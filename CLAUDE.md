@@ -25,6 +25,8 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 GAYNAV is an LGBTQ+ travel platform being rebuilt from scratch, replacing an old vendor system (my.gaynav.com / GP Solutions) that offered no API access and no visibility into where guest data lived. The MVP scope for this repository is the **hotel booking core**: a curated hotel search and booking experience, sourced from RateHawk (a wholesale hotel bedbank), gatekept by GAYNAV's own vetting process. Villas, Connections, Forums, Reviews, Listings, Employment and Journeys are later phases, out of scope until the hotel core is live — do not build toward them unless explicitly asked.
 
+**One site, one codebase.** This app replaces both the gaynav.com marketing site and the my.gaynav.com booking engine (owner decision 2026-10-12). Homepage, city pages, trust/about pages, search, property pages and booking all live in this one Next.js app on one domain, with one account system. Do not build a separate marketing site, and do not hand off to any external booking engine.
+
 ## Non-negotiable architecture principles
 
 - **Whitelist-first curation.** The public site never queries RateHawk's open catalogue directly. Every search or listing query is filtered server-side against GAYNAV's own `approved_properties` table before RateHawk is asked for live rates/availability. A property only becomes visible after a staff member approves it — never automatically.
