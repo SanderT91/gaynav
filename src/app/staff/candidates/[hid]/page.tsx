@@ -3,12 +3,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { requireStaff } from "@/lib/auth/current-user";
+import { approvalRequirements, type DecisionEntry } from "@/lib/candidates/decisions";
 import { findCandidate, imageUrl } from "@/lib/candidates/detail";
 import type { EvidenceSignal } from "@/lib/evidence/schema";
 import type { CitableSource } from "@/lib/evidence/sources";
 import { loadLatestEvidencePack } from "@/lib/evidence/store";
 import { createClient } from "@/lib/supabase/server";
+import { DecisionPanel } from "./decision-panel";
 import { GenerateButton } from "./generate-button";
+import { StatusPanel } from "./status-panel";
 
 export const metadata: Metadata = {
   title: "Candidate — GAYNAV staff",
@@ -27,7 +30,8 @@ const WHITELIST_LABEL = {
 } as const;
 
 // Staff-only detail view of one candidate (Epic 1.3): the hotel's own data
-// and the latest AI evidence pack. Approve / reject comes in the next feature.
+// and the latest AI evidence pack, the approve / reject decision, and the
+// audit log of every decision about this hotel.
 export default function CandidatePage({ params }: PageProps<"/staff/candidates/[hid]">) {
   return (
     <main style={{ padding: "3rem 1.5rem", maxWidth: "52rem", margin: "0 auto" }}>
@@ -47,17 +51,23 @@ async function CandidateDetail({
   params: PageProps<"/staff/candidates/[hid]">["params"];
 }) {
   const { hid } = await params;
-  await requireStaff(`/staff/candidates/${encodeURIComponent(hid)}`);
+  const user = await requireStaff(`/staff/candidates/${encodeURIComponent(hid)}`);
 
   const candidate = findCandidate(hid);
   if (!candidate) notFound();
   const { hotel } = candidate;
 
   const supabase = await createClient();
-  const [{ data: approval }, latest] = await Promise.all([
+  const [{ data: approval }, latest, { data: history }] = await Promise.all([
     supabase.from("approved_properties").select("status").eq("hid", hotel.hid).maybeSingle(),
     loadLatestEvidencePack(supabase, hotel.hid),
+    supabase
+      .from("vetting_decisions")
+      .select("decision, note, concerns_acknowledged, decided_by, decided_at")
+      .eq("hid", hotel.hid)
+      .order("decided_at", { ascending: false }),
   ]);
+  const decisions = (history ?? []) as DecisionEntry[];
   const amenities = hotel.amenity_groups.flatMap((g) => g.amenities);
 
   return (
@@ -182,6 +192,43 @@ async function CandidateDetail({
             </p>
             <GenerateButton hid={String(hotel.hid)} label="Regenerate" />
           </>
+        )}
+      </section>
+      <section style={{ marginTop: "2rem" }} aria-labelledby="decision-heading">
+        <h2 id="decision-heading" style={{ fontSize: "1.2rem" }}>
+          Decision
+        </h2>
+        {approval ? (
+          <StatusPanel
+            hid={String(hotel.hid)}
+            status={approval.status === "suspended" ? "suspended" : "approved"}
+          />
+        ) : hotel.is_closed ? (
+          <p style={{ marginTop: "0.5rem" }}>Closed hotels can&apos;t be approved.</p>
+        ) : (
+          <DecisionPanel hid={String(hotel.hid)} requirements={approvalRequirements(latest)} />
+        )}
+      </section>
+
+      <section style={{ marginTop: "2rem" }} aria-labelledby="history-heading">
+        <h2 id="history-heading" style={{ fontSize: "1.2rem" }}>
+          Decision history
+        </h2>
+        {decisions.length === 0 ? (
+          <p style={{ marginTop: "0.5rem" }}>No decisions yet.</p>
+        ) : (
+          <ul
+            style={{ marginTop: "0.5rem", paddingLeft: "1.2rem", display: "grid", gap: "0.5rem" }}
+          >
+            {decisions.map((d, i) => (
+              <li key={i}>
+                <strong>{d.decision}</strong> · {new Date(d.decided_at).toLocaleString("en-GB")} ·{" "}
+                {d.decided_by === user.id ? "you" : `staff member ${d.decided_by.slice(0, 8)}`}
+                {d.concerns_acknowledged && " · concerns reviewed"}
+                {d.note && <div style={{ fontSize: "0.9rem" }}>“{d.note}”</div>}
+              </li>
+            ))}
+          </ul>
         )}
       </section>
     </>

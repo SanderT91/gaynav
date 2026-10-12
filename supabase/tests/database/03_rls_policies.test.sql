@@ -6,14 +6,15 @@
 -- it: switch to the `anon` or `authenticated` database role and set the JWT
 -- claims the API would set.
 --
--- Two independent layers block bad approvals: the RLS policy (error 42501) and
--- the "approver must be staff" trigger from the table migration (error 23514),
--- which fires first when the named approver is not staff. Tests expect
--- whichever layer actually stops the write.
+-- Since Epic 1.3, API roles cannot insert into approved_properties at all
+-- (error 42501): approving happens by recording an "approved" decision in
+-- vetting_decisions (see 07_vetting_decisions), which applies the owner's
+-- rules and adds the hotel to the whitelist. Tests here check that every
+-- other path is closed.
 --
 -- Run with: npm run db:test
 begin;
-select plan(59);
+select plan(60);
 
 -- ── Test helpers (created inside this transaction, rolled back at the end) ──
 create schema tests;
@@ -60,9 +61,9 @@ update public.users set role = 'partner' where id = '00000000-0000-0000-0000-000
 update public.users set role = 'staff'
   where id in ('00000000-0000-0000-0000-00000000000c', '00000000-0000-0000-0000-00000000000d');
 
-insert into public.approved_properties (hid, status, approved_by) values
-  (5001, 'approved',  '00000000-0000-0000-0000-00000000000c'),
-  (5002, 'suspended', '00000000-0000-0000-0000-00000000000c');
+insert into public.approved_properties (hid, status, approved_by, vetting_summary) values
+  (5001, 'approved',  '00000000-0000-0000-0000-00000000000c', 'Fixture public summary'),
+  (5002, 'suspended', '00000000-0000-0000-0000-00000000000c', 'Fixture public summary');
 
 -- ════════════════════════════════════════════════════════════════════════════
 -- 1. Unauthenticated visitor (anon)
@@ -76,8 +77,8 @@ select results_eq(
 );
 select throws_ok($$ select approved_by from public.approved_properties $$, '42501', null,
   'anon: cannot read approved_by');
-select throws_ok($$ insert into public.approved_properties (hid, approved_by)
-  values (6001, '00000000-0000-0000-0000-00000000000c') $$, '42501', null,
+select throws_ok($$ insert into public.approved_properties (hid, approved_by, vetting_summary)
+  values (6001, '00000000-0000-0000-0000-00000000000c', 'Test public summary') $$, '42501', null,
   'anon: cannot insert a property, even naming a real staff approver');
 select throws_ok($$ update public.approved_properties set status = 'approved' where hid = 5002 $$,
   '42501', null, 'anon: cannot update a property');
@@ -117,16 +118,16 @@ select results_eq(
 );
 select throws_ok($$ select approved_by from public.approved_properties $$, '42501', null,
   'traveler: cannot read approved_by');
-select throws_ok($$ insert into public.approved_properties (hid, approved_by)
-  values (6002, '00000000-0000-0000-0000-00000000000a') $$, '23514', null,
+select throws_ok($$ insert into public.approved_properties (hid, approved_by, vetting_summary)
+  values (6002, '00000000-0000-0000-0000-00000000000a', 'Test public summary') $$, '42501', null,
   'traveler: cannot approve a property as themselves');
-select throws_ok($$ insert into public.approved_properties (hid, approved_by)
-  values (6003, '00000000-0000-0000-0000-00000000000c') $$, '42501', null,
+select throws_ok($$ insert into public.approved_properties (hid, approved_by, vetting_summary)
+  values (6003, '00000000-0000-0000-0000-00000000000c', 'Test public summary') $$, '42501', null,
   'traveler: cannot approve a property in a staff member''s name');
-select is(tests.rows_updated($$ update public.approved_properties set status = 'suspended' where hid = 5001 $$),
-  0::bigint, 'traveler: cannot suspend an approved property (0 rows touched)');
-select is(tests.rows_updated($$ update public.approved_properties set status = 'approved' where hid = 5002 $$),
-  0::bigint, 'traveler: cannot reinstate a suspended property (0 rows touched)');
+select throws_ok($$ update public.approved_properties set status = 'suspended' where hid = 5001 $$, '42501', null,
+  'traveler: cannot suspend an approved property');
+select throws_ok($$ update public.approved_properties set status = 'approved' where hid = 5002 $$, '42501', null,
+  'traveler: cannot reinstate a suspended property');
 select throws_ok($$ delete from public.approved_properties where hid = 5001 $$, '42501', null,
   'traveler: cannot delete a property');
 reset role;
@@ -136,8 +137,8 @@ reset role;
 -- because the role is read from public.users, never from the token.
 select tests.login_as('00000000-0000-0000-0000-00000000000a', 'aal2',
   '{"user_metadata": {"role": "staff"}, "app_metadata": {"role": "staff"}, "user_role": "staff"}');
-select throws_ok($$ insert into public.approved_properties (hid, approved_by)
-  values (6004, '00000000-0000-0000-0000-00000000000a') $$, '23514', null,
+select throws_ok($$ insert into public.approved_properties (hid, approved_by, vetting_summary)
+  values (6004, '00000000-0000-0000-0000-00000000000a', 'Test public summary') $$, '42501', null,
   'traveler with 2FA and forged "staff" claims: still cannot approve');
 select results_eq(
   $$ select count(*) from public.users $$, $$ values (1::bigint) $$,
@@ -167,11 +168,11 @@ select results_eq(
   $$ values (5001::bigint) $$,
   'partner: sees approved properties only'
 );
-select throws_ok($$ insert into public.approved_properties (hid, approved_by)
-  values (6005, '00000000-0000-0000-0000-00000000000b') $$, '23514', null,
+select throws_ok($$ insert into public.approved_properties (hid, approved_by, vetting_summary)
+  values (6005, '00000000-0000-0000-0000-00000000000b', 'Test public summary') $$, '42501', null,
   'partner: cannot approve a property');
-select is(tests.rows_updated($$ update public.approved_properties set status = 'suspended' where hid = 5001 $$),
-  0::bigint, 'partner: cannot suspend a property');
+select throws_ok($$ update public.approved_properties set status = 'suspended' where hid = 5001 $$, '42501', null,
+  'partner: cannot suspend a property');
 select throws_ok($$ delete from public.approved_properties where hid = 5001 $$, '42501', null,
   'partner: cannot delete a property');
 select throws_ok($$ select approved_by from public.approved_properties $$, '42501', null,
@@ -193,19 +194,19 @@ select results_eq(
   $$ values (5001::bigint) $$,
   'staff without 2FA: does not see suspended properties'
 );
-select throws_ok($$ insert into public.approved_properties (hid, approved_by)
-  values (6006, '00000000-0000-0000-0000-00000000000c') $$, '42501', null,
+select throws_ok($$ insert into public.approved_properties (hid, approved_by, vetting_summary)
+  values (6006, '00000000-0000-0000-0000-00000000000c', 'Test public summary') $$, '42501', null,
   'staff without 2FA: cannot approve a property');
-select is(tests.rows_updated($$ update public.approved_properties set status = 'suspended' where hid = 5001 $$),
-  0::bigint, 'staff without 2FA: cannot suspend a property');
+select throws_ok($$ update public.approved_properties set status = 'suspended' where hid = 5001 $$, '42501', null,
+  'staff without 2FA: cannot suspend a property');
 reset role;
 
 -- A missing aal claim is treated the same as aal1.
 select set_config('request.jwt.claims',
   '{"sub": "00000000-0000-0000-0000-00000000000c", "role": "authenticated"}', true);
 set local role authenticated;
-select throws_ok($$ insert into public.approved_properties (hid, approved_by)
-  values (6007, '00000000-0000-0000-0000-00000000000c') $$, '42501', null,
+select throws_ok($$ insert into public.approved_properties (hid, approved_by, vetting_summary)
+  values (6007, '00000000-0000-0000-0000-00000000000c', 'Test public summary') $$, '42501', null,
   'staff with no aal claim at all: cannot approve a property');
 reset role;
 
@@ -233,19 +234,21 @@ select results_eq(
   $$ values (5001::bigint), (5002::bigint) $$,
   'staff with 2FA: sees approved and suspended properties'
 );
-select lives_ok($$ insert into public.approved_properties (hid, approved_by)
-  values (7001, '00000000-0000-0000-0000-00000000000c') $$,
+select lives_ok($$ insert into public.vetting_decisions (hid, decision, note, public_summary)
+  values (7001, 'approved', 'Approved on own research (no evidence pack)', 'Test public summary') $$,
   'staff with 2FA: can approve a property as themselves');
-select throws_ok($$ insert into public.approved_properties (hid, approved_by)
-  values (7002, '00000000-0000-0000-0000-00000000000d') $$, '42501', null,
+select throws_ok($$ insert into public.vetting_decisions (hid, decision, note, public_summary, decided_by)
+  values (7002, 'approved', 'x', 'Test public summary', '00000000-0000-0000-0000-00000000000d') $$, '42501', null,
   'staff with 2FA: cannot approve in another staff member''s name');
-select throws_ok($$ insert into public.approved_properties (hid, status, approved_by)
-  values (7003, 'suspended', '00000000-0000-0000-0000-00000000000c') $$, '42501', null,
+select throws_ok($$ insert into public.approved_properties (hid, status, approved_by, vetting_summary)
+  values (7003, 'suspended', '00000000-0000-0000-0000-00000000000c', 'Test public summary') $$, '42501', null,
   'staff with 2FA: cannot set columns outside the insert grant (status) on insert');
-select is(tests.rows_updated($$ update public.approved_properties set status = 'suspended' where hid = 5001 $$),
-  1::bigint, 'staff with 2FA: can suspend a property');
-select is(tests.rows_updated($$ update public.approved_properties set status = 'approved' where hid = 5002 $$),
-  1::bigint, 'staff with 2FA: can reinstate a property');
+select throws_ok($$ update public.approved_properties set status = 'suspended' where hid = 5001 $$, '42501', null,
+  'staff with 2FA: cannot change the status directly (it must be a logged decision)');
+select lives_ok($$ insert into public.vetting_decisions (hid, decision, note) values (5001, 'suspended', 'Complaint under review') $$,
+  'staff with 2FA: can suspend a property by recording the decision');
+select lives_ok($$ insert into public.vetting_decisions (hid, decision) values (5002, 'reinstated') $$,
+  'staff with 2FA: can reactivate a property by recording the decision');
 select throws_ok($$ update public.approved_properties set hid = 9999 where hid = 5001 $$, '42501', null,
   'staff with 2FA: cannot change a property''s hid');
 select throws_ok($$ update public.approved_properties
@@ -271,15 +274,15 @@ select results_eq(
 -- ════════════════════════════════════════════════════════════════════════════
 update public.users set role = 'traveler' where id = '00000000-0000-0000-0000-00000000000d';
 select tests.login_as('00000000-0000-0000-0000-00000000000d', 'aal2');
-select throws_ok($$ insert into public.approved_properties (hid, approved_by)
-  values (7004, '00000000-0000-0000-0000-00000000000d') $$, '23514', null,
+select throws_ok($$ insert into public.approved_properties (hid, approved_by, vetting_summary)
+  values (7004, '00000000-0000-0000-0000-00000000000d', 'Test public summary') $$, '42501', null,
   'demoted staff with a live 2FA session: can no longer approve');
 select results_eq(
   $$ select count(*) from public.users $$, $$ values (1::bigint) $$,
   'demoted staff with a live 2FA session: no longer reads all users'
 );
-select is(tests.rows_updated($$ update public.approved_properties set status = 'approved' where hid = 5001 $$),
-  0::bigint, 'demoted staff with a live 2FA session: can no longer change status');
+select throws_ok($$ update public.approved_properties set status = 'approved' where hid = 5001 $$, '42501', null,
+  'demoted staff with a live 2FA session: can no longer change status');
 reset role;
 
 -- ════════════════════════════════════════════════════════════════════════════
