@@ -111,11 +111,13 @@ select is(
   'traveler'::public.user_role,
   'after all those attempts, the new account is still a traveler'
 );
+-- No API role can even look inside the admin schema. (It is also kept out
+-- of the Data API in supabase/config.toml; CI checks that over HTTP.)
 select ok(
-  not exists (select 1 from information_schema.schemata s
-              where s.schema_name = 'admin'
-                and s.schema_name = any(string_to_array(current_setting('pgrst.db_schemas', true), ','))),
-  'the admin schema is not exposed through the Data API'
+  not has_schema_privilege('anon', 'admin', 'USAGE')
+  and not has_schema_privilege('authenticated', 'admin', 'USAGE')
+  and not has_schema_privilege('service_role', 'admin', 'USAGE'),
+  'anon, authenticated and service_role have no access to the admin schema'
 );
 
 select * from finish();

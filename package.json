@@ -13,7 +13,8 @@
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
-    "db:test": "supabase test db"
+    "db:test": "supabase db reset && supabase test db",
+    "db:check-exposure": "node scripts/check-api-exposure.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

@@ -304,11 +304,13 @@ select is_empty(
        and grantee = 'anon' $$,
   'anon holds no privileges at all on users'
 );
-select ok(
-  not exists (select 1 from information_schema.schemata s
-              where s.schema_name = 'private'
-                and s.schema_name = any(string_to_array(current_setting('pgrst.db_schemas', true), ','))),
-  'the private helper schema is not exposed through the Data API'
+-- The private schema is also kept out of the Data API (supabase/config.toml
+-- [api].schemas); CI checks that over HTTP. Here: it holds no data at all,
+-- only the helper function, so nothing in it could leak even if exposed.
+select is_empty(
+  $$ select 1 from pg_class c join pg_namespace n on n.oid = c.relnamespace
+     where n.nspname = 'private' and c.relkind in ('r', 'v', 'm', 'p', 'f') $$,
+  'the private schema contains no tables or views'
 );
 select ok(
   (select relrowsecurity from pg_class where oid = 'public.users'::regclass)
