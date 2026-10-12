@@ -9,7 +9,9 @@ import { EvidencePackSchema, type EvidencePack } from "./schema";
 // read from the server environment and this module can't be imported into
 // browser code (the "server-only" import makes that a build error).
 
-export const EVIDENCE_MODEL = "claude-opus-5-5";
+// Owner decision 2026-10-12: Sonnet 5.5 for the MVP (about half the cost of
+// Opus 5.5). Swap back here if evidence-pack quality ever needs it.
+export const EVIDENCE_MODEL = "claude-sonnet-5-5";
 
 /** What the generator needs back from one Claude call. */
 export type ClaudeEvidenceReply = {
@@ -45,7 +47,7 @@ export const callClaude: CallClaude = async (userMessage) => {
   const response = await getClient().beta.messages.create({
     model: EVIDENCE_MODEL,
     max_tokens: 16000,
-    // Vetting evidence deserves careful reading; Opus 5.5 defaults to medium.
+    // Vetting evidence deserves careful reading.
     output_config: {
       effort: "high",
       format: { type: "json_schema", schema: EVIDENCE_FORMAT.schema },
