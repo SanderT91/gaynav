@@ -21,8 +21,6 @@ create table public.approved_properties (
   -- that trail; staff offboarding is a role change / ban instead.
   approved_by uuid not null references public.users (id) on delete restrict,
   approved_at timestamptz not null default now(),
-  -- Staff-only working notes; never exposed to the public (see RLS policies).
-  internal_notes text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
