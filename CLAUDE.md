@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 0 — Foundation
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 0.3 — mandatory 2FA enforcement for the staff role (TOTP enrolment, aal2 step-up, lost-authenticator recovery path)
+- **Next up:** Epic 0.4 — GitHub Actions workflow running lint + tests on every PR
 
 ## Session protocol
 
@@ -104,7 +104,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 **Epic 0.3 — Authentication**
 - [x] Feature: Supabase Auth wired up (sign up, sign in, session handling) — done 2026-10-12, PR #7
 - [ ] Feature: role assignment on account creation (new accounts are always travelers; staff accounts are provisioned manually through admin tooling, never via self-signup or from within the app — see Decisions #1) — done 2026-10-12, PR #8
-- [ ] Feature: mandatory 2FA enforcement specifically for the staff role, enforced in RLS at `aal2` (see Decisions #2). Includes the staff flow to enroll a TOTP factor and step up to an `aal2` session, a test proving a staff user without `aal2` gets no staff powers, and a documented lost-authenticator recovery path
+- [x] Feature: mandatory 2FA enforcement specifically for the staff role, enforced in RLS at `aal2` (see Decisions #2). Includes the staff flow to enroll a TOTP factor and step up to an `aal2` session, a test proving a staff user without `aal2` gets no staff powers, and a documented lost-authenticator recovery path — done 2026-10-12, PR #9
 
 **Epic 0.4 — CI/CD and environments**
 - [ ] Feature: GitHub Actions workflow running lint + tests on every PR

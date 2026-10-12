@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
 import { requireUser } from "@/lib/auth/current-user";
 import { signOut } from "../login/actions";
@@ -26,6 +27,11 @@ async function AccountDetails() {
     <>
       <p style={{ marginTop: "1rem" }}>Hello, you&apos;re signed in as {user.email}.</p>
       <p style={{ marginTop: "0.5rem" }}>Account type: {user.role}</p>
+      {user.role === "staff" && (
+        <p style={{ marginTop: "0.5rem" }}>
+          <Link href="/staff">Go to the staff area</Link>
+        </p>
+      )}
       <form action={signOut} style={{ marginTop: "1.5rem" }}>
         <button type="submit">Sign out</button>
       </form>
