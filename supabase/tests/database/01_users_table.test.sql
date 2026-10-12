@@ -1,7 +1,7 @@
 -- Epic 0.2 — users table: structure, sign-up trigger, and locked-down defaults.
 -- Run with: npm run db:test
 begin;
-select plan(14);
+select plan(11);
 
 -- ── Structure ────────────────────────────────────────────────────────────────
 select has_table('public', 'users', 'public.users exists');
@@ -49,29 +49,10 @@ select is_empty(
   'deleting the auth account removes the users row'
 );
 
--- ── Secure by default: no API role has access before policies exist ─────────
-select is_empty(
-  $$ select privilege_type from information_schema.role_table_grants
-     where table_schema = 'public' and table_name = 'users'
-       and grantee in ('anon', 'authenticated') $$,
-  'anon and authenticated hold no table privileges on users'
-);
-
-set local role anon;
-select throws_ok(
-  $$ select * from public.users $$,
-  '42501', null,
-  'anon cannot read users'
-);
-reset role;
-
+-- ── Trigger function is not an API endpoint ─────────────────────────────────
+-- (Who may read/write the table is covered by 03_rls_policies.test.sql.)
 set local role authenticated;
 set local request.jwt.claims to '{"sub": "11111111-1111-1111-1111-111111111111", "role": "authenticated"}';
-select throws_ok(
-  $$ select * from public.users where id = '11111111-1111-1111-1111-111111111111' $$,
-  '42501', null,
-  'a signed-in user cannot read users yet (not even their own row) until policies are added'
-);
 select throws_ok(
   $$ select public.handle_new_auth_user() $$,
   '42501', null,

@@ -1,7 +1,7 @@
 -- Epic 0.2 — approved_properties: structure, integrity rules, locked-down defaults.
 -- Run with: npm run db:test
 begin;
-select plan(15);
+select plan(12);
 
 -- ── Structure ────────────────────────────────────────────────────────────────
 select has_table('public', 'approved_properties', 'public.approved_properties exists');
@@ -62,31 +62,7 @@ select throws_ok(
   'a staff account that approved properties cannot be hard-deleted (audit trail kept)'
 );
 
--- ── Secure by default ────────────────────────────────────────────────────────
-select is_empty(
-  $$ select privilege_type from information_schema.role_table_grants
-     where table_schema = 'public' and table_name = 'approved_properties'
-       and grantee in ('anon', 'authenticated') $$,
-  'anon and authenticated hold no table privileges on approved_properties'
-);
-
-set local role anon;
-select throws_ok(
-  $$ select * from public.approved_properties $$,
-  '42501', null,
-  'anon cannot read approved_properties until policies are added'
-);
-reset role;
-
-set local role authenticated;
-set local request.jwt.claims to '{"sub": "aaaaaaaa-0000-0000-0000-000000000001", "role": "authenticated", "aal": "aal2"}';
-select throws_ok(
-  $$ insert into public.approved_properties (hid, approved_by)
-     values (2001, 'aaaaaaaa-0000-0000-0000-000000000001') $$,
-  '42501', null,
-  'even staff cannot write through the API until policies are added'
-);
-reset role;
+-- (Who may read/write the table is covered by 03_rls_policies.test.sql.)
 
 select * from finish();
 rollback;
