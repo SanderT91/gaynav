@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 0 — Foundation
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 0.3 — Supabase Auth wired up (sign up, sign in, session handling). Epic 0.2 reviewed by the owner and live on the hosted Supabase project (2026-10-12).
+- **Next up:** Epic 0.3 — role assignment on account creation (staff provisioned manually through admin tooling)
 
 ## Session protocol
 
@@ -102,7 +102,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [x] Feature: RLS policies enforcing role-based access on both tables — this is the dedicated-review exception noted above — done 2026-10-12, PR #5
 
 **Epic 0.3 — Authentication**
-- [ ] Feature: Supabase Auth wired up (sign up, sign in, session handling)
+- [x] Feature: Supabase Auth wired up (sign up, sign in, session handling) — done 2026-10-12, PR #7
 - [ ] Feature: role assignment on account creation (new accounts are always travelers; staff accounts are provisioned manually through admin tooling, never via self-signup or from within the app — see Decisions #1)
 - [ ] Feature: mandatory 2FA enforcement specifically for the staff role, enforced in RLS at `aal2` (see Decisions #2). Includes the staff flow to enroll a TOTP factor and step up to an `aal2` session, a test proving a staff user without `aal2` gets no staff powers, and a documented lost-authenticator recovery path
 

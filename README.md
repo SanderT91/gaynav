@@ -41,3 +41,12 @@ Hosted on Vercel (project `gaynav`, team `sander-swat`), connected to this GitHu
 - **Previews:** every pull request gets its own preview deployment; the link appears on the PR. Previews are protected by Vercel Authentication — log in with an account on the Vercel team to view them.
 - **Framework preset** is pinned to Next.js in [`vercel.json`](vercel.json) rather than in the dashboard, so the build setting lives in code and can't drift.
 - **Environment variables** are set in the Vercel dashboard (Project → Settings → Environment Variables), never committed. The list of required names will live in `.env.example` (Epic 0.5).
+
+## Authentication (local)
+
+Sign-up, sign-in and sessions use Supabase Auth (`src/lib/supabase/`, `src/proxy.ts`). Locally:
+
+1. `npm run db:start` (needs Docker) — prints the local `API_URL` and `PUBLISHABLE_KEY`.
+2. Copy `.env.example` to `.env.local` and fill in those two values.
+3. `npm run dev`, then open http://localhost:3000/login.
+4. Confirmation emails don't leave your machine: open the local mail catcher at http://127.0.0.1:54324 and click the link there.
