@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 1 — Curation workbench (against mock data). Phase 0 complete 2026-10-12 (end-of-phase review pending with the owner).
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 1.2 — server-side Claude API evidence-pack generation (needs an Anthropic API key from the owner)
+- **Next up:** Epic 1.2 — error handling for failed/incomplete AI responses; then live verification of 1.2 once an ANTHROPIC_API_KEY is available
 
 ## Session protocol
 
@@ -126,7 +126,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [x] Feature: `candidate_properties` JSON fixture shaped like an expected RateHawk response (property id, name, location, photos, amenities, rate/availability) — done 2026-10-12, PR #16
 
 **Epic 1.2 — AI evidence-pack generation**
-- [ ] Feature: server-side Claude API call that produces a structured, cited summary (reviews, policies, press) from a candidate's mock data. Candidates and their evidence packs are stored in staff-only tables, never on a table travelers can read (see Decisions #6)
+- [ ] Feature: server-side Claude API call that produces a structured, cited summary (reviews, policies, press) from a candidate's mock data. Candidates and their evidence packs are stored in staff-only tables, never on a table travelers can read (see Decisions #6) — built 2026-10-12, PR #17; ⏳ not checked off until verified with a live Claude API call (needs ANTHROPIC_API_KEY)
 - [ ] Feature: error handling for a failed or incomplete AI response — never silently show a blank or fabricated summary
 
 **Epic 1.3 — Staff review UI**
