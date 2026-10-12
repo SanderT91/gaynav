@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 0 — Foundation
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 0.5 — `.env.example` documenting every required environment variable
+- **Next up:** Epic 0.5 — README local dev guide
 
 ## Session protocol
 
@@ -113,7 +113,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [x] Feature: a basic test framework in place (e.g. Vitest) with one real test, so later features have a pattern to follow rather than inventing one each time — done 2026-10-12, PR #12
 
 **Epic 0.5 — Config and secrets**
-- [ ] Feature: `.env.example` documenting every required environment variable (without real values), kept up to date as new integrations are added
+- [x] Feature: `.env.example` documenting every required environment variable (without real values), kept up to date as new integrations are added — done 2026-10-12, PR #13 (kept in sync by a test)
 - [ ] Feature: a short README section on how to get a local dev environment running against a Supabase preview branch
 - [ ] Feature: a README admin runbook for the things the app deliberately cannot do: creating the first staff account, promoting or demoting a role, offboarding a staff member (remove the role, disable the login, never delete), and resetting a staff member's lost 2FA factor (see Decisions #1, #2, #4)
 
