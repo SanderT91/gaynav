@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 0 — Foundation
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 0.5 — README admin runbook
+- **Next up:** ⏸ End-of-Phase-0 human review (all Phase 0 PRs) before Phase 1 starts. Open in Phase 0: Supabase preview branches (deferred by the owner, free plan).
 
 ## Session protocol
 
@@ -103,7 +103,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 
 **Epic 0.3 — Authentication**
 - [x] Feature: Supabase Auth wired up (sign up, sign in, session handling) — done 2026-10-12, PR #7
-- [ ] Feature: role assignment on account creation (new accounts are always travelers; staff accounts are provisioned manually through admin tooling, never via self-signup or from within the app — see Decisions #1) — done 2026-10-12, PR #8
+- [x] Feature: role assignment on account creation (new accounts are always travelers; staff accounts are provisioned manually through admin tooling, never via self-signup or from within the app — see Decisions #1) — done 2026-10-12, PR #8
 - [x] Feature: mandatory 2FA enforcement specifically for the staff role, enforced in RLS at `aal2` (see Decisions #2). Includes the staff flow to enroll a TOTP factor and step up to an `aal2` session, a test proving a staff user without `aal2` gets no staff powers, and a documented lost-authenticator recovery path — done 2026-10-12, PR #9
 
 **Epic 0.4 — CI/CD and environments**
@@ -115,7 +115,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 **Epic 0.5 — Config and secrets**
 - [x] Feature: `.env.example` documenting every required environment variable (without real values), kept up to date as new integrations are added — done 2026-10-12, PR #13 (kept in sync by a test)
 - [x] Feature: a short README section on how to get a local dev environment running against a Supabase preview branch — done 2026-10-12, PR #14 (written for the local Docker Supabase stack, since preview branches are deferred with the free plan; update when Branching is enabled)
-- [ ] Feature: a README admin runbook for the things the app deliberately cannot do: creating the first staff account, promoting or demoting a role, offboarding a staff member (remove the role, disable the login, never delete), and resetting a staff member's lost 2FA factor (see Decisions #1, #2, #4)
+- [x] Feature: a README admin runbook for the things the app deliberately cannot do: creating the first staff account, promoting or demoting a role, offboarding a staff member (remove the role, disable the login, never delete), and resetting a staff member's lost 2FA factor (see Decisions #1, #2, #4) — done 2026-10-12, PR #15
 
 ### Phase 1 — Curation workbench (against mock data)
 **Epic 1.1 — Mock candidate data**
