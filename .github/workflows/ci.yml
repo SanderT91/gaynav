@@ -57,6 +57,10 @@ jobs:
         run: npx supabase test db
       - name: Internal schemas are not reachable through the API
         run: npm run db:check-exposure
+      # Supabase's own security linter (exposed functions, missing RLS, …).
+      # Any warning fails the PR.
+      - name: Supabase security advisors
+        run: npx supabase db advisors --local --type security --level warn --fail-on warn
       - name: Stop Supabase
         if: always()
         run: npx supabase stop --no-backup
