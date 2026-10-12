@@ -26,6 +26,13 @@ Items below were found by reviewing the existing my.gaynav.com hotel search flow
 
 - **Staff can change a user's role from within the app** (for example promoting a traveler to partner). Today roles change only through server-side admin tooling, by design (see Decisions #1 in `CLAUDE.md`). Promote when: the partner role is actually used (villa/apartment hosts, Connections) and manual admin changes become a bottleneck. It must be built deliberately, with `aal2` enforcement and an audit log entry for every change.
 
+## Content and onboarding (from the rebuilt gaynav.com, 12 Oct 2026)
+
+- **Insiders news feed.** The current site has a news feed with 3 categories, views, author, sharing and source attribution ("Adapted from…" external sources, so check copyright before reusing content). Promote when: the hotel core is live and content is wanted for SEO and engagement.
+- **Provider sign-up and onboarding.** The current site has separate Customer and Provider accounts. Maps to the `partner` role. Promote together with the partner/villa phase.
+- **Destination guides** (LGBTQ+ rights and safety per country/city), **LGBTQ+ traveler reviews**, **community and meet-ups**, **curated queer experiences.** Promised on the About page; they belong to the later Reviews, Connections, Listings and Journeys phases.
+- **Redirects from old gaynav.com / my.gaynav.com URLs** to their new equivalents at go-live, to keep SEO and bookmarks working. Promote at Phase 5 launch readiness.
+
 ## Personalization (already flagged as deferred in CLAUDE.md)
 
 - Favoriting/saving properties — confirmed present on the existing site, so this is a real gap, not a hypothetical one.

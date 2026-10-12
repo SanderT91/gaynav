@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 1 — Curation workbench (against mock data). Phase 0 complete 2026-10-12 (end-of-phase review pending with the owner).
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 1.2 — server-side Claude API evidence-pack generation (needs an Anthropic API key from the owner)
+- **Next up:** Epic 0.2 follow-up (anon RLS check) if still open, then Epic 1.1 launch-city fixture alignment, then Epic 1.2 — server-side Claude API evidence-pack generation (needs an Anthropic API key from the owner)
 
 ## Session protocol
 
@@ -122,6 +122,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 ### Phase 1 — Curation workbench (against mock data)
 **Epic 1.1 — Mock candidate data**
 - [x] Feature: `candidate_properties` JSON fixture shaped like an expected RateHawk response (property id, name, location, photos, amenities, rate/availability) — done 2026-10-12, PR #16
+- [ ] Feature: align the fixture with the launch cities (owner decision 2026-10-12): London, Rome, Paris, Tokyo, Ho Chi Minh City, Bangkok — the six cities gaynav.com already features as "City curations". Replace any other pilot cities (e.g. Bali, Amsterdam, Barcelona) in the fixture, docs and tests
 
 **Epic 1.2 — AI evidence-pack generation**
 - [ ] Feature: server-side Claude API call that produces a structured, cited summary (reviews, policies, press) from a candidate's mock data. Candidates and their evidence packs are stored in staff-only tables, never on a table travelers can read (see Decisions #6)
@@ -154,6 +155,12 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 **Epic 2.4 — Trust page**
 - [ ] Feature: a public page explaining the vetting process in plain language (why every property is reviewed, what disqualifies one) — this is the core brand promise and costs little to build, but was missing from the original phase plan
 
+**Epic 2.5 — Homepage and city pages**
+*This app replaces gaynav.com entirely (owner decision 2026-10-12), so the public entry points of the current site are rebuilt here. Accounts are this app's own — no combined login with the old site.*
+- [ ] Feature: homepage with a hero, a search box, and "City curations" cards for the six launch cities, each linking to a city page (replaces the current deep links into my.gaynav.com search)
+- [ ] Feature: city page per launch city showing only approved properties for that city, server-rendered with its own metadata (SEO)
+- [ ] Feature: About, Privacy and Terms pages (placeholder text where legal copy isn't final, flagged clearly). The Insiders news feed is NOT part of the MVP (see `FEATURE_BACKLOG.md`)
+
 **Deferred, deliberately out of MVP scope:** favoriting/saved properties, multi-language UI, personalized recommendations. Not forgotten — reviewed and postponed past MVP.
 
 ### Phase 3 — Real RateHawk integration
@@ -168,7 +175,7 @@ Depends on RateHawk credentials being available — flag and pause if they aren'
 *Replaces a simpler "candidate pull" assumption: RateHawk expects partners to bulk-download and store hotel content, not fetch it live per request.*
 - [ ] Feature: job to retrieve RateHawk's full hotel data dump (updated weekly) and store it — name, address, photos, amenities, `metapolicy_struct`/`metapolicy_extra_info` (house rules, extra fees, ID requirements)
 - [ ] Feature: job to retrieve the daily incremental dump and apply updates, so static content doesn't go stale
-- [ ] Feature: candidate selection for the named target cities pulled from this locally-stored static data, replacing the Phase 1 mock fixture
+- [ ] Feature: candidate selection for the launch cities (London, Rome, Paris, Tokyo, Ho Chi Minh City, Bangkok) pulled from this locally-stored static data, replacing the Phase 1 mock fixture
 
 **Epic 3.3 — Swap mock data for live data**
 - [ ] Feature: search and detail pages read live rates/availability from RateHawk (joined with the locally-stored static content from Epic 3.2), filtered through the same whitelist logic from Phase 2 — this logic should not need to change, only its data source
@@ -217,7 +224,7 @@ From this phase on, every PR requires human review before merge (see Review poli
 
 **Epic 5.4 — Privacy basics**
 - [ ] Feature: a traveler can request account deletion and a copy of their own data — required for real customer PII regardless of exact jurisdiction, and much easier to build now than to retrofit once there's live data to migrate. Where retained records (e.g. bookings, audit entries) reference the account, anonymise it instead of hard-deleting (see Decisions #4)
-- [ ] Feature: a cookie consent banner — legally required once there are EU visitors (the named launch cities include Amsterdam and Barcelona)
+- [ ] Feature: a cookie consent banner — legally required once there are EU visitors (the launch cities include London, Rome and Paris)
 - [ ] Feature: password reset flow tested end-to-end, not just assumed to work because Supabase provides it by default
 
 **Epic 5.5 — Measuring whether the MVP is working**
