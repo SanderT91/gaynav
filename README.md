@@ -106,14 +106,6 @@ Every tool below requires a **reason**, and records who ran it and when in an ap
    ```
 3. The person signs in and opens `/staff`. They are made to set up an authenticator app before getting any staff access.
 
-### Give someone an account without email (demos, early testers)
-
-Until a real email service is connected (Epic 4.2), Supabase's built-in sender only delivers to members of the Supabase organisation, a few emails per hour. To let anyone else in:
-
-1. Supabase dashboard → **Authentication → Users → Add user → Create new user**.
-2. Enter their email and a temporary password, and tick **Auto Confirm User**.
-3. They can sign in at https://gaynav.vercel.app/login straight away. For staff access, follow the steps above.
-
 ### Change someone's role
 
 Same function, any role: `traveler`, `partner` or `staff`.
