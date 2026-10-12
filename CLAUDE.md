@@ -7,8 +7,8 @@ This file orients Claude Code on every session in this repository. Read it in fu
 *Claude Code: keep this block current. Update it whenever you check off a feature or move to a new phase — it's the fastest way for a human to see where the product stands without reading the whole file.*
 
 - **Current phase:** 0 — Foundation
-- **Last updated:** (update this line with the date, each time you touch this file)
-- **Next up:** first unchecked feature in Phase 0, in the order listed below
+- **Last updated:** 2026-10-12
+- **Next up:** Epic 0.1 — scaffold in review (PR #1, awaiting Vercel preview check); then connect repo to Vercel
 
 ## Session protocol
 
