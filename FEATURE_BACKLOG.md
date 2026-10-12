@@ -22,6 +22,10 @@ Items below were found by reviewing the existing my.gaynav.com hotel search flow
 - **Interactive map with nearby points of interest**, plus a "show all hotels on the map" toggle. The MVP detail page only plans a simple location display. Promote when: the design pass (Phase 5) has budget to spare, or user feedback specifically asks for it.
 - **Per-room cancellation policy shown inline**, next to each room's price (not just a general policy page). The MVP backlog doesn't break this out per room. Promote when: building Epic 4.3 (cancellation flow) — worth reconsidering together at that point rather than fully separately.
 
+## Administration
+
+- **Staff can change a user's role from within the app** (for example promoting a traveler to partner). Today roles change only through server-side admin tooling, by design (see Decisions #1 in `CLAUDE.md`). Promote when: the partner role is actually used (villa/apartment hosts, Connections) and manual admin changes become a bottleneck. It must be built deliberately, with `aal2` enforcement and an audit log entry for every change.
+
 ## Personalization (already flagged as deferred in CLAUDE.md)
 
 - Favoriting/saving properties — confirmed present on the existing site, so this is a real gap, not a hypothetical one.
