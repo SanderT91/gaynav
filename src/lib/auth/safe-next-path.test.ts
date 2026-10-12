@@ -5,7 +5,7 @@ import { safeNextPath } from "./safe-next-path";
 // outside URL through, a crafted GAYNAV login link could forward a freshly
 // signed-in user to a look-alike phishing site (an "open redirect").
 describe("safeNextPath", () => {
-  it.each(["/account", "/staff", "/staff/mfa?next=%2Fstaff", "/search?city=amsterdam#results"])(
+  it.each(["/account", "/staff", "/staff/mfa?next=%2Fstaff", "/search?city=london#results"])(
     "keeps the same-site path %s",
     (path) => {
       expect(safeNextPath(path)).toBe(path);

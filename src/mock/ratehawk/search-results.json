@@ -18,7 +18,7 @@
   "data": {
     "hotels": [
       {
-        "id": "canal_lantern_hotel_mock",
+        "id": "lantern_house_saigon_mock",
         "hid": 9990000001,
         "rates": [
           {
@@ -31,7 +31,7 @@
               "has_breakfast": false,
               "no_child_meal": true
             },
-            "daily_prices": ["214.00", "224.00"],
+            "daily_prices": ["96.00", "106.00"],
             "amenities_data": ["wifi"],
             "allotment": 3,
             "rg_ext": {
@@ -51,8 +51,8 @@
             "payment_options": {
               "payment_types": [
                 {
-                  "amount": "438.00",
-                  "show_amount": "438.00",
+                  "amount": "202.00",
+                  "show_amount": "202.00",
                   "currency_code": "EUR",
                   "show_currency_code": "EUR",
                   "by": null,
@@ -62,27 +62,20 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "36.17",
+                    "amount": "14.96",
                     "currency_code": "EUR",
-                    "value": "9.00"
+                    "value": "8.00"
                   },
                   "tax_data": {
-                    "taxes": [
-                      {
-                        "name": "city_tax",
-                        "included_by_supplier": false,
-                        "amount": "54.75",
-                        "currency_code": "EUR"
-                      }
-                    ]
+                    "taxes": []
                   },
                   "cancellation_penalties": {
                     "policies": [
                       {
                         "start_at": null,
                         "end_at": null,
-                        "amount_charge": "438.00",
-                        "amount_show": "438.00"
+                        "amount_charge": "202.00",
+                        "amount_show": "202.00"
                       }
                     ],
                     "free_cancellation_before": null
@@ -101,7 +94,7 @@
               "has_breakfast": true,
               "no_child_meal": true
             },
-            "daily_prices": ["232.00", "242.00"],
+            "daily_prices": ["114.00", "124.00"],
             "amenities_data": ["breakfast", "wifi"],
             "allotment": 3,
             "rg_ext": {
@@ -121,8 +114,8 @@
             "payment_options": {
               "payment_types": [
                 {
-                  "amount": "474.00",
-                  "show_amount": "474.00",
+                  "amount": "238.00",
+                  "show_amount": "238.00",
                   "currency_code": "EUR",
                   "show_currency_code": "EUR",
                   "by": null,
@@ -132,19 +125,12 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "39.14",
+                    "amount": "17.63",
                     "currency_code": "EUR",
-                    "value": "9.00"
+                    "value": "8.00"
                   },
                   "tax_data": {
-                    "taxes": [
-                      {
-                        "name": "city_tax",
-                        "included_by_supplier": false,
-                        "amount": "59.25",
-                        "currency_code": "EUR"
-                      }
-                    ]
+                    "taxes": []
                   },
                   "cancellation_penalties": {
                     "policies": [
@@ -157,14 +143,14 @@
                       {
                         "start_at": "2026-11-06T00:00:00",
                         "end_at": "2026-11-12T00:00:00",
-                        "amount_charge": "237.00",
-                        "amount_show": "237.00"
+                        "amount_charge": "119.00",
+                        "amount_show": "119.00"
                       },
                       {
                         "start_at": "2026-11-12T00:00:00",
                         "end_at": null,
-                        "amount_charge": "474.00",
-                        "amount_show": "474.00"
+                        "amount_charge": "238.00",
+                        "amount_show": "238.00"
                       }
                     ],
                     "free_cancellation_before": "2026-11-06T00:00:00"
@@ -183,7 +169,7 @@
               "has_breakfast": true,
               "no_child_meal": true
             },
-            "daily_prices": ["259.00", "269.00"],
+            "daily_prices": ["141.00", "151.00"],
             "amenities_data": ["breakfast", "wifi"],
             "allotment": 3,
             "rg_ext": {
@@ -203,8 +189,8 @@
             "payment_options": {
               "payment_types": [
                 {
-                  "amount": "528.00",
-                  "show_amount": "528.00",
+                  "amount": "292.00",
+                  "show_amount": "292.00",
                   "currency_code": "EUR",
                   "show_currency_code": "EUR",
                   "by": null,
@@ -214,19 +200,12 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "43.60",
+                    "amount": "21.63",
                     "currency_code": "EUR",
-                    "value": "9.00"
+                    "value": "8.00"
                   },
                   "tax_data": {
-                    "taxes": [
-                      {
-                        "name": "city_tax",
-                        "included_by_supplier": false,
-                        "amount": "66.00",
-                        "currency_code": "EUR"
-                      }
-                    ]
+                    "taxes": []
                   },
                   "cancellation_penalties": {
                     "policies": [
@@ -239,14 +218,14 @@
                       {
                         "start_at": "2026-11-10T00:00:00",
                         "end_at": "2026-11-12T00:00:00",
-                        "amount_charge": "264.00",
-                        "amount_show": "264.00"
+                        "amount_charge": "146.00",
+                        "amount_show": "146.00"
                       },
                       {
                         "start_at": "2026-11-12T00:00:00",
                         "end_at": null,
-                        "amount_charge": "528.00",
-                        "amount_show": "528.00"
+                        "amount_charge": "292.00",
+                        "amount_show": "292.00"
                       }
                     ],
                     "free_cancellation_before": "2026-11-10T00:00:00"
@@ -258,7 +237,7 @@
         ]
       },
       {
-        "id": "harbour_light_rooms_mock",
+        "id": "docklands_light_rooms_mock",
         "hid": 9990000002,
         "rates": [
           {
@@ -271,7 +250,7 @@
               "has_breakfast": false,
               "no_child_meal": true
             },
-            "daily_prices": ["139.00", "149.00"],
+            "daily_prices": ["149.00", "159.00"],
             "amenities_data": ["wifi"],
             "allotment": 3,
             "rg_ext": {
@@ -291,8 +270,8 @@
             "payment_options": {
               "payment_types": [
                 {
-                  "amount": "288.00",
-                  "show_amount": "288.00",
+                  "amount": "308.00",
+                  "show_amount": "308.00",
                   "currency_code": "EUR",
                   "show_currency_code": "EUR",
                   "by": null,
@@ -302,27 +281,20 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "23.78",
+                    "amount": "51.33",
                     "currency_code": "EUR",
-                    "value": "9.00"
+                    "value": "20.00"
                   },
                   "tax_data": {
-                    "taxes": [
-                      {
-                        "name": "city_tax",
-                        "included_by_supplier": false,
-                        "amount": "36.00",
-                        "currency_code": "EUR"
-                      }
-                    ]
+                    "taxes": []
                   },
                   "cancellation_penalties": {
                     "policies": [
                       {
                         "start_at": null,
                         "end_at": null,
-                        "amount_charge": "288.00",
-                        "amount_show": "288.00"
+                        "amount_charge": "308.00",
+                        "amount_show": "308.00"
                       }
                     ],
                     "free_cancellation_before": null
@@ -341,7 +313,7 @@
               "has_breakfast": true,
               "no_child_meal": true
             },
-            "daily_prices": ["157.00", "167.00"],
+            "daily_prices": ["167.00", "177.00"],
             "amenities_data": ["breakfast", "wifi"],
             "allotment": 3,
             "rg_ext": {
@@ -361,8 +333,8 @@
             "payment_options": {
               "payment_types": [
                 {
-                  "amount": "324.00",
-                  "show_amount": "324.00",
+                  "amount": "344.00",
+                  "show_amount": "344.00",
                   "currency_code": "EUR",
                   "show_currency_code": "EUR",
                   "by": null,
@@ -372,19 +344,12 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "26.75",
+                    "amount": "57.33",
                     "currency_code": "EUR",
-                    "value": "9.00"
+                    "value": "20.00"
                   },
                   "tax_data": {
-                    "taxes": [
-                      {
-                        "name": "city_tax",
-                        "included_by_supplier": false,
-                        "amount": "40.50",
-                        "currency_code": "EUR"
-                      }
-                    ]
+                    "taxes": []
                   },
                   "cancellation_penalties": {
                     "policies": [
@@ -397,14 +362,14 @@
                       {
                         "start_at": "2026-11-06T00:00:00",
                         "end_at": "2026-11-12T00:00:00",
-                        "amount_charge": "162.00",
-                        "amount_show": "162.00"
+                        "amount_charge": "172.00",
+                        "amount_show": "172.00"
                       },
                       {
                         "start_at": "2026-11-12T00:00:00",
                         "end_at": null,
-                        "amount_charge": "324.00",
-                        "amount_show": "324.00"
+                        "amount_charge": "344.00",
+                        "amount_show": "344.00"
                       }
                     ],
                     "free_cancellation_before": "2026-11-06T00:00:00"
@@ -423,7 +388,7 @@
               "has_breakfast": true,
               "no_child_meal": true
             },
-            "daily_prices": ["184.00", "194.00"],
+            "daily_prices": ["194.00", "204.00"],
             "amenities_data": ["breakfast", "wifi"],
             "allotment": 3,
             "rg_ext": {
@@ -443,8 +408,8 @@
             "payment_options": {
               "payment_types": [
                 {
-                  "amount": "378.00",
-                  "show_amount": "378.00",
+                  "amount": "398.00",
+                  "show_amount": "398.00",
                   "currency_code": "EUR",
                   "show_currency_code": "EUR",
                   "by": null,
@@ -454,19 +419,12 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "31.21",
+                    "amount": "66.33",
                     "currency_code": "EUR",
-                    "value": "9.00"
+                    "value": "20.00"
                   },
                   "tax_data": {
-                    "taxes": [
-                      {
-                        "name": "city_tax",
-                        "included_by_supplier": false,
-                        "amount": "47.25",
-                        "currency_code": "EUR"
-                      }
-                    ]
+                    "taxes": []
                   },
                   "cancellation_penalties": {
                     "policies": [
@@ -479,14 +437,14 @@
                       {
                         "start_at": "2026-11-10T00:00:00",
                         "end_at": "2026-11-12T00:00:00",
-                        "amount_charge": "189.00",
-                        "amount_show": "189.00"
+                        "amount_charge": "199.00",
+                        "amount_show": "199.00"
                       },
                       {
                         "start_at": "2026-11-12T00:00:00",
                         "end_at": null,
-                        "amount_charge": "378.00",
-                        "amount_show": "378.00"
+                        "amount_charge": "398.00",
+                        "amount_show": "398.00"
                       }
                     ],
                     "free_cancellation_before": "2026-11-10T00:00:00"
@@ -498,7 +456,7 @@
         ]
       },
       {
-        "id": "the_tulip_stay_mock",
+        "id": "the_rose_stay_mock",
         "hid": 9990000003,
         "rates": [
           {
@@ -511,7 +469,7 @@
               "has_breakfast": false,
               "no_child_meal": true
             },
-            "daily_prices": ["119.00", "129.00"],
+            "daily_prices": ["129.00", "139.00"],
             "amenities_data": ["wifi"],
             "allotment": 3,
             "rg_ext": {
@@ -531,8 +489,8 @@
             "payment_options": {
               "payment_types": [
                 {
-                  "amount": "248.00",
-                  "show_amount": "248.00",
+                  "amount": "268.00",
+                  "show_amount": "268.00",
                   "currency_code": "EUR",
                   "show_currency_code": "EUR",
                   "by": null,
@@ -542,27 +500,20 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "20.48",
+                    "amount": "44.67",
                     "currency_code": "EUR",
-                    "value": "9.00"
+                    "value": "20.00"
                   },
                   "tax_data": {
-                    "taxes": [
-                      {
-                        "name": "city_tax",
-                        "included_by_supplier": true,
-                        "amount": "31.00",
-                        "currency_code": "EUR"
-                      }
-                    ]
+                    "taxes": []
                   },
                   "cancellation_penalties": {
                     "policies": [
                       {
                         "start_at": null,
                         "end_at": null,
-                        "amount_charge": "248.00",
-                        "amount_show": "248.00"
+                        "amount_charge": "268.00",
+                        "amount_show": "268.00"
                       }
                     ],
                     "free_cancellation_before": null
@@ -581,7 +532,7 @@
               "has_breakfast": true,
               "no_child_meal": true
             },
-            "daily_prices": ["137.00", "147.00"],
+            "daily_prices": ["147.00", "157.00"],
             "amenities_data": ["breakfast", "wifi"],
             "allotment": 3,
             "rg_ext": {
@@ -601,8 +552,8 @@
             "payment_options": {
               "payment_types": [
                 {
-                  "amount": "284.00",
-                  "show_amount": "284.00",
+                  "amount": "304.00",
+                  "show_amount": "304.00",
                   "currency_code": "EUR",
                   "show_currency_code": "EUR",
                   "by": null,
@@ -612,19 +563,12 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "23.45",
+                    "amount": "50.67",
                     "currency_code": "EUR",
-                    "value": "9.00"
+                    "value": "20.00"
                   },
                   "tax_data": {
-                    "taxes": [
-                      {
-                        "name": "city_tax",
-                        "included_by_supplier": true,
-                        "amount": "35.50",
-                        "currency_code": "EUR"
-                      }
-                    ]
+                    "taxes": []
                   },
                   "cancellation_penalties": {
                     "policies": [
@@ -637,14 +581,14 @@
                       {
                         "start_at": "2026-11-06T00:00:00",
                         "end_at": "2026-11-12T00:00:00",
-                        "amount_charge": "142.00",
-                        "amount_show": "142.00"
+                        "amount_charge": "152.00",
+                        "amount_show": "152.00"
                       },
                       {
                         "start_at": "2026-11-12T00:00:00",
                         "end_at": null,
-                        "amount_charge": "284.00",
-                        "amount_show": "284.00"
+                        "amount_charge": "304.00",
+                        "amount_show": "304.00"
                       }
                     ],
                     "free_cancellation_before": "2026-11-06T00:00:00"
@@ -663,7 +607,7 @@
               "has_breakfast": true,
               "no_child_meal": true
             },
-            "daily_prices": ["164.00", "174.00"],
+            "daily_prices": ["174.00", "184.00"],
             "amenities_data": ["breakfast", "wifi"],
             "allotment": 3,
             "rg_ext": {
@@ -683,8 +627,8 @@
             "payment_options": {
               "payment_types": [
                 {
-                  "amount": "338.00",
-                  "show_amount": "338.00",
+                  "amount": "358.00",
+                  "show_amount": "358.00",
                   "currency_code": "EUR",
                   "show_currency_code": "EUR",
                   "by": null,
@@ -694,19 +638,12 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "27.91",
+                    "amount": "59.67",
                     "currency_code": "EUR",
-                    "value": "9.00"
+                    "value": "20.00"
                   },
                   "tax_data": {
-                    "taxes": [
-                      {
-                        "name": "city_tax",
-                        "included_by_supplier": true,
-                        "amount": "42.25",
-                        "currency_code": "EUR"
-                      }
-                    ]
+                    "taxes": []
                   },
                   "cancellation_penalties": {
                     "policies": [
@@ -719,14 +656,14 @@
                       {
                         "start_at": "2026-11-10T00:00:00",
                         "end_at": "2026-11-12T00:00:00",
-                        "amount_charge": "169.00",
-                        "amount_show": "169.00"
+                        "amount_charge": "179.00",
+                        "amount_show": "179.00"
                       },
                       {
                         "start_at": "2026-11-12T00:00:00",
                         "end_at": null,
-                        "amount_charge": "338.00",
-                        "amount_show": "338.00"
+                        "amount_charge": "358.00",
+                        "amount_show": "358.00"
                       }
                     ],
                     "free_cancellation_before": "2026-11-10T00:00:00"
@@ -738,7 +675,7 @@
         ]
       },
       {
-        "id": "prinsen_suites_mock",
+        "id": "rive_gauche_suites_mock",
         "hid": 9990000004,
         "rates": [
           {
@@ -782,16 +719,16 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "32.04",
+                    "amount": "35.27",
                     "currency_code": "EUR",
-                    "value": "9.00"
+                    "value": "10.00"
                   },
                   "tax_data": {
                     "taxes": [
                       {
                         "name": "city_tax",
                         "included_by_supplier": false,
-                        "amount": "48.50",
+                        "amount": "13.00",
                         "currency_code": "EUR"
                       }
                     ]
@@ -852,16 +789,16 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "35.01",
+                    "amount": "38.55",
                     "currency_code": "EUR",
-                    "value": "9.00"
+                    "value": "10.00"
                   },
                   "tax_data": {
                     "taxes": [
                       {
                         "name": "city_tax",
                         "included_by_supplier": false,
-                        "amount": "53.00",
+                        "amount": "13.00",
                         "currency_code": "EUR"
                       }
                     ]
@@ -934,16 +871,16 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "39.47",
+                    "amount": "43.45",
                     "currency_code": "EUR",
-                    "value": "9.00"
+                    "value": "10.00"
                   },
                   "tax_data": {
                     "taxes": [
                       {
                         "name": "city_tax",
                         "included_by_supplier": false,
-                        "amount": "59.75",
+                        "amount": "13.00",
                         "currency_code": "EUR"
                       }
                     ]
@@ -978,7 +915,7 @@
         ]
       },
       {
-        "id": "casa_eixample_mock",
+        "id": "casa_trastevere_mock",
         "hid": 9990000006,
         "rates": [
           {
@@ -1031,7 +968,7 @@
                       {
                         "name": "city_tax",
                         "included_by_supplier": false,
-                        "amount": "22.00",
+                        "amount": "24.00",
                         "currency_code": "EUR"
                       }
                     ]
@@ -1101,7 +1038,7 @@
                       {
                         "name": "city_tax",
                         "included_by_supplier": false,
-                        "amount": "22.00",
+                        "amount": "24.00",
                         "currency_code": "EUR"
                       }
                     ]
@@ -1183,7 +1120,7 @@
                       {
                         "name": "city_tax",
                         "included_by_supplier": false,
-                        "amount": "22.00",
+                        "amount": "24.00",
                         "currency_code": "EUR"
                       }
                     ]
@@ -1218,7 +1155,7 @@
         ]
       },
       {
-        "id": "hotel_mar_blava_mock",
+        "id": "sumida_garden_hotel_mock",
         "hid": 9990000007,
         "rates": [
           {
@@ -1271,7 +1208,7 @@
                       {
                         "name": "city_tax",
                         "included_by_supplier": false,
-                        "amount": "22.00",
+                        "amount": "5.20",
                         "currency_code": "EUR"
                       }
                     ]
@@ -1341,7 +1278,7 @@
                       {
                         "name": "city_tax",
                         "included_by_supplier": false,
-                        "amount": "22.00",
+                        "amount": "5.20",
                         "currency_code": "EUR"
                       }
                     ]
@@ -1423,7 +1360,7 @@
                       {
                         "name": "city_tax",
                         "included_by_supplier": false,
-                        "amount": "22.00",
+                        "amount": "5.20",
                         "currency_code": "EUR"
                       }
                     ]
@@ -1458,12 +1395,12 @@
         ]
       },
       {
-        "id": "gotic_hideaway_mock",
+        "id": "hotel_vicolo_mock",
         "hid": 9990000008,
         "rates": []
       },
       {
-        "id": "montjuic_garden_hotel_mock",
+        "id": "shinjuku_court_hotel_mock",
         "hid": 9990000009,
         "rates": [
           {
@@ -1516,7 +1453,7 @@
                       {
                         "name": "city_tax",
                         "included_by_supplier": true,
-                        "amount": "22.00",
+                        "amount": "5.20",
                         "currency_code": "EUR"
                       }
                     ]
@@ -1586,7 +1523,7 @@
                       {
                         "name": "city_tax",
                         "included_by_supplier": true,
-                        "amount": "22.00",
+                        "amount": "5.20",
                         "currency_code": "EUR"
                       }
                     ]
@@ -1668,7 +1605,7 @@
                       {
                         "name": "city_tax",
                         "included_by_supplier": true,
-                        "amount": "22.00",
+                        "amount": "5.20",
                         "currency_code": "EUR"
                       }
                     ]
@@ -1703,7 +1640,7 @@
         ]
       },
       {
-        "id": "rambla_loft_mock",
+        "id": "silom_loft_mock",
         "hid": 9990000010,
         "rates": [
           {
@@ -1716,7 +1653,7 @@
               "has_breakfast": false,
               "no_child_meal": true
             },
-            "daily_prices": ["158.00", "168.00"],
+            "daily_prices": ["88.00", "98.00"],
             "amenities_data": ["wifi"],
             "allotment": 3,
             "rg_ext": {
@@ -1736,8 +1673,8 @@
             "payment_options": {
               "payment_types": [
                 {
-                  "amount": "326.00",
-                  "show_amount": "326.00",
+                  "amount": "186.00",
+                  "show_amount": "186.00",
                   "currency_code": "EUR",
                   "show_currency_code": "EUR",
                   "by": null,
@@ -1747,27 +1684,20 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "29.64",
+                    "amount": "12.17",
                     "currency_code": "EUR",
-                    "value": "10.00"
+                    "value": "7.00"
                   },
                   "tax_data": {
-                    "taxes": [
-                      {
-                        "name": "city_tax",
-                        "included_by_supplier": false,
-                        "amount": "22.00",
-                        "currency_code": "EUR"
-                      }
-                    ]
+                    "taxes": []
                   },
                   "cancellation_penalties": {
                     "policies": [
                       {
                         "start_at": null,
                         "end_at": null,
-                        "amount_charge": "326.00",
-                        "amount_show": "326.00"
+                        "amount_charge": "186.00",
+                        "amount_show": "186.00"
                       }
                     ],
                     "free_cancellation_before": null
@@ -1786,7 +1716,7 @@
               "has_breakfast": true,
               "no_child_meal": true
             },
-            "daily_prices": ["176.00", "186.00"],
+            "daily_prices": ["106.00", "116.00"],
             "amenities_data": ["breakfast", "wifi"],
             "allotment": 3,
             "rg_ext": {
@@ -1806,8 +1736,8 @@
             "payment_options": {
               "payment_types": [
                 {
-                  "amount": "362.00",
-                  "show_amount": "362.00",
+                  "amount": "222.00",
+                  "show_amount": "222.00",
                   "currency_code": "EUR",
                   "show_currency_code": "EUR",
                   "by": null,
@@ -1817,19 +1747,12 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "32.91",
+                    "amount": "14.52",
                     "currency_code": "EUR",
-                    "value": "10.00"
+                    "value": "7.00"
                   },
                   "tax_data": {
-                    "taxes": [
-                      {
-                        "name": "city_tax",
-                        "included_by_supplier": false,
-                        "amount": "22.00",
-                        "currency_code": "EUR"
-                      }
-                    ]
+                    "taxes": []
                   },
                   "cancellation_penalties": {
                     "policies": [
@@ -1842,14 +1765,14 @@
                       {
                         "start_at": "2026-11-06T00:00:00",
                         "end_at": "2026-11-12T00:00:00",
-                        "amount_charge": "181.00",
-                        "amount_show": "181.00"
+                        "amount_charge": "111.00",
+                        "amount_show": "111.00"
                       },
                       {
                         "start_at": "2026-11-12T00:00:00",
                         "end_at": null,
-                        "amount_charge": "362.00",
-                        "amount_show": "362.00"
+                        "amount_charge": "222.00",
+                        "amount_show": "222.00"
                       }
                     ],
                     "free_cancellation_before": "2026-11-06T00:00:00"
@@ -1868,7 +1791,7 @@
               "has_breakfast": true,
               "no_child_meal": true
             },
-            "daily_prices": ["203.00", "213.00"],
+            "daily_prices": ["133.00", "143.00"],
             "amenities_data": ["breakfast", "wifi"],
             "allotment": 3,
             "rg_ext": {
@@ -1888,8 +1811,8 @@
             "payment_options": {
               "payment_types": [
                 {
-                  "amount": "416.00",
-                  "show_amount": "416.00",
+                  "amount": "276.00",
+                  "show_amount": "276.00",
                   "currency_code": "EUR",
                   "show_currency_code": "EUR",
                   "by": null,
@@ -1899,19 +1822,12 @@
                   "vat_data": {
                     "included": true,
                     "applied": true,
-                    "amount": "37.82",
+                    "amount": "18.06",
                     "currency_code": "EUR",
-                    "value": "10.00"
+                    "value": "7.00"
                   },
                   "tax_data": {
-                    "taxes": [
-                      {
-                        "name": "city_tax",
-                        "included_by_supplier": false,
-                        "amount": "22.00",
-                        "currency_code": "EUR"
-                      }
-                    ]
+                    "taxes": []
                   },
                   "cancellation_penalties": {
                     "policies": [
@@ -1924,14 +1840,452 @@
                       {
                         "start_at": "2026-11-10T00:00:00",
                         "end_at": "2026-11-12T00:00:00",
-                        "amount_charge": "208.00",
-                        "amount_show": "208.00"
+                        "amount_charge": "138.00",
+                        "amount_show": "138.00"
                       },
                       {
                         "start_at": "2026-11-12T00:00:00",
                         "end_at": null,
-                        "amount_charge": "416.00",
-                        "amount_show": "416.00"
+                        "amount_charge": "276.00",
+                        "amount_show": "276.00"
+                      }
+                    ],
+                    "free_cancellation_before": "2026-11-10T00:00:00"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "riverside_residences_mock",
+        "hid": 9990000011,
+        "rates": [
+          {
+            "match_hash": "m-mock-9990000011-1",
+            "book_hash": "h-mock-9990000011-1",
+            "room_name": "Standard Double Room",
+            "meal": "nomeal",
+            "meal_data": {
+              "value": "nomeal",
+              "has_breakfast": false,
+              "no_child_meal": true
+            },
+            "daily_prices": ["74.00", "84.00"],
+            "amenities_data": ["wifi"],
+            "allotment": 3,
+            "rg_ext": {
+              "class": 3,
+              "quality": 2,
+              "sex": 0,
+              "bathroom": 2,
+              "bedding": 3,
+              "family": 0,
+              "capacity": 2,
+              "club": 0,
+              "bedrooms": 0,
+              "balcony": 0,
+              "view": 0,
+              "floor": 0
+            },
+            "payment_options": {
+              "payment_types": [
+                {
+                  "amount": "158.00",
+                  "show_amount": "158.00",
+                  "currency_code": "EUR",
+                  "show_currency_code": "EUR",
+                  "by": null,
+                  "is_need_credit_card_data": false,
+                  "is_need_cvc": false,
+                  "type": "deposit",
+                  "vat_data": {
+                    "included": true,
+                    "applied": true,
+                    "amount": "11.70",
+                    "currency_code": "EUR",
+                    "value": "8.00"
+                  },
+                  "tax_data": {
+                    "taxes": []
+                  },
+                  "cancellation_penalties": {
+                    "policies": [
+                      {
+                        "start_at": null,
+                        "end_at": null,
+                        "amount_charge": "158.00",
+                        "amount_show": "158.00"
+                      }
+                    ],
+                    "free_cancellation_before": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "match_hash": "m-mock-9990000011-2",
+            "book_hash": "h-mock-9990000011-2",
+            "room_name": "Standard Double Room",
+            "meal": "breakfast",
+            "meal_data": {
+              "value": "breakfast",
+              "has_breakfast": true,
+              "no_child_meal": true
+            },
+            "daily_prices": ["92.00", "102.00"],
+            "amenities_data": ["breakfast", "wifi"],
+            "allotment": 3,
+            "rg_ext": {
+              "class": 3,
+              "quality": 2,
+              "sex": 0,
+              "bathroom": 2,
+              "bedding": 3,
+              "family": 0,
+              "capacity": 2,
+              "club": 0,
+              "bedrooms": 0,
+              "balcony": 0,
+              "view": 0,
+              "floor": 0
+            },
+            "payment_options": {
+              "payment_types": [
+                {
+                  "amount": "194.00",
+                  "show_amount": "194.00",
+                  "currency_code": "EUR",
+                  "show_currency_code": "EUR",
+                  "by": null,
+                  "is_need_credit_card_data": false,
+                  "is_need_cvc": false,
+                  "type": "deposit",
+                  "vat_data": {
+                    "included": true,
+                    "applied": true,
+                    "amount": "14.37",
+                    "currency_code": "EUR",
+                    "value": "8.00"
+                  },
+                  "tax_data": {
+                    "taxes": []
+                  },
+                  "cancellation_penalties": {
+                    "policies": [
+                      {
+                        "start_at": null,
+                        "end_at": "2026-11-06T00:00:00",
+                        "amount_charge": "0.00",
+                        "amount_show": "0.00"
+                      },
+                      {
+                        "start_at": "2026-11-06T00:00:00",
+                        "end_at": "2026-11-12T00:00:00",
+                        "amount_charge": "97.00",
+                        "amount_show": "97.00"
+                      },
+                      {
+                        "start_at": "2026-11-12T00:00:00",
+                        "end_at": null,
+                        "amount_charge": "194.00",
+                        "amount_show": "194.00"
+                      }
+                    ],
+                    "free_cancellation_before": "2026-11-06T00:00:00"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "match_hash": "m-mock-9990000011-3",
+            "book_hash": "h-mock-9990000011-3",
+            "room_name": "Deluxe Double Room",
+            "meal": "breakfast",
+            "meal_data": {
+              "value": "breakfast",
+              "has_breakfast": true,
+              "no_child_meal": true
+            },
+            "daily_prices": ["119.00", "129.00"],
+            "amenities_data": ["breakfast", "wifi"],
+            "allotment": 3,
+            "rg_ext": {
+              "class": 3,
+              "quality": 2,
+              "sex": 0,
+              "bathroom": 2,
+              "bedding": 3,
+              "family": 0,
+              "capacity": 2,
+              "club": 0,
+              "bedrooms": 0,
+              "balcony": 0,
+              "view": 0,
+              "floor": 0
+            },
+            "payment_options": {
+              "payment_types": [
+                {
+                  "amount": "248.00",
+                  "show_amount": "248.00",
+                  "currency_code": "EUR",
+                  "show_currency_code": "EUR",
+                  "by": null,
+                  "is_need_credit_card_data": false,
+                  "is_need_cvc": false,
+                  "type": "deposit",
+                  "vat_data": {
+                    "included": true,
+                    "applied": true,
+                    "amount": "18.37",
+                    "currency_code": "EUR",
+                    "value": "8.00"
+                  },
+                  "tax_data": {
+                    "taxes": []
+                  },
+                  "cancellation_penalties": {
+                    "policies": [
+                      {
+                        "start_at": null,
+                        "end_at": "2026-11-10T00:00:00",
+                        "amount_charge": "0.00",
+                        "amount_show": "0.00"
+                      },
+                      {
+                        "start_at": "2026-11-10T00:00:00",
+                        "end_at": "2026-11-12T00:00:00",
+                        "amount_charge": "124.00",
+                        "amount_show": "124.00"
+                      },
+                      {
+                        "start_at": "2026-11-12T00:00:00",
+                        "end_at": null,
+                        "amount_charge": "248.00",
+                        "amount_show": "248.00"
+                      }
+                    ],
+                    "free_cancellation_before": "2026-11-10T00:00:00"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "sathorn_garden_rooms_mock",
+        "hid": 9990000012,
+        "rates": [
+          {
+            "match_hash": "m-mock-9990000012-1",
+            "book_hash": "h-mock-9990000012-1",
+            "room_name": "Standard Double Room",
+            "meal": "nomeal",
+            "meal_data": {
+              "value": "nomeal",
+              "has_breakfast": false,
+              "no_child_meal": true
+            },
+            "daily_prices": ["112.00", "122.00"],
+            "amenities_data": ["wifi"],
+            "allotment": 3,
+            "rg_ext": {
+              "class": 3,
+              "quality": 2,
+              "sex": 0,
+              "bathroom": 2,
+              "bedding": 3,
+              "family": 0,
+              "capacity": 2,
+              "club": 0,
+              "bedrooms": 0,
+              "balcony": 0,
+              "view": 0,
+              "floor": 0
+            },
+            "payment_options": {
+              "payment_types": [
+                {
+                  "amount": "234.00",
+                  "show_amount": "234.00",
+                  "currency_code": "EUR",
+                  "show_currency_code": "EUR",
+                  "by": null,
+                  "is_need_credit_card_data": false,
+                  "is_need_cvc": false,
+                  "type": "deposit",
+                  "vat_data": {
+                    "included": true,
+                    "applied": true,
+                    "amount": "15.31",
+                    "currency_code": "EUR",
+                    "value": "7.00"
+                  },
+                  "tax_data": {
+                    "taxes": []
+                  },
+                  "cancellation_penalties": {
+                    "policies": [
+                      {
+                        "start_at": null,
+                        "end_at": null,
+                        "amount_charge": "234.00",
+                        "amount_show": "234.00"
+                      }
+                    ],
+                    "free_cancellation_before": null
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "match_hash": "m-mock-9990000012-2",
+            "book_hash": "h-mock-9990000012-2",
+            "room_name": "Standard Double Room",
+            "meal": "breakfast",
+            "meal_data": {
+              "value": "breakfast",
+              "has_breakfast": true,
+              "no_child_meal": true
+            },
+            "daily_prices": ["130.00", "140.00"],
+            "amenities_data": ["breakfast", "wifi"],
+            "allotment": 3,
+            "rg_ext": {
+              "class": 3,
+              "quality": 2,
+              "sex": 0,
+              "bathroom": 2,
+              "bedding": 3,
+              "family": 0,
+              "capacity": 2,
+              "club": 0,
+              "bedrooms": 0,
+              "balcony": 0,
+              "view": 0,
+              "floor": 0
+            },
+            "payment_options": {
+              "payment_types": [
+                {
+                  "amount": "270.00",
+                  "show_amount": "270.00",
+                  "currency_code": "EUR",
+                  "show_currency_code": "EUR",
+                  "by": null,
+                  "is_need_credit_card_data": false,
+                  "is_need_cvc": false,
+                  "type": "deposit",
+                  "vat_data": {
+                    "included": true,
+                    "applied": true,
+                    "amount": "17.66",
+                    "currency_code": "EUR",
+                    "value": "7.00"
+                  },
+                  "tax_data": {
+                    "taxes": []
+                  },
+                  "cancellation_penalties": {
+                    "policies": [
+                      {
+                        "start_at": null,
+                        "end_at": "2026-11-06T00:00:00",
+                        "amount_charge": "0.00",
+                        "amount_show": "0.00"
+                      },
+                      {
+                        "start_at": "2026-11-06T00:00:00",
+                        "end_at": "2026-11-12T00:00:00",
+                        "amount_charge": "135.00",
+                        "amount_show": "135.00"
+                      },
+                      {
+                        "start_at": "2026-11-12T00:00:00",
+                        "end_at": null,
+                        "amount_charge": "270.00",
+                        "amount_show": "270.00"
+                      }
+                    ],
+                    "free_cancellation_before": "2026-11-06T00:00:00"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "match_hash": "m-mock-9990000012-3",
+            "book_hash": "h-mock-9990000012-3",
+            "room_name": "Deluxe Double Room",
+            "meal": "breakfast",
+            "meal_data": {
+              "value": "breakfast",
+              "has_breakfast": true,
+              "no_child_meal": true
+            },
+            "daily_prices": ["157.00", "167.00"],
+            "amenities_data": ["breakfast", "wifi"],
+            "allotment": 3,
+            "rg_ext": {
+              "class": 3,
+              "quality": 2,
+              "sex": 0,
+              "bathroom": 2,
+              "bedding": 3,
+              "family": 0,
+              "capacity": 2,
+              "club": 0,
+              "bedrooms": 0,
+              "balcony": 0,
+              "view": 0,
+              "floor": 0
+            },
+            "payment_options": {
+              "payment_types": [
+                {
+                  "amount": "324.00",
+                  "show_amount": "324.00",
+                  "currency_code": "EUR",
+                  "show_currency_code": "EUR",
+                  "by": null,
+                  "is_need_credit_card_data": false,
+                  "is_need_cvc": false,
+                  "type": "deposit",
+                  "vat_data": {
+                    "included": true,
+                    "applied": true,
+                    "amount": "21.20",
+                    "currency_code": "EUR",
+                    "value": "7.00"
+                  },
+                  "tax_data": {
+                    "taxes": []
+                  },
+                  "cancellation_penalties": {
+                    "policies": [
+                      {
+                        "start_at": null,
+                        "end_at": "2026-11-10T00:00:00",
+                        "amount_charge": "0.00",
+                        "amount_show": "0.00"
+                      },
+                      {
+                        "start_at": "2026-11-10T00:00:00",
+                        "end_at": "2026-11-12T00:00:00",
+                        "amount_charge": "162.00",
+                        "amount_show": "162.00"
+                      },
+                      {
+                        "start_at": "2026-11-12T00:00:00",
+                        "end_at": null,
+                        "amount_charge": "324.00",
+                        "amount_show": "324.00"
                       }
                     ],
                     "free_cancellation_before": "2026-11-10T00:00:00"
@@ -1943,6 +2297,6 @@
         ]
       }
     ],
-    "total_hotels": 9
+    "total_hotels": 11
   }
 }
