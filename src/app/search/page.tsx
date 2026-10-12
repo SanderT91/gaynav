@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import { MAX_ADULTS, MAX_NIGHTS, parseSearch, type SearchParams } from "@/lib/search/params";
 import { LAUNCH_CITIES, loadSearch } from "@/lib/search/load";
 import type { SearchResult } from "@/lib/search/search";
 
@@ -9,9 +10,9 @@ export const metadata: Metadata = {
   description: "Hotels personally vetted by GAYNAV as safe and welcoming for LGBTQ+ travellers.",
 };
 
-// Public search (Epic 2.1). No login needed. Shows only hotels GAYNAV staff
-// have approved. Dates and guests are fixed to the mock search for now; making
-// them required inputs is the next feature.
+// Public search (Epic 2.1). No login needed. Only hotels GAYNAV staff have
+// approved. Dates and guests are required: without them there are no real
+// prices or availability, so no search runs.
 export default function SearchPage({ searchParams }: PageProps<"/search">) {
   return (
     <main style={{ padding: "3rem 1.5rem", maxWidth: "56rem", margin: "0 auto" }}>
@@ -20,73 +21,177 @@ export default function SearchPage({ searchParams }: PageProps<"/search">) {
       </p>
       <h1 style={{ marginTop: "0.5rem" }}>Find a hotel</h1>
       <Suspense fallback={<p style={{ marginTop: "1rem" }}>Searching…</p>}>
-        <Results searchParams={searchParams} />
+        <SearchBody searchParams={searchParams} />
       </Suspense>
     </main>
   );
 }
 
+const todayIso = () => new Date().toISOString().slice(0, 10);
+
 const money = (amount: number, currency: string) =>
   new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(amount);
 
 const dateLabel = (iso: string) =>
-  new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-GB", {
+  new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
     year: "numeric",
   });
 
-async function Results({ searchParams }: { searchParams: PageProps<"/search">["searchParams"] }) {
-  const params = await searchParams;
-  const city =
-    typeof params.city === "string" && LAUNCH_CITIES.includes(params.city)
-      ? params.city
-      : undefined;
+async function SearchBody({
+  searchParams,
+}: {
+  searchParams: PageProps<"/search">["searchParams"];
+}) {
+  const raw = await searchParams;
+  const today = todayIso();
+  const parsed = parseSearch(raw, today, LAUNCH_CITIES);
 
-  const result = await loadSearch(city);
+  const values =
+    parsed.status === "invalid"
+      ? parsed.values
+      : parsed.status === "ok"
+        ? {
+            city: parsed.params.city ?? "",
+            checkin: parsed.params.checkin,
+            checkout: parsed.params.checkout,
+            adults: String(parsed.params.adults),
+          }
+        : {
+            city: typeof raw.city === "string" ? raw.city : "",
+            checkin: "",
+            checkout: "",
+            adults: "2",
+          };
+  const errors = parsed.status === "invalid" ? parsed.errors : {};
+
+  return (
+    <>
+      <SearchForm values={values} errors={errors} today={today} />
+      {parsed.status === "empty" && (
+        <p style={{ marginTop: "1.5rem" }}>
+          Choose your dates and number of guests to see hotels and prices.
+        </p>
+      )}
+      {parsed.status === "ok" && <Results params={parsed.params} today={today} />}
+    </>
+  );
+}
+
+function SearchForm({
+  values,
+  errors,
+  today,
+}: {
+  values: Record<string, string>;
+  errors: Partial<Record<string, string>>;
+  today: string;
+}) {
+  const field = { display: "grid", gap: "0.25rem" } as const;
+  const error = (name: string) =>
+    errors[name] ? (
+      <span id={`${name}-error`} role="alert" style={{ color: "#b42318", fontSize: "0.9rem" }}>
+        {errors[name]}
+      </span>
+    ) : null;
+
+  // A plain GET form: works without JavaScript, and the URL is shareable.
+  return (
+    <form
+      action="/search"
+      method="get"
+      style={{
+        marginTop: "1rem",
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "1rem",
+        alignItems: "end",
+      }}
+    >
+      <label style={field}>
+        City
+        <select name="city" defaultValue={values.city} aria-describedby="city-error">
+          <option value="">All cities</option>
+          {LAUNCH_CITIES.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+        {error("city")}
+      </label>
+      <label style={field}>
+        Check-in
+        <input
+          type="date"
+          name="checkin"
+          required
+          min={today}
+          defaultValue={values.checkin}
+          aria-describedby="checkin-error"
+        />
+        {error("checkin")}
+      </label>
+      <label style={field}>
+        Check-out
+        <input
+          type="date"
+          name="checkout"
+          required
+          min={today}
+          defaultValue={values.checkout}
+          aria-describedby="checkout-error"
+        />
+        {error("checkout")}
+      </label>
+      <label style={field}>
+        Guests
+        <select
+          name="adults"
+          required
+          defaultValue={values.adults || "2"}
+          aria-describedby="adults-error"
+        >
+          {Array.from({ length: MAX_ADULTS }, (_, i) => i + 1).map((n) => (
+            <option key={n} value={n}>
+              {n} {n === 1 ? "adult" : "adults"}
+            </option>
+          ))}
+        </select>
+        {error("adults")}
+      </label>
+      <button type="submit">Search</button>
+      <p style={{ flexBasis: "100%", fontSize: "0.85rem" }}>
+        One room, up to {MAX_ADULTS} adults, stays of up to {MAX_NIGHTS} nights. Sample prices —
+        booking isn&apos;t live yet.
+      </p>
+    </form>
+  );
+}
+
+async function Results({ params, today }: { params: SearchParams; today: string }) {
+  const result = await loadSearch(params, today);
   if (!result.ok) {
     return (
-      <p role="alert" style={{ marginTop: "1rem" }}>
+      <p role="alert" style={{ marginTop: "1.5rem" }}>
         {result.error}
       </p>
     );
   }
-  const { searched } = result;
-  const guests = searched.guests.reduce((n, g) => n + g.adults + g.children.length, 0);
 
   return (
-    <>
-      <p style={{ marginTop: "0.5rem" }}>
-        {dateLabel(searched.checkin)} – {dateLabel(searched.checkout)} · {guests} guests
-        <span style={{ fontSize: "0.85rem" }}>
-          {" "}
-          (sample dates and prices — booking isn&apos;t live yet)
-        </span>
+    <section aria-label="Search results" style={{ marginTop: "1.5rem" }}>
+      <p>
+        {params.city ?? "All cities"} · {dateLabel(params.checkin)} – {dateLabel(params.checkout)} ·{" "}
+        {params.nights} {params.nights === 1 ? "night" : "nights"} · {params.adults}{" "}
+        {params.adults === 1 ? "guest" : "guests"}
       </p>
-
-      <nav
-        aria-label="Choose a city"
-        style={{ marginTop: "1rem", display: "flex", flexWrap: "wrap", gap: "0.75rem" }}
-      >
-        <Link href="/search" aria-current={city ? undefined : "page"}>
-          All cities
-        </Link>
-        {LAUNCH_CITIES.map((c) => (
-          <Link
-            key={c}
-            href={`/search?city=${encodeURIComponent(c)}`}
-            aria-current={city === c ? "page" : undefined}
-          >
-            {c}
-          </Link>
-        ))}
-      </nav>
-
       <ul
         style={{
           listStyle: "none",
           padding: 0,
-          marginTop: "1.5rem",
+          marginTop: "1rem",
           display: "grid",
           gap: "1.25rem",
         }}
@@ -95,7 +200,7 @@ async function Results({ searchParams }: { searchParams: PageProps<"/search">["s
           <HotelCard key={hotel.hid} hotel={hotel} />
         ))}
       </ul>
-    </>
+    </section>
   );
 }
 
@@ -127,14 +232,14 @@ function HotelCard({ hotel }: { hotel: SearchResult }) {
         {hotel.price ? (
           <p style={{ marginTop: "0.5rem" }}>
             <strong>{money(hotel.price.total, hotel.price.currency)}</strong> for{" "}
-            {hotel.price.nights} nights
+            {hotel.price.nights} {hotel.price.nights === 1 ? "night" : "nights"}
             {hotel.price.excludedTaxes > 0 &&
               ` + ${money(hotel.price.excludedTaxes, hotel.price.currency)} local tax paid at the hotel`}
             {hotel.price.breakfastIncluded && " · breakfast included"}
             <br />
             <span style={{ fontSize: "0.9rem" }}>
               {hotel.price.freeCancellationBefore
-                ? `Free cancellation until ${dateLabel(hotel.price.freeCancellationBefore.slice(0, 10))}`
+                ? `Free cancellation until ${dateLabel(hotel.price.freeCancellationBefore)}`
                 : "Non-refundable"}
             </span>
           </p>
