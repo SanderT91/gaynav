@@ -1,0 +1,11 @@
+.next
+out
+build
+coverage
+node_modules
+package-lock.json
+next-env.d.ts
+# Owner-maintained planning docs — keep their hand formatting
+CLAUDE.md
+FEATURE_BACKLOG.md
+AGENTS.md

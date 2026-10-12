@@ -7,8 +7,8 @@ This file orients Claude Code on every session in this repository. Read it in fu
 *Claude Code: keep this block current. Update it whenever you check off a feature or move to a new phase — it's the fastest way for a human to see where the product stands without reading the whole file.*
 
 - **Current phase:** 0 — Foundation
-- **Last updated:** (update this line with the date, each time you touch this file)
-- **Next up:** first unchecked feature in Phase 0, in the order listed below
+- **Last updated:** 2026-10-12
+- **Next up:** Epic 0.1 — connect repo to Vercel, confirm a basic page deploys successfully
 
 ## Session protocol
 
@@ -82,7 +82,7 @@ Each phase below is broken into epics, and each epic into features — build and
 Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a working "hello world" page behind auth.
 
 **Epic 0.1 — Project scaffold**
-- [ ] Feature: initialize Next.js app, folder structure, linting/formatting config
+- [x] Feature: initialize Next.js app, folder structure, linting/formatting config — done 2026-10-12, PR #1
 - [ ] Feature: connect repo to Vercel, confirm a basic page deploys successfully
 
 **Epic 0.2 — Database schema & access control**
