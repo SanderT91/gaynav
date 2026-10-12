@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 0 — Foundation
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 0.2 — `users` table with role column (traveler / partner / staff)
+- **Next up:** Epic 0.2 — `approved_properties` table (the whitelist)
 
 ## Session protocol
 
@@ -86,7 +86,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [x] Feature: connect repo to Vercel, confirm a basic page deploys successfully — done 2026-10-12, PR #2
 
 **Epic 0.2 — Database schema & access control**
-- [ ] Feature: `users` table with role column (traveler / partner / staff)
+- [x] Feature: `users` table with role column (traveler / partner / staff) — done 2026-10-12, PR #3
 - [ ] Feature: `approved_properties` table (the whitelist)
 - [ ] Feature: RLS policies enforcing role-based access on both tables — this is the dedicated-review exception noted above
 
