@@ -2,6 +2,7 @@ import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { EVIDENCE_SYSTEM_PROMPT } from "./prompt";
+import { parseEvidenceReply } from "./parse";
 import { EvidencePackSchema, type EvidencePack } from "./schema";
 
 // The one place GAYNAV talks to the Claude API. Server-only: the API key is
@@ -34,12 +35,21 @@ function getClient(): Anthropic {
   return client;
 }
 
+// The schema-constrained JSON format, built from the Zod schema.
+const EVIDENCE_FORMAT = betaZodOutputFormat(EvidencePackSchema);
+
 export const callClaude: CallClaude = async (userMessage) => {
-  const response = await getClient().beta.messages.parse({
+  // Plain create() rather than parse(): parse() throws on any reply that
+  // doesn't validate — including one cut off by max_tokens — before the
+  // stop_reason can be checked.
+  const response = await getClient().beta.messages.create({
     model: EVIDENCE_MODEL,
     max_tokens: 16000,
     // Vetting evidence deserves careful reading; Opus 5.5 defaults to medium.
-    output_config: { effort: "high", format: betaZodOutputFormat(EvidencePackSchema) },
+    output_config: {
+      effort: "high",
+      format: { type: "json_schema", schema: EVIDENCE_FORMAT.schema },
+    },
     // If a safety classifier declines, Anthropic retries on its recommended
     // fallback model inside the same call instead of returning a refusal.
     betas: ["server-side-fallback-2026-07-01"],
@@ -49,9 +59,14 @@ export const callClaude: CallClaude = async (userMessage) => {
     messages: [{ role: "user", content: userMessage }],
   });
 
+  const text = response.content
+    .filter((block) => block.type === "text")
+    .map((block) => block.text)
+    .join("");
+
   return {
     stop_reason: response.stop_reason,
-    parsed: response.parsed_output ?? null,
+    parsed: parseEvidenceReply(text),
     model: response.model,
     usage: {
       input_tokens: response.usage.input_tokens,
