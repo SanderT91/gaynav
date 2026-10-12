@@ -51,3 +51,12 @@ Sign-up, sign-in and sessions use Supabase Auth (`src/lib/supabase/`, `src/proxy
 2. Copy `.env.example` to `.env.local` and fill in those two values.
 3. `npm run dev`, then open http://localhost:3000/login.
 4. Confirmation emails don't leave your machine: open the local mail catcher at http://127.0.0.1:54324 and click the link there.
+
+## Branch protection (`main`)
+
+Configured in GitHub (Settings → Branches), not in code:
+
+- Changes reach `main` only through pull requests — no direct pushes, force-pushes or branch deletion.
+- Both CI jobs (`Lint, typecheck, build` and `Database tests (RLS)`) must pass, on a branch that is up to date with `main`.
+- The rules apply to admins too.
+- **Phases 0–2:** no human approval required per PR (one review per phase, see `CLAUDE.md`). **From Phase 3:** raise "required approvals" to 1 before the first Phase 3 PR.
