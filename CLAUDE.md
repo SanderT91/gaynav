@@ -109,7 +109,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 **Epic 0.4 — CI/CD and environments**
 - [x] Feature: GitHub Actions workflow running lint + tests on every PR — done 2026-10-12, PR #10
 - [x] Feature: branch protection on `main` requiring the checks above to pass (and, from Phase 3 on, requiring human approval — see Review policy) — done 2026-10-12, PR #11 (approval requirement to be raised to 1 at the start of Phase 3)
-- [ ] Feature: Supabase GitHub integration enabled so every PR gets its own preview database branch, not just a preview frontend
+- [ ] Feature: Supabase GitHub integration enabled so every PR gets its own preview database branch, not just a preview frontend — ⏸ deferred by the owner on 2026-10-12: needs the Supabase Pro plan; the prototype runs on the free plan. Meanwhile each PR is tested against a throwaway local Supabase stack in CI.
 - [x] Feature: a basic test framework in place (e.g. Vitest) with one real test, so later features have a pattern to follow rather than inventing one each time — done 2026-10-12, PR #12
 
 **Epic 0.5 — Config and secrets**
