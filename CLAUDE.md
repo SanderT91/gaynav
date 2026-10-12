@@ -6,9 +6,9 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 *Claude Code: keep this block current. Update it whenever you check off a feature or move to a new phase — it's the fastest way for a human to see where the product stands without reading the whole file.*
 
-- **Current phase:** 0 — Foundation
+- **Current phase:** 1 — Curation workbench (against mock data). Phase 0 complete 2026-10-12 (end-of-phase review pending with the owner).
 - **Last updated:** 2026-10-12
-- **Next up:** ⏸ End-of-Phase-0 human review (all Phase 0 PRs) before Phase 1 starts. Open in Phase 0: Supabase preview branches (deferred by the owner, free plan).
+- **Next up:** Epic 1.2 — server-side Claude API evidence-pack generation (needs an Anthropic API key from the owner)
 
 ## Session protocol
 
@@ -33,6 +33,7 @@ GAYNAV is an LGBTQ+ travel platform being rebuilt from scratch, replacing an old
 - **Secrets are server-side only.** RateHawk credentials, the Supabase service-role key, and the Claude API key live in environment variables on the hosting platform. Never in client-side code, never committed to the repo, never logged.
 - **Security enforcement lives in the database, not the UI.** Supabase row-level security policies are the real access boundary. Hiding a button or route in the frontend is a convenience, never a substitute for an RLS policy.
 - **Staff accounts require 2FA, no exceptions.** No self-signup path to the staff role.
+- **Browsing never requires an account.** The traveler-facing site is public. An anonymous visitor (not signed in) can search, view property pages, and read the trust page, with no login prompt and no redirect to a login page. Only these are protected: staff routes (workbench, audit log), account pages, and the booking step. A traveler is asked to sign in or create an account only when they start a booking, and then returns straight to that booking (owner decision 2026-10-12, see Epic 4.1). Implementation consequences: (1) the database's anonymous role (`anon`) needs read access to the public fields of `approved` properties and nothing else — no suspended hotels, no `approved_by`, no staff-only tables; (2) public routes must not sit behind auth middleware; (3) the traveler sign-up and sign-in pages exist but must never gate public pages. Staff-only protections are unchanged by this rule.
 
 ## Decisions from the Epic 0.2 review (2026-10-12)
 
@@ -100,6 +101,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [x] Feature: `users` table with role column (traveler / partner / staff) — done 2026-10-12, PR #3
 - [x] Feature: `approved_properties` table (the whitelist) — done 2026-10-12, PR #4
 - [x] Feature: RLS policies enforcing role-based access on both tables — this is the dedicated-review exception noted above — done 2026-10-12, PR #5
+- [ ] Feature: verify that an anonymous visitor (not signed in) can read the public fields of `approved` properties, and nothing else (see "Browsing never requires an account"). If the current policies only allow signed-in users, fix them. Add tests for the anonymous case: can read an approved property's public fields; cannot read suspended properties, `approved_by`, staff-only tables, or the `users` table. Added 2026-10-12 after Phase 0 finished; because this touches RLS, it needs a short dedicated human review like the rest of Epic 0.2. Do this before continuing with Phase 1
 
 **Epic 0.3 — Authentication**
 - [x] Feature: Supabase Auth wired up (sign up, sign in, session handling) — done 2026-10-12, PR #7
@@ -119,7 +121,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 
 ### Phase 1 — Curation workbench (against mock data)
 **Epic 1.1 — Mock candidate data**
-- [ ] Feature: `candidate_properties` JSON fixture shaped like an expected RateHawk response (property id, name, location, photos, amenities, rate/availability)
+- [x] Feature: `candidate_properties` JSON fixture shaped like an expected RateHawk response (property id, name, location, photos, amenities, rate/availability) — done 2026-10-12, PR #16
 
 **Epic 1.2 — AI evidence-pack generation**
 - [ ] Feature: server-side Claude API call that produces a structured, cited summary (reviews, policies, press) from a candidate's mock data. Candidates and their evidence packs are stored in staff-only tables, never on a table travelers can read (see Decisions #6)
@@ -141,6 +143,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [ ] Feature: date range and guest count as required search inputs — RateHawk cannot return real availability/pricing without them, so the UI shouldn't let a search happen without them either
 - [ ] Feature: empty-state messaging for a search with zero approved properties (expected and common at launch, given the deliberately small, hand-picked catalogue — this must not look like a broken page)
 - [ ] Feature: server-side enforcement test proving an unapproved or suspended property can never appear in results
+- [ ] Feature: test that the whole public flow works with no session at all: an anonymous visitor can run a search and open a property page, with no redirect to a login page and no staff-only data in the response
 
 **Epic 2.2 — Property detail page**
 - [ ] Feature: detail page with photos, amenities, the public vetting summary (the staff-approved text, never the raw AI evidence pack), and a "Check availability" call to action (no real booking yet)
