@@ -1,0 +1,59 @@
+# Runs on every pull request (and on main after merge). Branch protection on
+# `main` requires both jobs to pass before a PR can be merged.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# A newer push to the same PR cancels the older, now-irrelevant run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  app:
+    name: Lint, typecheck, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run format:check
+      # No Supabase env vars on purpose: the build must not need any secrets.
+      - run: npm run build
+
+  database:
+    name: Database tests (RLS)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # A throwaway local Supabase stack inside the CI machine — never the
+      # hosted project. Only the services the tests need are started.
+      - name: Start local Supabase
+        run: >-
+          npx supabase start
+          -x studio,imgproxy,edge-runtime,logflare,vector,realtime,storage-api,supavisor,postgres-meta,mailpit
+      - name: pgTAP tests (schema, RLS, admin tooling)
+        run: npx supabase test db
+      - name: Internal schemas are not reachable through the API
+        run: npm run db:check-exposure
+      - name: Stop Supabase
+        if: always()
+        run: npx supabase stop --no-backup

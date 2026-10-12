@@ -9,18 +9,19 @@ Curated LGBTQ+ hotel search and booking. See [`CLAUDE.md`](CLAUDE.md) for the ar
 
 ## Scripts
 
-| Command                | What it does                                  |
-| ---------------------- | --------------------------------------------- |
-| `npm run dev`          | Start the dev server on http://localhost:3000 |
-| `npm run build`        | Production build                              |
-| `npm run lint`         | ESLint (Next.js + TypeScript rules)           |
-| `npm run typecheck`    | Generate route types and run `tsc`            |
-| `npm run format`       | Format all files with Prettier                |
-| `npm run format:check` | Check formatting without writing              |
-| `npm run db:start`     | Start the local Supabase stack (needs Docker) |
-| `npm run db:reset`     | Rebuild the local database from migrations    |
-| `npm run db:test`      | Run the database (pgTAP) tests                |
-| `npm run db:stop`      | Stop the local Supabase stack                 |
+| Command                     | What it does                                                  |
+| --------------------------- | ------------------------------------------------------------- |
+| `npm run dev`               | Start the dev server on http://localhost:3000                 |
+| `npm run build`             | Production build                                              |
+| `npm run lint`              | ESLint (Next.js + TypeScript rules)                           |
+| `npm run typecheck`         | Generate route types and run `tsc`                            |
+| `npm run format`            | Format all files with Prettier                                |
+| `npm run format:check`      | Check formatting without writing                              |
+| `npm run db:start`          | Start the local Supabase stack (needs Docker)                 |
+| `npm run db:reset`          | Rebuild the local database from migrations                    |
+| `npm run db:test`           | Rebuild the local database, then run the pgTAP tests          |
+| `npm run db:check-exposure` | Check over HTTP that internal schemas are hidden from the API |
+| `npm run db:stop`           | Stop the local Supabase stack                                 |
 
 ## Folder structure
 

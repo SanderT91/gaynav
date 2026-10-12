@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 0 — Foundation
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 0.4 — GitHub Actions workflow running lint + tests on every PR
+- **Next up:** Epic 0.4 — branch protection on `main` requiring the CI checks
 
 ## Session protocol
 
@@ -107,7 +107,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [x] Feature: mandatory 2FA enforcement specifically for the staff role, enforced in RLS at `aal2` (see Decisions #2). Includes the staff flow to enroll a TOTP factor and step up to an `aal2` session, a test proving a staff user without `aal2` gets no staff powers, and a documented lost-authenticator recovery path — done 2026-10-12, PR #9
 
 **Epic 0.4 — CI/CD and environments**
-- [ ] Feature: GitHub Actions workflow running lint + tests on every PR
+- [x] Feature: GitHub Actions workflow running lint + tests on every PR — done 2026-10-12, PR #10
 - [ ] Feature: branch protection on `main` requiring the checks above to pass (and, from Phase 3 on, requiring human approval — see Review policy)
 - [ ] Feature: Supabase GitHub integration enabled so every PR gets its own preview database branch, not just a preview frontend
 - [ ] Feature: a basic test framework in place (e.g. Vitest) with one real test, so later features have a pattern to follow rather than inventing one each time
