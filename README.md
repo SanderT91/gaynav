@@ -43,7 +43,7 @@ Hosted on Vercel (project `gaynav`, team `sander-swat`), connected to this GitHu
 - **Production:** every merge to `main` deploys to https://gaynav.vercel.app.
 - **Previews:** every pull request gets its own preview deployment; the link appears on the PR. Previews are protected by Vercel Authentication — log in with an account on the Vercel team to view them.
 - **Framework preset** is pinned to Next.js in [`vercel.json`](vercel.json) rather than in the dashboard, so the build setting lives in code and can't drift.
-- **Environment variables** are set in the Vercel dashboard (Project → Settings → Environment Variables), never committed. The list of required names will live in `.env.example` (Epic 0.5).
+- **Environment variables** are set in the Vercel dashboard (Project → Settings → Environment Variables), never committed. Every name the app reads is listed in [`.env.example`](.env.example); a test fails CI if the two drift apart.
 
 ## Authentication (local)
 
