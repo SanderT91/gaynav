@@ -1,0 +1,30 @@
+# GAYNAV
+
+Curated LGBTQ+ hotel search and booking. See [`CLAUDE.md`](CLAUDE.md) for the architecture principles and build plan.
+
+## Requirements
+
+- Node.js 20.9 or newer (developed on Node 24)
+- npm
+
+## Scripts
+
+| Command                | What it does                                  |
+| ---------------------- | --------------------------------------------- |
+| `npm run dev`          | Start the dev server on http://localhost:3000 |
+| `npm run build`        | Production build                              |
+| `npm run lint`         | ESLint (Next.js + TypeScript rules)           |
+| `npm run typecheck`    | Generate route types and run `tsc`            |
+| `npm run format`       | Format all files with Prettier                |
+| `npm run format:check` | Check formatting without writing              |
+
+## Folder structure
+
+```
+src/
+  app/        Next.js App Router — routes, layouts, pages
+  lib/        Server-side helpers (Supabase clients, RateHawk client, …) — added as features need them
+supabase/     Database migrations and RLS tests — added in Epic 0.2
+```
+
+A full local-development guide (Supabase, environment variables) follows in Epic 0.5.
