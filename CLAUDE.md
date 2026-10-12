@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 0 — Foundation
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 0.1 — connect repo to Vercel, confirm a basic page deploys successfully
+- **Next up:** Epic 0.2 — `users` table with role column (traveler / partner / staff)
 
 ## Session protocol
 
@@ -83,7 +83,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 
 **Epic 0.1 — Project scaffold**
 - [x] Feature: initialize Next.js app, folder structure, linting/formatting config — done 2026-10-12, PR #1
-- [ ] Feature: connect repo to Vercel, confirm a basic page deploys successfully
+- [x] Feature: connect repo to Vercel, confirm a basic page deploys successfully — done 2026-10-12, PR #2
 
 **Epic 0.2 — Database schema & access control**
 - [ ] Feature: `users` table with role column (traveler / partner / staff)
