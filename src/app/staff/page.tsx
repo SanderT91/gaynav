@@ -30,6 +30,9 @@ async function StaffHome() {
       <p style={{ marginTop: "0.5rem" }}>
         <Link href="/staff/candidates">Review candidate hotels</Link>
       </p>
+      <p style={{ marginTop: "0.5rem" }}>
+        <Link href="/staff/audit">Audit log</Link>
+      </p>
       <form action={signOut} style={{ marginTop: "1.5rem" }}>
         <button type="submit">Sign out</button>
       </form>

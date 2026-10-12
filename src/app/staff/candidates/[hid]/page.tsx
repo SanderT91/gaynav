@@ -51,7 +51,7 @@ async function CandidateDetail({
   params: PageProps<"/staff/candidates/[hid]">["params"];
 }) {
   const { hid } = await params;
-  const user = await requireStaff(`/staff/candidates/${encodeURIComponent(hid)}`);
+  await requireStaff(`/staff/candidates/${encodeURIComponent(hid)}`);
 
   const candidate = findCandidate(hid);
   if (!candidate) notFound();
@@ -63,7 +63,7 @@ async function CandidateDetail({
     loadLatestEvidencePack(supabase, hotel.hid),
     supabase
       .from("vetting_decisions")
-      .select("decision, note, concerns_acknowledged, decided_by, decided_at")
+      .select("decision, note, concerns_acknowledged, decided_at")
       .eq("hid", hotel.hid)
       .order("decided_at", { ascending: false }),
   ]);
@@ -214,6 +214,10 @@ async function CandidateDetail({
         <h2 id="history-heading" style={{ fontSize: "1.2rem" }}>
           Decision history
         </h2>
+        <p style={{ marginTop: "0.25rem", fontSize: "0.9rem" }}>
+          Who made each decision is in the{" "}
+          <Link href={`/staff/audit?hid=${hotel.hid}`}>audit log for this hotel</Link>.
+        </p>
         {decisions.length === 0 ? (
           <p style={{ marginTop: "0.5rem" }}>No decisions yet.</p>
         ) : (
@@ -222,8 +226,7 @@ async function CandidateDetail({
           >
             {decisions.map((d, i) => (
               <li key={i}>
-                <strong>{d.decision}</strong> · {new Date(d.decided_at).toLocaleString("en-GB")} ·{" "}
-                {d.decided_by === user.id ? "you" : `staff member ${d.decided_by.slice(0, 8)}`}
+                <strong>{d.decision}</strong> · {new Date(d.decided_at).toLocaleString("en-GB")} ·
                 {d.concerns_acknowledged && " · concerns reviewed"}
                 {d.note && <div style={{ fontSize: "0.9rem" }}>“{d.note}”</div>}
               </li>
