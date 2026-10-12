@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
 import { requireStaff } from "@/lib/auth/current-user";
 import { signOut } from "../login/actions";
@@ -26,7 +27,9 @@ async function StaffHome() {
   return (
     <>
       <p style={{ marginTop: "1rem" }}>Signed in as {user.email} with two-factor authentication.</p>
-      <p style={{ marginTop: "0.5rem" }}>The curation workbench arrives in Phase 1.</p>
+      <p style={{ marginTop: "0.5rem" }}>
+        <Link href="/staff/candidates">Review candidate hotels</Link>
+      </p>
       <form action={signOut} style={{ marginTop: "1.5rem" }}>
         <button type="submit">Sign out</button>
       </form>

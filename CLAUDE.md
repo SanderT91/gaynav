@@ -131,7 +131,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [ ] Feature: error handling for a failed or incomplete AI response — never silently show a blank or fabricated summary — built 2026-10-12, PR #21; ⏳ not checked off until verified with a live Claude API call
 
 **Epic 1.3 — Staff review UI**
-- [ ] Feature: staff-only candidate list view (behind 2FA)
+- [x] Feature: staff-only candidate list view (behind 2FA) — done 2026-10-12, PR #22
 - [ ] Feature: candidate detail view showing the evidence-pack summary
 - [ ] Feature: approve / reject actions, writing approved candidates into `approved_properties`. On approval, staff also write the short public vetting summary (a separate field from the AI evidence pack, see Decisions #6)
 - [ ] Feature: suspend and reactivate actions for an approved hotel (never delete, see Decisions #3), each with a required reason
