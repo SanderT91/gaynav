@@ -6,9 +6,9 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 *Claude Code: keep this block current. Update it whenever you check off a feature or move to a new phase — it's the fastest way for a human to see where the product stands without reading the whole file.*
 
-- **Current phase:** 1 — Curation workbench (against mock data). Phase 0 complete 2026-10-12 (end-of-phase review pending with the owner).
+- **Current phase:** 2 — Public search and listing pages (against mock data). Phase 1 complete and reviewed by the owner 2026-10-12.
 - **Last updated:** 2026-10-12
-- **Next up:** ⏸ End-of-Phase-1 human review. All Phase 1 features are done.
+- **Next up:** Epic 2.1 — date range and guest count as required search inputs
 
 ## Session protocol
 
@@ -142,7 +142,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 
 ### Phase 2 — Public search and listing pages (against mock data)
 **Epic 2.1 — Search**
-- [ ] Feature: public search page querying only `approved_properties`, joined with mock rate/availability data
+- [x] Feature: public search page querying only `approved_properties`, joined with mock rate/availability data — done 2026-10-12, PR #27
 - [ ] Feature: date range and guest count as required search inputs — RateHawk cannot return real availability/pricing without them, so the UI shouldn't let a search happen without them either
 - [ ] Feature: empty-state messaging for a search with zero approved properties (expected and common at launch, given the deliberately small, hand-picked catalogue — this must not look like a broken page)
 - [ ] Feature: server-side enforcement test proving an unapproved or suspended property can never appear in results
