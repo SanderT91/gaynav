@@ -17,6 +17,8 @@ Curated LGBTQ+ hotel search and booking. See [`CLAUDE.md`](CLAUDE.md) for the ar
 | `npm run typecheck`         | Generate route types and run `tsc`                            |
 | `npm run format`            | Format all files with Prettier                                |
 | `npm run format:check`      | Check formatting without writing                              |
+| `npm test`                  | Unit tests (Vitest)                                           |
+| `npm run test:watch`        | Unit tests in watch mode                                      |
 | `npm run db:start`          | Start the local Supabase stack (needs Docker)                 |
 | `npm run db:reset`          | Rebuild the local database from migrations                    |
 | `npm run db:test`           | Rebuild the local database, then run the pgTAP tests          |

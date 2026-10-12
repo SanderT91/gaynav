@@ -14,7 +14,9 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
     "db:test": "supabase db reset && supabase test db",
-    "db:check-exposure": "node scripts/check-api-exposure.mjs"
+    "db:check-exposure": "node scripts/check-api-exposure.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -24,7 +26,7 @@
     "react-dom": "19.3.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^24.19.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
@@ -32,9 +34,10 @@
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.9.10",
     "supabase": "^2.120.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.4"
   },
   "engines": {
-    "node": ">=20.9"
+    "node": ">=24"
   }
 }

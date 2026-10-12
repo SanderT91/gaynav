@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 0 — Foundation
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 0.4 — basic test framework (Vitest) with one real test (the Supabase preview-branch feature is deferred by the owner while on the free plan)
+- **Next up:** Epic 0.5 — `.env.example` documenting every required environment variable
 
 ## Session protocol
 
@@ -110,7 +110,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [x] Feature: GitHub Actions workflow running lint + tests on every PR — done 2026-10-12, PR #10
 - [x] Feature: branch protection on `main` requiring the checks above to pass (and, from Phase 3 on, requiring human approval — see Review policy) — done 2026-10-12, PR #11 (approval requirement to be raised to 1 at the start of Phase 3)
 - [ ] Feature: Supabase GitHub integration enabled so every PR gets its own preview database branch, not just a preview frontend
-- [ ] Feature: a basic test framework in place (e.g. Vitest) with one real test, so later features have a pattern to follow rather than inventing one each time
+- [x] Feature: a basic test framework in place (e.g. Vitest) with one real test, so later features have a pattern to follow rather than inventing one each time — done 2026-10-12, PR #12
 
 **Epic 0.5 — Config and secrets**
 - [ ] Feature: `.env.example` documenting every required environment variable (without real values), kept up to date as new integrations are added

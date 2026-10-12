@@ -1,5 +1,6 @@
 # Runs on every pull request (and on main after merge). Branch protection on
-# `main` requires both jobs to pass before a PR can be merged.
+# `main` requires both jobs to pass before a PR can be merged. Job names are
+# referenced by branch protection — renaming a job means updating it there too.
 name: CI
 
 on:
@@ -30,6 +31,8 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run format:check
+      - name: Unit tests (Vitest)
+        run: npm test
       # No Supabase env vars on purpose: the build must not need any secrets.
       - run: npm run build
 
