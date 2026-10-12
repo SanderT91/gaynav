@@ -5,7 +5,7 @@ import { getSupabaseEnv } from "./env";
 // Paths that need a signed-in user. This is only an *optimistic* redirect for a
 // better experience — the real checks happen in each page (requireUser) and,
 // for data, in the database's RLS policies.
-const PROTECTED_PREFIXES = ["/account"];
+const PROTECTED_PREFIXES = ["/account", "/staff"];
 
 // Runs on every matched request: refreshes the Supabase session cookie when the
 // access token is close to expiry, then redirects signed-out visitors away from

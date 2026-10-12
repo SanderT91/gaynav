@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 export type CurrentUser = {
@@ -41,5 +41,31 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 export async function requireUser(nextPath: string): Promise<CurrentUser> {
   const user = await getCurrentUser();
   if (!user) redirect(`/login?next=${encodeURIComponent(nextPath)}`);
+  return user;
+}
+
+// Did this session complete a second factor? Read from the verified session
+// token's `aal` claim — the same claim the database's RLS policies check.
+export async function sessionHasMfa(): Promise<boolean> {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getClaims();
+  return data?.claims?.aal === "aal2";
+}
+
+// Signed in AND staff role, regardless of 2FA. Only for the 2FA set-up and
+// code-entry steps themselves. Anyone else gets a plain 404, so the staff
+// area doesn't advertise itself.
+export async function requireStaffRole(nextPath: string): Promise<CurrentUser> {
+  const user = await requireUser(nextPath);
+  if (user.role !== "staff") notFound();
+  return user;
+}
+
+// For every staff page: staff role AND a 2FA session (CLAUDE.md, Decisions #2).
+// Staff without 2FA are sent to set it up or enter their code first. The
+// database enforces the same rule independently through RLS.
+export async function requireStaff(nextPath: string): Promise<CurrentUser> {
+  const user = await requireStaffRole(nextPath);
+  if (!(await sessionHasMfa())) redirect(`/staff/mfa?next=${encodeURIComponent(nextPath)}`);
   return user;
 }
