@@ -14,7 +14,7 @@
         "kind": "review",
         "rating": 5,
         "date": "2026-06-19",
-        "text": "Lovely canal views. The inclusion policy is printed in every room — small thing, but it mattered to us."
+        "text": "Lovely garden views. The inclusion policy is printed in every room — small thing, but it mattered to us."
       },
       {
         "source_id": "rev-9990000001-03",
@@ -28,7 +28,7 @@
         "kind": "press",
         "outlet": "Mock City Guide (fictitious)",
         "date": "2026-04-10",
-        "text": "Named one of Amsterdam's most welcoming small hotels for LGBTQ+ travellers."
+        "text": "Named one of Saigon's most welcoming small hotels for LGBTQ+ travellers."
       }
     ],
     "9990000002": [
@@ -123,7 +123,7 @@
         "kind": "review",
         "rating": 4,
         "date": "2026-07-07",
-        "text": "Good location for the beach. No issues as a gay couple."
+        "text": "Good location near the river. No issues as a gay couple."
       }
     ],
     "9990000008": [
@@ -153,7 +153,7 @@
       {
         "source_id": "press-9990000009-01",
         "kind": "press",
-        "outlet": "Mock Barcelona Herald (fictitious)",
+        "outlet": "Mock Tokyo Herald (fictitious)",
         "date": "2025-09-14",
         "text": "Two guests filed a complaint alleging they were refused a shared room; the hotel said it was a booking error."
       }
@@ -165,6 +165,31 @@
         "rating": 4,
         "date": "2026-08-25",
         "text": "Self check-in was easy. The registration form asked for gender, which was awkward for my non-binary partner."
+      }
+    ],
+    "9990000011": [
+      {
+        "source_id": "rev-9990000011-01",
+        "kind": "review",
+        "rating": 4,
+        "date": "2026-08-14",
+        "text": "Clean apartment, great river view. Staff were polite and kept to themselves."
+      }
+    ],
+    "9990000012": [
+      {
+        "source_id": "rev-9990000012-01",
+        "kind": "review",
+        "rating": 5,
+        "date": "2026-09-03",
+        "text": "We stayed as a lesbian couple and were treated like family. The pool is lovely."
+      },
+      {
+        "source_id": "rev-9990000012-02",
+        "kind": "review",
+        "rating": 5,
+        "date": "2026-07-21",
+        "text": "Staff remembered our names and recommended inclusive bars nearby."
       }
     ]
   }

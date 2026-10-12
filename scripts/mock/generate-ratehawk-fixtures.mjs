@@ -23,9 +23,25 @@ const SEARCH = {
   currency: "EUR",
 };
 
+// Launch cities (owner decision 2026-10-12). Region ids are mock values, not
+// RateHawk's. Tax and VAT figures are rough approximations for testing only.
 const REGIONS = {
-  amsterdam: { id: 2734, name: "Amsterdam", country_code: "NL", iata: "AMS", type: "City" },
-  barcelona: { id: 1869, name: "Barcelona", country_code: "ES", iata: "BCN", type: "City" },
+  london: { id: 9990101, name: "London", country_code: "GB", iata: "LON", type: "City" },
+  rome: { id: 9990102, name: "Rome", country_code: "IT", iata: "ROM", type: "City" },
+  paris: { id: 9990103, name: "Paris", country_code: "FR", iata: "PAR", type: "City" },
+  tokyo: { id: 9990104, name: "Tokyo", country_code: "JP", iata: "TYO", type: "City" },
+  hcmc: { id: 9990105, name: "Ho Chi Minh City", country_code: "VN", iata: "SGN", type: "City" },
+  bangkok: { id: 9990106, name: "Bangkok", country_code: "TH", iata: "BKK", type: "City" },
+};
+
+// Per-city mock tax rules: city tax per guest per night (0 = none) and VAT.
+const CITY_TAX = {
+  london: { perGuestNight: 0, vat: 0.2 },
+  rome: { perGuestNight: 6, vat: 0.1 },
+  paris: { perGuestNight: 3.25, vat: 0.1 },
+  tokyo: { perGuestNight: 1.3, vat: 0.1 },
+  hcmc: { perGuestNight: 0, vat: 0.08 },
+  bangkok: { perGuestNight: 0, vat: 0.07 },
 };
 
 const emptyPolicy = () => ({
@@ -76,73 +92,70 @@ const amenities = (extra = []) => [
 const HOTELS = [
   {
     hid: 9990000001,
-    slug: "canal_lantern_hotel_mock",
-    name: "Canal Lantern Hotel (mock)",
+    slug: "lantern_house_saigon_mock",
+    name: "Lantern House Saigon (mock)",
     kind: "Boutique_and_Design",
     stars: 4,
-    region: "amsterdam",
-    address: "Lantaarngracht 14",
-    postal: "1016 AB",
-    lat: 52.3731,
-    lon: 4.8846,
+    region: "hcmc",
+    address: "14 Lantern Lane, District 3",
+    postal: "700000",
+    lat: 10.782,
+    lon: 106.688,
     vetting_note: "clear-positive: visible inclusion commitments, strong guest reviews",
     description:
-      "A canal-house boutique hotel in the Jordaan with 24 rooms. The team runs a published inclusion policy and partners with local LGBTQ+ venues for guest recommendations.",
+      "A 24-room boutique hotel in a restored villa. The team runs a published inclusion policy and partners with local LGBTQ+ community groups for guest recommendations.",
     extra_info:
       "Quiet hours from 22:00. Guests of all identities and relationships are welcome; no questions asked about who shares a room.",
     amenityExtra: ["Bar", "Garden"],
-    rateBase: 214,
-    taxIncluded: false,
+    rateBase: 96,
   },
   {
     hid: 9990000002,
-    slug: "harbour_light_rooms_mock",
-    name: "Harbour Light Rooms (mock)",
+    slug: "docklands_light_rooms_mock",
+    name: "Docklands Light Rooms (mock)",
     kind: "Hotel",
     stars: 3,
-    region: "amsterdam",
-    address: "Kadewerf 3",
-    postal: "1018 CZ",
-    lat: 52.3714,
-    lon: 4.9152,
+    region: "london",
+    address: "3 Quayside Walk",
+    postal: "E14 0MK",
+    lat: 51.5054,
+    lon: -0.0235,
     vetting_note: "neutral: nothing positive or negative stated — needs human judgement",
     description:
-      "A practical, modern hotel near the eastern docks, 10 minutes by tram from Centraal Station.",
+      "A practical, modern hotel by the eastern docks, 15 minutes by train from the centre.",
     extra_info: "Photo ID required at check-in for all guests.",
     amenityExtra: ["Bicycle rental"],
-    rateBase: 139,
-    taxIncluded: false,
+    rateBase: 149,
   },
   {
     hid: 9990000003,
-    slug: "the_tulip_stay_mock",
-    name: "The Tulip Stay (mock)",
+    slug: "the_rose_stay_mock",
+    name: "The Rose Stay (mock)",
     kind: "Hotel",
     stars: 3,
-    region: "amsterdam",
-    address: "Bloembollenweg 88",
-    postal: "1062 HK",
-    lat: 52.3576,
-    lon: 4.8392,
+    region: "london",
+    address: "88 Bloom Terrace",
+    postal: "W2 4MK",
+    lat: 51.5133,
+    lon: -0.187,
     vetting_note: "red-flag: house rule restricts who may share a room",
-    description: "Family-run hotel near Vondelpark with garden views.",
+    description: "Family-run hotel near the park with garden views.",
     extra_info:
       "Only married couples may share a double room. The hotel may ask for a marriage certificate at check-in.",
     amenityExtra: [],
-    rateBase: 119,
-    taxIncluded: true,
+    rateBase: 129,
   },
   {
     hid: 9990000004,
-    slug: "prinsen_suites_mock",
-    name: "Prinsen Suites (mock)",
+    slug: "rive_gauche_suites_mock",
+    name: "Rive Gauche Suites (mock)",
     kind: "Apartment",
     stars: 4,
-    region: "amsterdam",
-    address: "Vorstenstraat 21",
-    postal: "1015 RN",
-    lat: 52.3779,
-    lon: 4.8858,
+    region: "paris",
+    address: "21 Rue Imaginaire",
+    postal: "75006",
+    lat: 48.8508,
+    lon: 2.333,
     vetting_note: "mixed: good policies but several reviews describe unwelcoming staff",
     description: "Serviced apartments with kitchenettes, suited to longer stays.",
     extra_info: "Security deposit of EUR 200 taken at check-in, refunded at check-out.",
@@ -153,15 +166,15 @@ const HOTELS = [
   },
   {
     hid: 9990000005,
-    slug: "dam_square_inn_mock",
-    name: "Dam Square Inn (mock)",
+    slug: "petit_pont_inn_mock",
+    name: "Petit Pont Inn (mock)",
     kind: "Hotel",
     stars: 2,
-    region: "amsterdam",
-    address: "Pleinpad 2",
-    postal: "1012 JS",
-    lat: 52.373,
-    lon: 4.8926,
+    region: "paris",
+    address: "2 Quai Fictif",
+    postal: "75005",
+    lat: 48.8527,
+    lon: 2.3469,
     vetting_note: "ineligible: permanently closed (is_closed: true)",
     description: "Small budget hotel. This property has closed.",
     extra_info: "",
@@ -171,18 +184,18 @@ const HOTELS = [
   },
   {
     hid: 9990000006,
-    slug: "casa_eixample_mock",
-    name: "Casa Eixample (mock)",
+    slug: "casa_trastevere_mock",
+    name: "Casa Trastevere (mock)",
     kind: "Boutique_and_Design",
     stars: 4,
-    region: "barcelona",
-    address: "Carrer de la Mostra 120",
-    postal: "08011",
-    lat: 41.3889,
-    lon: 2.1611,
-    vetting_note: "clear-positive: LGBTQ+-owned, in the Gaixample neighbourhood",
+    region: "rome",
+    address: "120 Via Inventata",
+    postal: "00153",
+    lat: 41.889,
+    lon: 12.47,
+    vetting_note: "clear-positive: LGBTQ+-owned",
     description:
-      "A modernista building in the Eixample, owned and run by an LGBTQ+ couple. Rooftop terrace with city views.",
+      "A restored townhouse owned and run by an LGBTQ+ couple. Rooftop terrace with city views.",
     extra_info: "All guests welcome. Rooftop open 10:00–23:00.",
     amenityExtra: ["Rooftop terrace", "Bar"],
     rateBase: 176,
@@ -190,35 +203,35 @@ const HOTELS = [
   },
   {
     hid: 9990000007,
-    slug: "hotel_mar_blava_mock",
-    name: "Hotel Mar Blava (mock)",
+    slug: "sumida_garden_hotel_mock",
+    name: "Sumida Garden Hotel (mock)",
     kind: "Hotel",
     stars: 4,
-    region: "barcelona",
-    address: "Passeig de les Onades 7",
-    postal: "08003",
-    lat: 41.3795,
-    lon: 2.1916,
-    vetting_note: "neutral-positive: large beach hotel, decent reviews, no explicit statements",
-    description: "Beachfront hotel in Barceloneta with an outdoor pool.",
-    extra_info: "Pool towels provided. Pool closes at 20:00.",
-    amenityExtra: ["Outdoor pool", "Restaurant"],
+    region: "tokyo",
+    address: "7-1 Kasen-dori",
+    postal: "130-0001",
+    lat: 35.71,
+    lon: 139.8,
+    vetting_note: "neutral-positive: large riverside hotel, decent reviews, no explicit statements",
+    description: "Riverside hotel with an indoor pool and a garden courtyard.",
+    extra_info: "Pool towels provided. Pool closes at 21:00.",
+    amenityExtra: ["Indoor pool", "Restaurant"],
     rateBase: 205,
     taxIncluded: false,
   },
   {
     hid: 9990000008,
-    slug: "gotic_hideaway_mock",
-    name: "Gòtic Hideaway (mock)",
+    slug: "hotel_vicolo_mock",
+    name: "Hotel Vicolo (mock)",
     kind: "Hotel",
     stars: 3,
-    region: "barcelona",
-    address: "Carrer del Rellotge 5",
-    postal: "08002",
-    lat: 41.3829,
-    lon: 2.177,
+    region: "rome",
+    address: "5 Vicolo Immaginario",
+    postal: "00186",
+    lat: 41.8986,
+    lon: 12.4723,
     vetting_note: "sold-out: no rates for the mock dates (empty rates array)",
-    description: "Small hotel in the Gothic Quarter, steps from the cathedral.",
+    description: "Small hotel in the historic centre, steps from the main squares.",
     extra_info: "No elevator; rooms are on floors 1–4.",
     amenityExtra: [],
     rateBase: 0,
@@ -226,43 +239,76 @@ const HOTELS = [
   },
   {
     hid: 9990000009,
-    slug: "montjuic_garden_hotel_mock",
-    name: "Montjuïc Garden Hotel (mock)",
+    slug: "shinjuku_court_hotel_mock",
+    name: "Shinjuku Court Hotel (mock)",
     kind: "Hotel",
     stars: 3,
-    region: "barcelona",
-    address: "Carrer dels Jardins 44",
-    postal: "08004",
-    lat: 41.3712,
-    lon: 2.1592,
+    region: "tokyo",
+    address: "4-4 Teien-dori",
+    postal: "160-0022",
+    lat: 35.6896,
+    lon: 139.7006,
     vetting_note:
       "red-flag: press coverage of a discrimination complaint (2025), hotel response unclear",
-    description: "Quiet hotel at the foot of Montjuïc with a garden courtyard.",
-    extra_info: "Breakfast served 07:00–10:30.",
+    description: "Quiet business hotel with a small garden lounge.",
+    extra_info: "Breakfast served 07:00–10:00.",
     amenityExtra: ["Garden"],
     rateBase: 128,
     taxIncluded: true,
   },
   {
     hid: 9990000010,
-    slug: "rambla_loft_mock",
-    name: "Rambla Loft (mock)",
+    slug: "silom_loft_mock",
+    name: "Silom Loft (mock)",
     kind: "Apartment",
     stars: 0,
-    region: "barcelona",
-    address: "Passatge del Teler 9",
-    postal: "08001",
-    lat: 41.381,
-    lon: 2.172,
+    region: "bangkok",
+    address: "9 Loom Alley, Silom",
+    postal: "10500",
+    lat: 13.729,
+    lon: 100.53,
     vetting_note:
       "gender-specification: is_gender_specification_required is true — check how the field is used",
-    description: "Loft apartments in El Raval. Self check-in with a keypad.",
+    description: "Loft apartments with self check-in via a keypad.",
     extra_info:
-      "Guest names and genders must match ID documents for registration with the police (Spanish guest registration law).",
+      "Guest names and genders must match ID documents for the legally required guest registration with local authorities.",
     amenityExtra: ["Kitchen", "Washing machine"],
-    rateBase: 158,
-    taxIncluded: false,
+    rateBase: 88,
     genderSpec: true,
+  },
+  {
+    hid: 9990000011,
+    slug: "riverside_residences_mock",
+    name: "Riverside Residences (mock)",
+    kind: "Apartment",
+    stars: 3,
+    region: "hcmc",
+    address: "27 Riverside Row, District 1",
+    postal: "700000",
+    lat: 10.775,
+    lon: 106.704,
+    vetting_note: "neutral: serviced apartments, little evidence either way",
+    description: "Serviced apartments overlooking the river, with a small gym.",
+    extra_info: "Passport registration required at check-in.",
+    amenityExtra: ["Gym", "Kitchenette"],
+    rateBase: 74,
+  },
+  {
+    hid: 9990000012,
+    slug: "sathorn_garden_rooms_mock",
+    name: "Sathorn Garden Rooms (mock)",
+    kind: "Hotel",
+    stars: 4,
+    region: "bangkok",
+    address: "40 Orchid Walk, Sathorn",
+    postal: "10120",
+    lat: 13.7213,
+    lon: 100.5296,
+    vetting_note: "clear-positive: consistently warm reviews from LGBTQ+ guests",
+    description: "Garden hotel with a pool, a short walk from the river ferry.",
+    extra_info: "Visitors are welcome in guest rooms until 22:00.",
+    amenityExtra: ["Outdoor pool", "Spa"],
+    rateBase: 112,
   },
 ];
 
@@ -278,12 +324,14 @@ function hotelContent(h) {
       pricing_method: "per_stay",
     });
   }
-  policy.add_fee.push({
-    fee_type: "city_tax",
-    price: h.region === "amsterdam" ? "12.50" : "5.50",
-    currency: "EUR",
-    price_unit: "per_guest_per_night",
-  });
+  if (CITY_TAX[h.region].perGuestNight > 0) {
+    policy.add_fee.push({
+      fee_type: "city_tax",
+      price: CITY_TAX[h.region].perGuestNight.toFixed(2),
+      currency: "EUR",
+      price_unit: "per_guest_per_night",
+    });
+  }
   return {
     id: h.slug,
     hid: h.hid,
@@ -311,10 +359,11 @@ function hotelContent(h) {
 const money = (n) => n.toFixed(2);
 
 function paymentType(total, h, { refundable, tieredDays }) {
-  // City tax: per guest per night. Amsterdam ~12.5%, Barcelona flat 5.50.
+  // City tax per guest per night (none in some cities); VAT included in price.
   const guests = SEARCH.guests[0].adults;
-  const cityTax = h.region === "amsterdam" ? total * 0.125 : 5.5 * guests * SEARCH.nights;
-  const vat = total * (h.region === "amsterdam" ? 0.09 / 1.09 : 0.1 / 1.1);
+  const { perGuestNight, vat: vatRate } = CITY_TAX[h.region];
+  const cityTax = perGuestNight * guests * SEARCH.nights;
+  const vat = total * (vatRate / (1 + vatRate));
   const checkinUtc = `${SEARCH.checkin}T14:00:00`;
   let cancellation;
   if (!refundable) {
@@ -363,17 +412,20 @@ function paymentType(total, h, { refundable, tieredDays }) {
       applied: true,
       amount: money(vat),
       currency_code: SEARCH.currency,
-      value: h.region === "amsterdam" ? "9.00" : "10.00",
+      value: (vatRate * 100).toFixed(2),
     },
     tax_data: {
-      taxes: [
-        {
-          name: "city_tax",
-          included_by_supplier: Boolean(h.taxIncluded),
-          amount: money(cityTax),
-          currency_code: SEARCH.currency,
-        },
-      ],
+      taxes:
+        cityTax > 0
+          ? [
+              {
+                name: "city_tax",
+                included_by_supplier: Boolean(h.taxIncluded),
+                amount: money(cityTax),
+                currency_code: SEARCH.currency,
+              },
+            ]
+          : [],
     },
     cancellation_penalties: cancellation,
     _checkin_reference: checkinUtc, // stripped below
@@ -459,7 +511,7 @@ const REVIEWS = {
     [
       5,
       "2026-06-19",
-      "Lovely canal views. The inclusion policy is printed in every room — small thing, but it mattered to us.",
+      "Lovely garden views. The inclusion policy is printed in every room — small thing, but it mattered to us.",
     ],
     [4, "2026-05-11", "Rooms are small but beautiful. Breakfast could be better."],
   ],
@@ -494,7 +546,7 @@ const REVIEWS = {
   ],
   9990000007: [
     [4, "2026-08-10", "Great pool, busy in summer. Staff were professional."],
-    [4, "2026-07-07", "Good location for the beach. No issues as a gay couple."],
+    [4, "2026-07-07", "Good location near the river. No issues as a gay couple."],
   ],
   9990000008: [[4, "2026-05-05", "Charming but the stairs are a workout."]],
   9990000009: [
@@ -508,6 +560,21 @@ const REVIEWS = {
       "Self check-in was easy. The registration form asked for gender, which was awkward for my non-binary partner.",
     ],
   ],
+  9990000011: [
+    [
+      4,
+      "2026-08-14",
+      "Clean apartment, great river view. Staff were polite and kept to themselves.",
+    ],
+  ],
+  9990000012: [
+    [
+      5,
+      "2026-09-03",
+      "We stayed as a lesbian couple and were treated like family. The pool is lovely.",
+    ],
+    [5, "2026-07-21", "Staff remembered our names and recommended inclusive bars nearby."],
+  ],
 };
 
 const PRESS = {
@@ -515,7 +582,7 @@ const PRESS = {
     [
       "Mock City Guide (fictitious)",
       "2026-04-10",
-      "Named one of Amsterdam's most welcoming small hotels for LGBTQ+ travellers.",
+      "Named one of Saigon's most welcoming small hotels for LGBTQ+ travellers.",
     ],
   ],
   9990000006: [
@@ -527,7 +594,7 @@ const PRESS = {
   ],
   9990000009: [
     [
-      "Mock Barcelona Herald (fictitious)",
+      "Mock Tokyo Herald (fictitious)",
       "2025-09-14",
       "Two guests filed a complaint alleging they were refused a shared room; the hotel said it was a booking error.",
     ],

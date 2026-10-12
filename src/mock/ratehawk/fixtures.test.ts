@@ -63,11 +63,21 @@ describe("mock hotel content (RateHawk static shape)", () => {
   });
 
   it("covers the launch cities", () => {
-    expect(new Set(hotels.map((h) => h.region.name))).toEqual(new Set(["Amsterdam", "Barcelona"]));
+    expect(new Set(hotels.map((h) => h.region.name))).toEqual(
+      new Set(["London", "Rome", "Paris", "Tokyo", "Ho Chi Minh City", "Bangkok"]),
+    );
   });
 });
 
 describe("mock search results (RateHawk SERP shape)", () => {
+  it("has at least one bookable hotel in every launch city (city pages need one)", () => {
+    const cityOf = new Map(hotels.map((h) => [h.hid, h.region.name]));
+    const bookableCities = new Set(
+      searchHotels.filter((h) => h.rates.length > 0).map((h) => cityOf.get(h.hid)),
+    );
+    expect(bookableCities).toEqual(new Set(hotels.map((h) => h.region.name)));
+  });
+
   it("only lists hotels that exist in the static content, and never a closed one", () => {
     const byHid = new Map(hotels.map((h) => [h.hid, h]));
     for (const sh of searchHotels) {
