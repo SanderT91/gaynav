@@ -23,8 +23,8 @@ update public.users set role = 'staff' where id = 'aaaaaaaa-0000-0000-0000-00000
 
 -- ── Integrity rules ──────────────────────────────────────────────────────────
 select lives_ok(
-  $$ insert into public.approved_properties (hid, approved_by)
-     values (1001, 'aaaaaaaa-0000-0000-0000-000000000001') $$,
+  $$ insert into public.approved_properties (hid, approved_by, vetting_summary)
+     values (1001, 'aaaaaaaa-0000-0000-0000-000000000001', 'Test public summary') $$,
   'a staff member can be recorded as approver'
 );
 select is(
@@ -33,8 +33,8 @@ select is(
   'new rows default to status approved'
 );
 select throws_ok(
-  $$ insert into public.approved_properties (hid, approved_by)
-     values (1002, 'aaaaaaaa-0000-0000-0000-000000000002') $$,
+  $$ insert into public.approved_properties (hid, approved_by, vetting_summary)
+     values (1002, 'aaaaaaaa-0000-0000-0000-000000000002', 'Test public summary') $$,
   '23514', 'approved_by must reference a user with the staff role',
   'a non-staff user cannot be recorded as approver (enforced even for service_role)'
 );
@@ -45,14 +45,14 @@ select throws_ok(
   'approver cannot be changed to a non-staff user'
 );
 select throws_ok(
-  $$ insert into public.approved_properties (hid, approved_by)
-     values (1001, 'aaaaaaaa-0000-0000-0000-000000000001') $$,
+  $$ insert into public.approved_properties (hid, approved_by, vetting_summary)
+     values (1001, 'aaaaaaaa-0000-0000-0000-000000000001', 'Test public summary') $$,
   '23505', null,
   'the same hotel (hid) cannot be whitelisted twice'
 );
 select throws_ok(
-  $$ insert into public.approved_properties (hid, approved_by)
-     values (0, 'aaaaaaaa-0000-0000-0000-000000000001') $$,
+  $$ insert into public.approved_properties (hid, approved_by, vetting_summary)
+     values (0, 'aaaaaaaa-0000-0000-0000-000000000001', 'Test public summary') $$,
   '23514', null,
   'hid must be a positive number'
 );
