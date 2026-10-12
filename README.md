@@ -106,6 +106,14 @@ Every tool below requires a **reason**, and records who ran it and when in an ap
    ```
 3. The person signs in and opens `/staff`. They are made to set up an authenticator app before getting any staff access.
 
+### Give a staff member a readable name in the audit log
+
+The audit log (`/staff/audit`) shows who made each decision. Without a name it shows a short id.
+
+```sql
+select * from admin.set_display_name('person@example.com', 'Alex (curation)');
+```
+
 ### Change someone's role
 
 Same function, any role: `traveler`, `partner` or `staff`.

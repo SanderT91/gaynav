@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 1 — Curation workbench (against mock data). Phase 0 complete 2026-10-12 (end-of-phase review pending with the owner).
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 1.4 — staff-only audit log view. Still open in Phase 1: live verification of Epic 1.2 once an ANTHROPIC_API_KEY is available.
+- **Next up:** ⏸ End-of-Phase-1 human review. Phase 1 is built; still open: live verification of Epic 1.2 (two features) once an ANTHROPIC_API_KEY is available.
 
 ## Session protocol
 
@@ -138,7 +138,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 
 **Epic 1.4 — Audit logging**
 - [x] Feature: every staff approve, reject, suspend and reactivate action logged with who, what, when, and the reason. The audit log table is append-only (no app role can update or delete rows) and readable by `aal2` staff only — done 2026-10-12, PR #24 (`vetting_decisions`; every decision is a logged row, the database then changes the whitelist; admin-SQL status changes are logged too)
-- [ ] Feature: a staff-only audit log view. This is the only place `approved_by` and similar "who did it" information is visible (see Decisions #5)
+- [x] Feature: a staff-only audit log view. This is the only place `approved_by` and similar "who did it" information is visible (see Decisions #5) — done 2026-10-12, PR #25 (`/staff/audit`; staff display names set by admins via `admin.set_display_name`)
 
 ### Phase 2 — Public search and listing pages (against mock data)
 **Epic 2.1 — Search**

@@ -59,6 +59,5 @@ export type DecisionEntry = {
   decision: "approved" | "rejected" | "suspended" | "reinstated";
   note: string | null;
   concerns_acknowledged: boolean;
-  decided_by: string;
   decided_at: string;
 };
