@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 0 — Foundation
 - **Last updated:** 2026-10-12
-- **Next up:** ⏸ Dedicated human review of Epic 0.2 (PRs #3, #4, #5 — schema + RLS) before Epic 0.3 starts
+- **Next up:** Epic 0.3 — Supabase Auth wired up (sign up, sign in, session handling). Epic 0.2 reviewed by the owner and live on the hosted Supabase project (2026-10-12).
 
 ## Session protocol
 
@@ -33,6 +33,17 @@ GAYNAV is an LGBTQ+ travel platform being rebuilt from scratch, replacing an old
 - **Secrets are server-side only.** RateHawk credentials, the Supabase service-role key, and the Claude API key live in environment variables on the hosting platform. Never in client-side code, never committed to the repo, never logged.
 - **Security enforcement lives in the database, not the UI.** Supabase row-level security policies are the real access boundary. Hiding a button or route in the frontend is a convenience, never a substitute for an RLS policy.
 - **Staff accounts require 2FA, no exceptions.** No self-signup path to the staff role.
+
+## Decisions from the Epic 0.2 review (2026-10-12)
+
+*These came out of the dedicated review of the schema and RLS policies (PRs #3-#5). Treat them as binding rules for everything built afterwards.*
+
+1. **Roles never change through the app.** Not even staff can change a user's role. Roles change only through server-side admin tooling (Supabase dashboard/SQL, or a service-role script run by a human), documented in the README (Epic 0.5). A staff-driven role change would be a separate, deliberate feature (see `FEATURE_BACKLOG.md`); never add one as a side effect of another feature.
+2. **Staff powers require a 2FA session, enforced in the database.** RLS grants staff privileges only when the session's authentication assurance level is `aal2`. A staff user with only a password session is treated as an ordinary signed-in user. Consequence: the app must let staff enroll and complete 2FA (Epic 0.3), and there must be a documented recovery path for a lost authenticator (a human resets the factor through admin tooling — never a self-service bypass).
+3. **Hotels are suspended, never deleted.** `approved_properties` rows carry a status (`approved` / `suspended`). Pulling a hotel sets it to suspended; the row and its approval record stay. Every public query, and the whitelist enforcement test, must treat suspended exactly like unapproved. Reactivating is a logged staff action and keeps the original approval history.
+4. **Staff who have approved hotels cannot be deleted.** An approval record must always resolve to a real account. Offboarding staff means removing the staff role through admin tooling (and disabling the login if needed), never deleting the account. Traveler deletion requests (Epic 5.4) are handled by anonymising the account where retained records reference it, not by hard delete.
+5. **Who approved a hotel is not readable through public data.** `approved_by` is stored but not exposed to travelers or through public queries. Staff see who did what only in the audit log (Epic 1.4), which is staff-only and append-only.
+6. **Public data and staff-only data live in separate tables.** Travelers and staff share one database role, so any column on a table travelers can read is readable by every signed-in traveler. Tables travelers can see (e.g. `approved_properties`) therefore hold only public fields. Staff notes, AI evidence packs, candidate data, and vetting details go in their own staff-only tables with their own RLS. The staff notes column was removed from `approved_properties` for this reason; create a staff-only notes table when a feature needs one. The public "vetting summary" on a property page is a separate, short, staff-approved text — never the raw AI evidence pack.
 
 ## Tech stack
 
@@ -92,8 +103,8 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 
 **Epic 0.3 — Authentication**
 - [ ] Feature: Supabase Auth wired up (sign up, sign in, session handling)
-- [ ] Feature: role assignment on account creation (staff accounts provisioned manually, not via self-signup)
-- [ ] Feature: mandatory 2FA enforcement specifically for the staff role
+- [ ] Feature: role assignment on account creation (new accounts are always travelers; staff accounts are provisioned manually through admin tooling, never via self-signup or from within the app — see Decisions #1)
+- [ ] Feature: mandatory 2FA enforcement specifically for the staff role, enforced in RLS at `aal2` (see Decisions #2). Includes the staff flow to enroll a TOTP factor and step up to an `aal2` session, a test proving a staff user without `aal2` gets no staff powers, and a documented lost-authenticator recovery path
 
 **Epic 0.4 — CI/CD and environments**
 - [ ] Feature: GitHub Actions workflow running lint + tests on every PR
@@ -104,32 +115,35 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 **Epic 0.5 — Config and secrets**
 - [ ] Feature: `.env.example` documenting every required environment variable (without real values), kept up to date as new integrations are added
 - [ ] Feature: a short README section on how to get a local dev environment running against a Supabase preview branch
+- [ ] Feature: a README admin runbook for the things the app deliberately cannot do: creating the first staff account, promoting or demoting a role, offboarding a staff member (remove the role, disable the login, never delete), and resetting a staff member's lost 2FA factor (see Decisions #1, #2, #4)
 
 ### Phase 1 — Curation workbench (against mock data)
 **Epic 1.1 — Mock candidate data**
 - [ ] Feature: `candidate_properties` JSON fixture shaped like an expected RateHawk response (property id, name, location, photos, amenities, rate/availability)
 
 **Epic 1.2 — AI evidence-pack generation**
-- [ ] Feature: server-side Claude API call that produces a structured, cited summary (reviews, policies, press) from a candidate's mock data
+- [ ] Feature: server-side Claude API call that produces a structured, cited summary (reviews, policies, press) from a candidate's mock data. Candidates and their evidence packs are stored in staff-only tables, never on a table travelers can read (see Decisions #6)
 - [ ] Feature: error handling for a failed or incomplete AI response — never silently show a blank or fabricated summary
 
 **Epic 1.3 — Staff review UI**
 - [ ] Feature: staff-only candidate list view (behind 2FA)
 - [ ] Feature: candidate detail view showing the evidence-pack summary
-- [ ] Feature: approve / reject actions, writing approved candidates into `approved_properties`
+- [ ] Feature: approve / reject actions, writing approved candidates into `approved_properties`. On approval, staff also write the short public vetting summary (a separate field from the AI evidence pack, see Decisions #6)
+- [ ] Feature: suspend and reactivate actions for an approved hotel (never delete, see Decisions #3), each with a required reason
 
 **Epic 1.4 — Audit logging**
-- [ ] Feature: every staff approve/reject action logged with who, what, and when
+- [ ] Feature: every staff approve, reject, suspend and reactivate action logged with who, what, when, and the reason. The audit log table is append-only (no app role can update or delete rows) and readable by `aal2` staff only
+- [ ] Feature: a staff-only audit log view. This is the only place `approved_by` and similar "who did it" information is visible (see Decisions #5)
 
 ### Phase 2 — Public search and listing pages (against mock data)
 **Epic 2.1 — Search**
 - [ ] Feature: public search page querying only `approved_properties`, joined with mock rate/availability data
 - [ ] Feature: date range and guest count as required search inputs — RateHawk cannot return real availability/pricing without them, so the UI shouldn't let a search happen without them either
 - [ ] Feature: empty-state messaging for a search with zero approved properties (expected and common at launch, given the deliberately small, hand-picked catalogue — this must not look like a broken page)
-- [ ] Feature: server-side enforcement test proving an unapproved property can never appear in results
+- [ ] Feature: server-side enforcement test proving an unapproved or suspended property can never appear in results
 
 **Epic 2.2 — Property detail page**
-- [ ] Feature: detail page with photos, amenities, the vetting summary, and a "Check availability" call to action (no real booking yet)
+- [ ] Feature: detail page with photos, amenities, the public vetting summary (the staff-approved text, never the raw AI evidence pack), and a "Check availability" call to action (no real booking yet)
 
 **Epic 2.3 — SEO foundations**
 - [ ] Feature: server-rendered metadata (title, description, Open Graph tags) per property and search page — organic search is called out as a core growth channel in the business plan, and this is much cheaper to build in from the start than to retrofit later
@@ -199,7 +213,7 @@ From this phase on, every PR requires human review before merge (see Review poli
 - [ ] Feature: final checklist and small, hand-picked soft launch catalogue
 
 **Epic 5.4 — Privacy basics**
-- [ ] Feature: a traveler can request account deletion and a copy of their own data — required for real customer PII regardless of exact jurisdiction, and much easier to build now than to retrofit once there's live data to migrate
+- [ ] Feature: a traveler can request account deletion and a copy of their own data — required for real customer PII regardless of exact jurisdiction, and much easier to build now than to retrofit once there's live data to migrate. Where retained records (e.g. bookings, audit entries) reference the account, anonymise it instead of hard-deleting (see Decisions #4)
 - [ ] Feature: a cookie consent banner — legally required once there are EU visitors (the named launch cities include Amsterdam and Barcelona)
 - [ ] Feature: password reset flow tested end-to-end, not just assumed to work because Supabase provides it by default
 
