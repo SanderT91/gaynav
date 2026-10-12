@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 1 — Curation workbench (against mock data). Phase 0 complete 2026-10-12 (end-of-phase review pending with the owner).
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 0.2 follow-up (anon RLS check) if still open, then Epic 1.1 launch-city fixture alignment, then Epic 1.2 — server-side Claude API evidence-pack generation (needs an Anthropic API key from the owner)
+- **Next up:** Epic 0.2 follow-up (anon RLS check) if still open, then Epic 1.1 launch-city fixture alignment, then Epic 1.2 — error handling for failed/incomplete AI responses (built, PR pending), then live verification of Epic 1.2 once an ANTHROPIC_API_KEY is available
 
 ## Session protocol
 
@@ -24,6 +24,8 @@ This file orients Claude Code on every session in this repository. Read it in fu
 ## What this project is
 
 GAYNAV is an LGBTQ+ travel platform being rebuilt from scratch, replacing an old vendor system (my.gaynav.com / GP Solutions) that offered no API access and no visibility into where guest data lived. The MVP scope for this repository is the **hotel booking core**: a curated hotel search and booking experience, sourced from RateHawk (a wholesale hotel bedbank), gatekept by GAYNAV's own vetting process. Villas, Connections, Forums, Reviews, Listings, Employment and Journeys are later phases, out of scope until the hotel core is live — do not build toward them unless explicitly asked.
+
+**One site, one codebase.** This app replaces both the gaynav.com marketing site and the my.gaynav.com booking engine (owner decision 2026-10-12). Homepage, city pages, trust/about pages, search, property pages and booking all live in this one Next.js app on one domain, with one account system. Do not build a separate marketing site, and do not hand off to any external booking engine.
 
 ## Non-negotiable architecture principles
 
@@ -125,7 +127,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [ ] Feature: align the fixture with the launch cities (owner decision 2026-10-12): London, Rome, Paris, Tokyo, Ho Chi Minh City, Bangkok — the six cities gaynav.com already features as "City curations". Replace any other pilot cities (e.g. Bali, Amsterdam, Barcelona) in the fixture, docs and tests
 
 **Epic 1.2 — AI evidence-pack generation**
-- [ ] Feature: server-side Claude API call that produces a structured, cited summary (reviews, policies, press) from a candidate's mock data. Candidates and their evidence packs are stored in staff-only tables, never on a table travelers can read (see Decisions #6)
+- [ ] Feature: server-side Claude API call that produces a structured, cited summary (reviews, policies, press) from a candidate's mock data. Candidates and their evidence packs are stored in staff-only tables, never on a table travelers can read (see Decisions #6) — built 2026-10-12, PR #17; ⏳ not checked off until verified with a live Claude API call (needs ANTHROPIC_API_KEY)
 - [ ] Feature: error handling for a failed or incomplete AI response — never silently show a blank or fabricated summary
 
 **Epic 1.3 — Staff review UI**
