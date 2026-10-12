@@ -96,7 +96,7 @@ async function CandidateList({
           {rows.map((row) => (
             <tr key={row.hid} style={{ borderTop: "1px solid #8884" }}>
               <td style={{ padding: "0.5rem 0.5rem 0.5rem 0" }}>
-                {row.name}
+                <Link href={`/staff/candidates/${row.hid}`}>{row.name}</Link>
                 {row.isClosed && <strong> · Closed — cannot be approved</strong>}
               </td>
               <td>

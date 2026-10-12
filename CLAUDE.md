@@ -132,7 +132,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 
 **Epic 1.3 — Staff review UI**
 - [x] Feature: staff-only candidate list view (behind 2FA) — done 2026-10-12, PR #22
-- [ ] Feature: candidate detail view showing the evidence-pack summary
+- [x] Feature: candidate detail view showing the evidence-pack summary — done 2026-10-12, PR #23
 - [ ] Feature: approve / reject actions, writing approved candidates into `approved_properties`. On approval, staff also write the short public vetting summary (a separate field from the AI evidence pack, see Decisions #6)
 - [ ] Feature: suspend and reactivate actions for an approved hotel (never delete, see Decisions #3), each with a required reason
 
