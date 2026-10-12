@@ -1,19 +1,31 @@
 import "server-only";
+import { mockSearchRates } from "@/lib/rates/mock-search";
 import { createClient } from "@/lib/supabase/server";
-import { mockHotelContent, mockSearchResponse, type MockSearch } from "@/mock/ratehawk";
+import { mockHotelContent } from "@/mock/ratehawk";
+import type { SearchParams } from "./params";
 import { searchApproved, type ApprovedHotel, type SearchResult } from "./search";
 
-// Loads public search results on the server.
+/** The launch cities (owner decision 2026-10-12). */
+export const LAUNCH_CITIES = [
+  "London",
+  "Paris",
+  "Rome",
+  "Tokyo",
+  "Bangkok",
+  "Ho Chi Minh City",
+] as const;
+
+// Loads public search results on the server, for a complete, validated search
+// (dates and guests are required — see params.ts).
 //
 // The whitelist is read with the visitor's own session (anonymous for most
 // visitors). RLS lets anyone read approved rows only — but staff with 2FA may
 // read suspended rows too, so the query also filters on status explicitly:
 // a staff member browsing the public site must see exactly what travellers see.
 export async function loadSearch(
-  city?: string,
-): Promise<
-  { ok: true; results: SearchResult[]; searched: MockSearch } | { ok: false; error: string }
-> {
+  params: SearchParams,
+  today: string,
+): Promise<{ ok: true; results: SearchResult[] } | { ok: false; error: string }> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("approved_properties")
@@ -27,11 +39,9 @@ export async function loadSearch(
   const results = searchApproved({
     approved: (data ?? []) as ApprovedHotel[],
     hotels: mockHotelContent,
-    search: mockSearchResponse,
-    city,
+    // MOCK until Phase 3: rates adapted to the requested dates and guests.
+    search: mockSearchRates(params, today),
+    city: params.city,
   });
-  return { ok: true, results, searched: mockSearchResponse._search };
+  return { ok: true, results };
 }
-
-/** The launch cities, for the city filter. */
-export const LAUNCH_CITIES = ["London", "Paris", "Rome", "Tokyo", "Bangkok", "Ho Chi Minh City"];
