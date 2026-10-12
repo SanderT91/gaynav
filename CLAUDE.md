@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 0 — Foundation
 - **Last updated:** 2026-10-12
-- **Next up:** Epic 0.5 — README admin runbook
+- **Next up:** ⏸ End-of-Phase-0 human review (all Phase 0 PRs) before Phase 1 starts. Open in Phase 0: Supabase preview branches (deferred by the owner, free plan).
 
 ## Session protocol
 
@@ -103,19 +103,19 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 
 **Epic 0.3 — Authentication**
 - [x] Feature: Supabase Auth wired up (sign up, sign in, session handling) — done 2026-10-12, PR #7
-- [ ] Feature: role assignment on account creation (new accounts are always travelers; staff accounts are provisioned manually through admin tooling, never via self-signup or from within the app — see Decisions #1) — done 2026-10-12, PR #8
+- [x] Feature: role assignment on account creation (new accounts are always travelers; staff accounts are provisioned manually through admin tooling, never via self-signup or from within the app — see Decisions #1) — done 2026-10-12, PR #8
 - [x] Feature: mandatory 2FA enforcement specifically for the staff role, enforced in RLS at `aal2` (see Decisions #2). Includes the staff flow to enroll a TOTP factor and step up to an `aal2` session, a test proving a staff user without `aal2` gets no staff powers, and a documented lost-authenticator recovery path — done 2026-10-12, PR #9
 
 **Epic 0.4 — CI/CD and environments**
 - [x] Feature: GitHub Actions workflow running lint + tests on every PR — done 2026-10-12, PR #10
 - [x] Feature: branch protection on `main` requiring the checks above to pass (and, from Phase 3 on, requiring human approval — see Review policy) — done 2026-10-12, PR #11 (approval requirement to be raised to 1 at the start of Phase 3)
-- [ ] Feature: Supabase GitHub integration enabled so every PR gets its own preview database branch, not just a preview frontend
+- [ ] Feature: Supabase GitHub integration enabled so every PR gets its own preview database branch, not just a preview frontend — ⏸ deferred by the owner on 2026-10-12: needs the Supabase Pro plan; the prototype runs on the free plan. Meanwhile each PR is tested against a throwaway local Supabase stack in CI.
 - [x] Feature: a basic test framework in place (e.g. Vitest) with one real test, so later features have a pattern to follow rather than inventing one each time — done 2026-10-12, PR #12
 
 **Epic 0.5 — Config and secrets**
 - [x] Feature: `.env.example` documenting every required environment variable (without real values), kept up to date as new integrations are added — done 2026-10-12, PR #13 (kept in sync by a test)
 - [x] Feature: a short README section on how to get a local dev environment running against a Supabase preview branch — done 2026-10-12, PR #14 (written for the local Docker Supabase stack, since preview branches are deferred with the free plan; update when Branching is enabled)
-- [ ] Feature: a README admin runbook for the things the app deliberately cannot do: creating the first staff account, promoting or demoting a role, offboarding a staff member (remove the role, disable the login, never delete), and resetting a staff member's lost 2FA factor (see Decisions #1, #2, #4)
+- [x] Feature: a README admin runbook for the things the app deliberately cannot do: creating the first staff account, promoting or demoting a role, offboarding a staff member (remove the role, disable the login, never delete), and resetting a staff member's lost 2FA factor (see Decisions #1, #2, #4) — done 2026-10-12, PR #15
 
 ### Phase 1 — Curation workbench (against mock data)
 **Epic 1.1 — Mock candidate data**
@@ -183,7 +183,7 @@ From this phase on, every PR requires human review before merge (see Review poli
 
 **Epic 4.1 — Checkout handoff**
 *Scope note: this is a checkout UI that calls RateHawk's API to place a reservation — not a rebuild of a booking engine. RateHawk remains responsible for rates, inventory, and hotel contracts. Working assumption (see Open Items): GAYNAV collects payment itself via Stripe, matching the current site's pattern, rather than redirecting into a RateHawk-hosted checkout.*
-- [ ] Feature: GAYNAV-built checkout form, using the confirmed prebook result from Epic 3.3
+- [ ] Feature: GAYNAV-built checkout form, using the confirmed prebook result from Epic 3.3. Browsing (search, property pages) never requires an account; sign-in or account creation is asked only when the traveler starts a booking, and they return straight to that booking afterwards (owner decision 2026-10-12)
 - [ ] Feature: Stripe integration (Stripe Elements or Checkout) to collect the traveler's payment — GAYNAV never handles raw card data directly, Stripe does, but the checkout experience itself is GAYNAV's own
 - [ ] Feature: the actual async booking sequence implemented as RateHawk specifies it — call `booking/form`, then `booking/finish`, then poll `booking/finish/status` (or use the booking-status webhook instead of polling — pick one, see Epic 4.2) — with the specific retry rules RateHawk documents (e.g. up to 10 retries on a 5xx/timeout before treating the booking as failed)
 - [ ] Feature: sequencing logic between the Stripe charge and the RateHawk booking call — decide and implement which happens first, and how to handle the failure case where one succeeds and the other doesn't (e.g. payment captured but RateHawk booking fails — this needs a defined refund path, not an unhandled edge case)

@@ -90,3 +90,58 @@ Configured in GitHub (Settings → Branches), not in code:
 - Both CI jobs (`Lint, typecheck, build` and `Database tests (RLS)`) must pass, on a branch that is up to date with `main`.
 - The rules apply to admins too.
 - **Phases 0–2:** no human approval required per PR (one review per phase, see `CLAUDE.md`). **From Phase 3:** raise "required approvals" to 1 before the first Phase 3 PR.
+
+## Admin runbook
+
+Some things the app deliberately **cannot** do (CLAUDE.md, Decisions #1, #2, #4): change roles, remove a second factor, disable a login. A human admin does them in the **Supabase dashboard → SQL editor** for the hosted project. The SQL editor connects as the database owner; the app, its server code and its users can't run any of this.
+
+Every tool below requires a **reason**, and records who ran it and when in an append-only log.
+
+### Create the first staff account (or any new staff member)
+
+1. The person signs up at https://gaynav.vercel.app/login and confirms their email.
+2. In the SQL editor:
+   ```sql
+   select * from admin.set_user_role('person@example.com', 'staff', 'Hired as curator');
+   ```
+3. The person signs in and opens `/staff`. They are made to set up an authenticator app before getting any staff access.
+
+### Change someone's role
+
+Same function, any role: `traveler`, `partner` or `staff`.
+
+```sql
+select * from admin.set_user_role('host@example.com', 'partner', 'Signed partner agreement');
+```
+
+### Offboard a staff member
+
+Never delete the account. Approval records must keep pointing at a real person, and the database refuses to delete a staff account that approved hotels. Instead:
+
+```sql
+-- 1. Remove staff rights (takes effect on their very next request)
+select * from admin.set_user_role('person@example.com', 'traveler', 'Left the team');
+-- 2. Sign them out everywhere and remove their authenticator
+select * from admin.reset_user_mfa('person@example.com', 'Offboarding');
+-- 3. Block future sign-ins. Use a far-future date: 'infinity' breaks Supabase Auth.
+update auth.users set banned_until = '2999-12-31' where email = 'person@example.com';
+```
+
+To undo step 3 later: `update auth.users set banned_until = null where email = '…';`
+
+### Staff member lost their authenticator app
+
+There is no self-service bypass. Before resetting, confirm it is really them through a channel an attacker can't control: a video call, or calling a phone number you already had. Then:
+
+```sql
+select * from admin.reset_user_mfa('person@example.com', 'Lost phone; identity confirmed by video call');
+```
+
+This removes their authenticator and signs them out on every device. At their next sign-in they set up a new one.
+
+### History
+
+```sql
+select * from admin.role_changes order by changed_at desc;
+select * from admin.mfa_resets   order by reset_at   desc;
+```
