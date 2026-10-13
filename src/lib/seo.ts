@@ -97,3 +97,37 @@ export function searchMetadata(cityName: string | undefined): Metadata {
     openGraph: { type: "website", siteName: "GAYNAV", title, description, url: "/search" },
   };
 }
+
+/** Paths of the public pages search engines should find. Never staff pages. */
+export const PUBLIC_PAGES = ["/", "/how-we-vet", "/about", "/search"] as const;
+
+/** Areas search engines must not crawl (robots.txt). */
+export const PRIVATE_PATHS = ["/staff", "/account", "/login", "/auth"] as const;
+
+/**
+ * The sitemap: public pages, every city page, and the approved hotels it is
+ * given — the caller passes only hotels a visitor may see.
+ */
+export function sitemapEntries(
+  base: URL,
+  approvedHids: number[],
+): { url: string; changeFrequency: "daily" | "weekly"; priority: number }[] {
+  const at = (path: string) => new URL(path, base).href;
+  return [
+    ...PUBLIC_PAGES.map((p) => ({
+      url: at(p),
+      changeFrequency: "weekly" as const,
+      priority: p === "/" ? 1 : 0.5,
+    })),
+    ...CITIES.map((c) => ({
+      url: at(`/cities/${c.slug}`),
+      changeFrequency: "daily" as const,
+      priority: 0.8,
+    })),
+    ...approvedHids.map((hid) => ({
+      url: at(`/hotels/${hid}`),
+      changeFrequency: "daily" as const,
+      priority: 0.7,
+    })),
+  ];
+}
