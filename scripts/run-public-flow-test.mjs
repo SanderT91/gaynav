@@ -3,12 +3,17 @@
 // anonymous visitor's journey over HTTP. Reads connection details from
 // `supabase status`, so no keys are stored anywhere.
 //
-// The build goes to .next/public-flow, so your normal build is untouched.
+// The build goes to .next/public-flow, so your normal build is untouched,
+// and is deleted afterwards: its generated route types are picked up by
+// tsconfig.json and would break `npm run typecheck` after a branch switch.
 //
 //   npm run test:public-flow
 import { execSync, spawn, spawnSync } from "node:child_process";
+import { rmSync } from "node:fs";
 
 const PORT = 3100;
+const DIST_DIR = ".next/public-flow";
+const cleanUp = () => rmSync(DIST_DIR, { recursive: true, force: true });
 const shell = process.platform === "win32";
 
 let status;
@@ -27,14 +32,18 @@ try {
 const publishableKey = status.PUBLISHABLE_KEY ?? status.ANON_KEY;
 const env = {
   ...process.env,
-  GAYNAV_DIST_DIR: ".next/public-flow",
+  GAYNAV_DIST_DIR: DIST_DIR,
   NEXT_PUBLIC_SUPABASE_URL: status.API_URL,
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: publishableKey,
 };
 
+cleanUp();
 console.log("Building the app against the local database…");
 const build = spawnSync("npx", ["next", "build"], { stdio: "inherit", shell, env });
-if (build.status !== 0) process.exit(build.status ?? 1);
+if (build.status !== 0) {
+  cleanUp();
+  process.exit(build.status ?? 1);
+}
 
 const server = spawn("npx", ["next", "start", "-p", String(PORT)], {
   stdio: ["ignore", "inherit", "inherit"],
@@ -44,6 +53,7 @@ const server = spawn("npx", ["next", "start", "-p", String(PORT)], {
 const stop = () => {
   if (shell) spawnSync("taskkill", ["/pid", String(server.pid), "/t", "/f"], { stdio: "ignore" });
   else server.kill();
+  cleanUp();
 };
 
 const base = `http://localhost:${PORT}`;
