@@ -1,4 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
+import { CITIES } from "@/lib/cities";
 import {
   APPROVED,
   NEVER_APPROVED,
@@ -127,10 +128,13 @@ describe("public flow with no session", () => {
     expect(res.body).toMatch(/<meta name="robots" content="noindex"/);
   });
 
-  it("the home page loads anonymously", async () => {
+  it("the home page loads anonymously, with the search box and a card per city", async () => {
     const res = await get("/");
     expect(res.status).toBe(200);
     expect(res.location).toBeNull();
+    expect(res.body).toContain('action="/search"');
+    for (const city of CITIES) expect(res.body).toContain(`href="/cities/${city.slug}"`);
+    expectNoStaffData(res.body);
   });
 
   it("About, Privacy and Terms load anonymously; unfinished legal text is flagged", async () => {
