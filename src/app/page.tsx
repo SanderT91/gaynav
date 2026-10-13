@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
@@ -20,6 +21,15 @@ export default function Home() {
   return (
     <main>
       <section aria-labelledby="hero" className={styles.hero}>
+        {/* Hero photo from the old gaynav.com — rights not yet confirmed (see cities.ts). */}
+        <Image
+          src="/brand/hero.avif"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className={styles.heroPhoto}
+        />
         <div className={styles.heroInner}>
           <h1 id="hero" className={styles.heroTitle}>
             Travel where you&apos;re welcome
@@ -48,7 +58,14 @@ export default function Home() {
             <li key={city.slug}>
               <Link href={`/cities/${city.slug}`} className={styles.cityCard}>
                 <span className={styles.cityImage} aria-hidden="true">
-                  {city.name}
+                  <Image
+                    src={city.photo}
+                    alt=""
+                    fill
+                    sizes="(max-width: 40rem) 100vw, 24rem"
+                    className={styles.cityPhoto}
+                  />
+                  <span className={styles.cityName}>{city.name}</span>
                 </span>
                 <span className={styles.cityMeta}>
                   <span>
