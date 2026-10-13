@@ -108,6 +108,20 @@ describe("public flow with no session", () => {
     expect(res.location).toBeNull();
   });
 
+  it("About, Privacy and Terms load anonymously; unfinished legal text is flagged", async () => {
+    const about = await get("/about");
+    expect(about.status).toBe(200);
+    expect(about.body).toContain("About GAYNAV");
+    for (const path of ["/privacy", "/terms"]) {
+      const res = await get(path);
+      expect(res.status).toBe(200);
+      expect(res.location).toBeNull();
+      expect(res.body).toContain("Placeholder — not final legal text");
+      // Not indexed until the final text is in place.
+      expect(res.body).toMatch(/<meta name="robots" content="noindex"/);
+    }
+  });
+
   it("staff pages still send an anonymous visitor to sign in (and show nothing)", async () => {
     const res = await get("/staff/candidates");
     expect([302, 303, 307, 308]).toContain(res.status);
