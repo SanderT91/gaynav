@@ -72,13 +72,22 @@ GAYNAV is an LGBTQ+ travel platform being rebuilt from scratch, replacing an old
 
 ## Design direction
 
-Follow the visual direction of the existing gaynav.com site where reasonably possible — colors, typography, general tone — so the rebuilt product doesn't feel disconnected from the brand. This is a soft guideline, not a blocker: in the early phases below, prioritize working functionality over pixel-perfect styling. Styling and polish get their own pass later (Phase 5).
+Follow the visual direction of the existing gaynav.com site where reasonably possible — colors, typography, general tone — so the rebuilt product doesn't feel disconnected from the brand. This is a soft guideline, not a blocker: prioritize working functionality over pixel-perfect styling. A light design round happens right after the public pages exist (Epic 2.6, so the owner can see a branded demo); final polish and the mobile check stay in Phase 5.
+
+**Brand tokens read from the live gaynav.com on 2026-10-12** (use these; don't guess):
+- Font: **Lexend Deca** (Google Fonts, variable weight 100–900). Headings are light (weight 300) on the hero; body is regular.
+- Primary pink scale: 900 `#58032c`, 800 `#7d073f`, 700 `#a70a55`, 600 `#c60a66`, **500 `#e40d75` (main brand color, primary buttons)**, 400 `#f04395`, 300 `#f882b7`, 200 `#fcc2db`, 100 `#fde8f1`.
+- Page background white `#fff`, text `#171717`.
+- Shapes: primary buttons are `#e40d75` with white text; header/login buttons use an 8px radius, hero and call-to-action buttons are fully rounded (pill). Secondary buttons on photos are translucent white/black with a pill shape.
+- Look and feel: full-width photo hero with a light-weight white headline, rounded cards, lots of white space.
+- Logo: `https://gaynav.com/logo/gaynav-gn.png` (small mark) and the favicon at `https://gaynav.com/icon.png`. Ask the owner for the full-resolution logo files (SVG preferred) before launch; use these as placeholders until then.
+- Put these in one place (CSS variables / Tailwind theme), never as scattered hex values.
 
 ## Open items — needed before certain phases can proceed
 
 - **RateHawk API credentials.** Not yet available at the start of this build. Phases 0–2 should be built against a realistic dummy/mock dataset that mirrors RateHawk's expected response shape (property ID, name, location, photos, amenities, live rate/availability). Phase 3 swaps the mock data source for the real RateHawk client once credentials exist — the whitelist-filtering and UI logic should not need to change, only the data-fetching layer.
 - **Supabase project + Vercel project**, connected to this GitHub repo, with the GitHub integration enabled on both so PRs get preview environments automatically.
-- **Brand assets** (logo, exact color values, fonts) if pixel-accurate brand matching becomes a priority — not required to start.
+- **Brand assets.** Colors and font are already captured from the live gaynav.com (see Design direction). Still needed from the owner: the full-resolution logo (SVG preferred) and any brand guidelines; not blocking Epic 2.6.
 - **A decision on RateHawk account ownership** (GAYNAV's own API key vs. routed through GP Solutions) — does not block starting the build against mock data, but blocks Phase 3.
 - **Confirmation of the RateHawk contract/payment type (verify before Phase 4, but working assumption is set).** GAYNAV requires B2B (for full catalogue control), which uses `payment_type: deposit` — GAYNAV collects payment from the traveler (via Stripe) and RateHawk deducts the net cost from a pre-funded deposit/credit balance. The current my.gaynav.com site already works this way, which supports this being the correct model — but that setup (Stripe account, RateHawk deposit/credit relationship) belongs to GP Solutions, not GAYNAV. None of it carries over automatically: GAYNAV needs its own Stripe account and its own funded deposit/credit line with RateHawk, set up from scratch as part of Phase 3/4, not inherited or reused from the current platform. Still get the payment model in writing from RateHawk during contracting/certification, but Epic 4.1 can be built against this assumption rather than waiting.
 - **IP whitelisting.** RateHawk requires the production server's IP address(es) to be whitelisted before the API will respond. Get this sorted early in Phase 3, not discovered as a blocker mid-build.
@@ -163,6 +172,13 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [ ] Feature: city page per launch city showing only approved properties for that city, server-rendered with its own metadata (SEO)
 - [ ] Feature: About, Privacy and Terms pages (placeholder text where legal copy isn't final, flagged clearly). The Insiders news feed is NOT part of the MVP (see `FEATURE_BACKLOG.md`)
 
+**Epic 2.6 — Light design round (owner demo)**
+*Goal: the owner can open the preview and see something that feels like GAYNAV, not a bare prototype. Uses the brand tokens in "Design direction". Not a full polish pass — that stays in Phase 5.*
+- [ ] Feature: design tokens (Lexend Deca, the pink scale, radii, spacing) in a single theme file, plus a shared header (logo, nav, login) and footer used by every public page
+- [ ] Feature: style the homepage with a photo hero, the search box and the six city cards in the gaynav.com look
+- [ ] Feature: style the search results page, hotel cards and the property detail page; responsive down to phone width (basic layout only — the full mobile check stays in Phase 5)
+- [ ] Feature: style the trust page, the sign-in/sign-up pages and the staff workbench lightly (consistent fonts and colors, no redesign)
+
 **Deferred, deliberately out of MVP scope:** favoriting/saved properties, multi-language UI, personalized recommendations. Not forgotten — reviewed and postponed past MVP.
 
 ### Phase 3 — Real RateHawk integration
@@ -217,7 +233,7 @@ From this phase on, every PR requires human review before merge (see Review poli
 - [ ] Feature: audit-log and staff permission layer review
 
 **Epic 5.2 — Design pass**
-- [ ] Feature: bring the UI in line with the gaynav.com brand direction (colors, typography, tone)
+- [ ] Feature: final polish of the gaynav.com brand direction across all pages (the main look is done in Epic 2.6): final logo files, imagery, microcopy and tone, booking and account pages
 - [ ] Feature: mobile responsiveness check across search, detail, and booking pages — most travel searches happen on a phone, this is not optional polish
 
 **Epic 5.3 — Launch readiness**
