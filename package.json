@@ -16,7 +16,8 @@
     "db:test": "supabase db reset && supabase test db",
     "db:check-exposure": "node scripts/check-api-exposure.mjs",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:integration": "node scripts/run-integration-tests.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.133.0",
