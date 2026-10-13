@@ -3,7 +3,7 @@
 -- the database checks the rules and adds the hotel to the whitelist.
 -- Run with: npm run db:test
 begin;
-select plan(47);
+select plan(50);
 
 create schema tests;
 create function tests.login_as(uid uuid, aal text default 'aal2')
@@ -151,6 +151,10 @@ select results_eq(
 select tests.login_as('eeeeeeee-0000-0000-0000-00000000000d');
 select throws_ok($$ insert into public.vetting_decisions (hid, decision) values (100, 'reinstated') $$,
   '23514', 'Only a suspended hotel can be reactivated', 'an approved hotel cannot be reactivated');
+select throws_ok($$ insert into public.vetting_decisions (hid, decision) values (100, 'suspended') $$,
+  '23514', 'Suspending or reactivating requires a reason', 'suspending without a reason is refused');
+select throws_ok($$ insert into public.vetting_decisions (hid, decision, note) values (100, 'suspended', '   ') $$,
+  '23514', 'Suspending or reactivating requires a reason', 'a blank reason does not count');
 select lives_ok($$ insert into public.vetting_decisions (hid, decision, note) values (100, 'suspended', 'Guest complaint under review') $$,
   'suspend with a reason');
 select throws_ok($$ insert into public.vetting_decisions (hid, decision) values (100, 'suspended') $$,
@@ -158,6 +162,8 @@ select throws_ok($$ insert into public.vetting_decisions (hid, decision) values 
 select throws_ok($$ insert into public.vetting_decisions (hid, decision, public_summary) values (100, 'reinstated', 'x') $$,
   '23514', 'Suspending or reactivating has no public summary or concerns acknowledgement',
   'reactivating cannot change the public summary');
+select throws_ok($$ insert into public.vetting_decisions (hid, decision) values (100, 'reinstated') $$,
+  '23514', 'Suspending or reactivating requires a reason', 'reactivating without a reason is refused');
 select lives_ok($$ insert into public.vetting_decisions (hid, decision, note) values (100, 'reinstated', 'Complaint resolved') $$,
   'reactivate with a reason');
 select throws_ok($$ insert into public.vetting_decisions (hid, decision) values (999, 'suspended') $$,

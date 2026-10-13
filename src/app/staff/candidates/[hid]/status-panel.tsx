@@ -3,8 +3,8 @@
 import { useActionState } from "react";
 import { reactivateAction, suspendAction, type DecisionState } from "./actions";
 
-// Suspend an approved hotel, or reactivate a suspended one. Reason optional,
-// logged either way.
+// Suspend an approved hotel, or reactivate a suspended one. Reason required
+// (the database enforces it too), logged either way.
 export function StatusPanel({ hid, status }: { hid: string; status: "approved" | "suspended" }) {
   const isApproved = status === "approved";
   const [state, action, pending] = useActionState<DecisionState, FormData>(
@@ -19,8 +19,8 @@ export function StatusPanel({ hid, status }: { hid: string; status: "approved" |
           : "This hotel is suspended and hidden from travellers."}
       </p>
       <input type="hidden" name="hid" value={hid} />
-      <label htmlFor="status-note">Reason (optional, staff only)</label>
-      <textarea id="status-note" name="note" rows={2} maxLength={2000} />
+      <label htmlFor="status-note">Reason (required, staff only)</label>
+      <textarea id="status-note" name="note" rows={2} maxLength={2000} required />
       <button type="submit" disabled={pending}>
         {pending ? "Saving…" : isApproved ? "Suspend" : "Reactivate"}
       </button>

@@ -44,6 +44,7 @@ const RULE_MESSAGES = [
   "Approving without an evidence pack requires a note",
   "The evidence pack has concerns: confirm you reviewed them",
   "The evidence pack has concerns: explain why the hotel is still approved",
+  "Suspending or reactivating requires a reason",
 ];
 
 export function decisionErrorMessage(error: { code?: string; message: string }): string {

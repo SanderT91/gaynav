@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 2 — Public search and listing pages (against mock data). Phase 1 complete and reviewed by the owner 2026-10-12.
 - **Last updated:** 2026-10-13
-- **Next up:** Epic 1.3 — suspend/reactivate with a required reason (built in PR #24, but the reason was optional). Phase 2 build order (owner left it to Claude, 2026-10-12): finish 2.1 → 2.2 detail page → 2.5 homepage & city pages → 2.6 light design round → 2.3 SEO → 2.4 trust page.
+- **Next up:** Epic 2.2 — property detail page. Phase 2 build order (owner left it to Claude, 2026-10-12): finish 2.1 → 2.2 detail page → 2.5 homepage & city pages → 2.6 light design round → 2.3 SEO → 2.4 trust page.
 
 ## Session protocol
 
@@ -143,7 +143,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [x] Feature: staff-only candidate list view (behind 2FA) — done 2026-10-12, PR #22
 - [x] Feature: candidate detail view showing the evidence-pack summary — done 2026-10-12, PR #23
 - [x] Feature: approve / reject actions, writing approved candidates into `approved_properties`. On approval, staff also write the short public vetting summary (a separate field from the AI evidence pack, see Decisions #6) — done 2026-10-12, PR #24. Owner rules (2026-10-12): rejection reason optional; approving without an evidence pack needs a staff note; approving when the pack lists concerns needs an explicit acknowledgement and a note; a rejected hotel can be re-reviewed any time. All enforced in the database.
-- [ ] Feature: suspend and reactivate actions for an approved hotel (never delete, see Decisions #3), each with a required reason
+- [x] Feature: suspend and reactivate actions for an approved hotel (never delete, see Decisions #3), each with a required reason — done 2026-10-13, PR #33 (actions built in PR #24; the reason is now required in the form, the server action and the database)
 
 **Epic 1.4 — Audit logging**
 - [x] Feature: every staff approve, reject, suspend and reactivate action logged with who, what, when, and the reason. The audit log table is append-only (no app role can update or delete rows) and readable by `aal2` staff only — done 2026-10-12, PR #24 (`vetting_decisions`; every decision is a logged row, the database then changes the whitelist; admin-SQL status changes are logged too)

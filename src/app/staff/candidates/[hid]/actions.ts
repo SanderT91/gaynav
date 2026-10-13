@@ -129,11 +129,14 @@ async function recordStatusDecision(
   const candidate = findCandidate(text(formData, "hid"));
   if (!candidate) return { error: "This candidate doesn't exist." };
 
+  const note = text(formData, "note");
+  if (!note) return { error: "Give a reason. It is kept in the staff-only audit log." };
+
   const supabase = await createClient();
   const { error } = await supabase.from("vetting_decisions").insert({
     hid: candidate.hotel.hid,
     decision,
-    note: text(formData, "note") || null,
+    note,
   });
   if (error) return { error: decisionErrorMessage(error) };
 
