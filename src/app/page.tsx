@@ -18,12 +18,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main style={{ padding: "3rem 1.5rem", maxWidth: "56rem", margin: "0 auto" }}>
-      <p style={{ display: "flex", justifyContent: "space-between" }}>
-        <strong>GAYNAV</strong>
-        <Link href="/login">Sign in</Link>
-      </p>
-
-      <section aria-labelledby="hero" style={{ marginTop: "2.5rem" }}>
+      <section aria-labelledby="hero">
         <h1 id="hero">Travel where you&apos;re welcome</h1>
         <p style={{ marginTop: "0.75rem", fontSize: "1.1rem" }}>
           Every hotel on GAYNAV is reviewed by a person on our team and approved as safe and
