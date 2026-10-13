@@ -21,10 +21,7 @@ export const metadata: Metadata = {
 export default function SearchPage({ searchParams }: PageProps<"/search">) {
   return (
     <main style={{ padding: "3rem 1.5rem", maxWidth: "56rem", margin: "0 auto" }}>
-      <p>
-        <Link href="/">GAYNAV</Link>
-      </p>
-      <h1 style={{ marginTop: "0.5rem" }}>Find a hotel</h1>
+      <h1>Find a hotel</h1>
       <Suspense fallback={<p style={{ marginTop: "1rem" }}>Searching…</p>}>
         <SearchBody searchParams={searchParams} />
       </Suspense>

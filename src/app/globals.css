@@ -1,17 +1,19 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * Base styles. Every value comes from the tokens in theme.css; this file
+ * only says how plain elements and the shared header/footer look.
+ */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 html {
   height: 100%;
+  color-scheme: light;
 }
 
 html,
@@ -24,26 +26,218 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-text);
+  background: var(--color-bg);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-regular);
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+body > main {
+  flex: 1;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: var(--weight-medium);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
 }
 
 a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--color-primary);
+}
+
+img {
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 3px solid var(--pink-300);
+  outline-offset: 2px;
+}
+
+.muted {
+  color: var(--color-muted);
+}
+
+/* ── Form controls ─────────────────────────────────────────────────────── */
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
   color: inherit;
+}
+
+input,
+select,
+textarea {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  min-height: 2.75rem;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--pink-400);
+}
+
+/* Primary button: brand pink, white text, 8px radius. `.button--pill` for
+   hero and call-to-action buttons. */
+button,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-5);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button:hover,
+.button:hover {
+  background: var(--color-primary-hover);
+  color: var(--color-on-primary);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.button--pill {
+  border-radius: var(--radius-pill);
+}
+
+.button--small {
+  min-height: 2.25rem;
+  padding: var(--space-1) var(--space-4);
+}
+
+/* ── Shared header ─────────────────────────────────────────────────────── */
+
+.site-header {
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.site-header__inner,
+.site-footer__inner {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: var(--space-4) var(--page-gutter);
+}
+
+.site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.wordmark {
+  color: var(--color-primary);
+  font-size: 1.4rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.04em;
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+.wordmark:hover {
+  color: var(--color-primary-hover);
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
+}
+
+.site-nav a:not(.button) {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.site-nav a:not(.button):hover {
+  color: var(--color-primary);
+}
+
+/* ── Shared footer ─────────────────────────────────────────────────────── */
+
+.site-footer {
+  margin-top: var(--space-8);
+  background: var(--pink-100);
+}
+
+.site-footer__inner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--space-6);
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-7);
+}
+
+.wordmark--footer {
+  margin-bottom: var(--space-2);
+}
+
+.site-footer__heading {
+  font-size: 0.95rem;
+  margin-bottom: var(--space-2);
+}
+
+.site-footer ul {
+  list-style: none;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.site-footer a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* Phones: keep the header compact (full mobile pass is Phase 5). */
+@media (max-width: 40rem) {
+  .site-header__inner {
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-3);
+  }
+
+  .site-nav {
+    gap: var(--space-1) var(--space-4);
+    font-size: 0.95rem;
   }
 }

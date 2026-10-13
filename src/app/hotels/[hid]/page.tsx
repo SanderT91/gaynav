@@ -63,9 +63,9 @@ async function HotelBody({
   return (
     <article>
       <p>
-        <Link href="/">GAYNAV</Link> / <Link href={backToSearch}>Hotels in {hotel.city}</Link>
+        <Link href={backToSearch}>Hotels in {hotel.city}</Link>
       </p>
-      <h1 style={{ marginTop: "0.5rem" }}>{hotel.name}</h1>
+      <h1>{hotel.name}</h1>
       <p>
         {hotel.city}, {hotel.countryCode} · {hotel.kind}
         {hotel.stars > 0 && ` · ${hotel.stars}★`}
