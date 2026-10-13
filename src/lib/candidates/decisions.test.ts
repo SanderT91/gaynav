@@ -56,6 +56,12 @@ describe("decisionErrorMessage", () => {
         message: "Approving without an evidence pack requires a note",
       }),
     ).toBe("Approving without an evidence pack requires a note.");
+    expect(
+      decisionErrorMessage({
+        code: "23514",
+        message: "Suspending or reactivating requires a reason",
+      }),
+    ).toBe("Suspending or reactivating requires a reason.");
   });
 
   it("hides any other check failure's raw text", () => {

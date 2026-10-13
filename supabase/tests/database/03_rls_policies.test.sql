@@ -247,7 +247,7 @@ select throws_ok($$ update public.approved_properties set status = 'suspended' w
   'staff with 2FA: cannot change the status directly (it must be a logged decision)');
 select lives_ok($$ insert into public.vetting_decisions (hid, decision, note) values (5001, 'suspended', 'Complaint under review') $$,
   'staff with 2FA: can suspend a property by recording the decision');
-select lives_ok($$ insert into public.vetting_decisions (hid, decision) values (5002, 'reinstated') $$,
+select lives_ok($$ insert into public.vetting_decisions (hid, decision, note) values (5002, 'reinstated', 'Complaint resolved') $$,
   'staff with 2FA: can reactivate a property by recording the decision');
 select throws_ok($$ update public.approved_properties set hid = 9999 where hid = 5001 $$, '42501', null,
   'staff with 2FA: cannot change a property''s hid');
