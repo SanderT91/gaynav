@@ -1,9 +1,17 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { beforeAll, describe, expect, it } from "vitest";
 import { mockSearchRates } from "@/lib/rates/mock-search";
 import { mockHotelContent } from "@/mock/ratehawk";
+import {
+  APPROVED,
+  NEVER_APPROVED,
+  setUpWhitelist,
+  SUSPENDED,
+  testClients,
+  whitelistStatus,
+} from "@/test/whitelist-fixture";
 import { searchApproved } from "./search";
-import { fetchPublicWhitelist } from "./whitelist";
+import { fetchPublicApproval, fetchPublicWhitelist } from "./whitelist";
 
 // Epic 2.1 — SERVER-SIDE ENFORCEMENT: an unapproved or suspended hotel can
 // never appear in public search results.
@@ -12,75 +20,14 @@ import { fetchPublicWhitelist } from "./whitelist";
 // one in CI) through the exact query and search logic the public site uses.
 // Run with: npm run test:integration (needs `npm run db:start`).
 
-const url = process.env.SUPABASE_TEST_URL;
-const publishableKey = process.env.SUPABASE_TEST_PUBLISHABLE_KEY;
-const secretKey = process.env.SUPABASE_TEST_SECRET_KEY;
-
-const APPROVED = 9990000006; // Casa Trastevere, Rome
-const SUSPENDED = 9990000007; // Sumida Garden Hotel, Tokyo
-const NEVER_APPROVED = 9990000012; // Sathorn Garden Rooms, Bangkok
-const STAFF_EMAIL = "whitelist-test-staff@gaynav.test";
-
-const options = { auth: { persistSession: false, autoRefreshToken: false } };
 let admin: SupabaseClient; // service role: bypasses RLS, reads everything
 let anon: SupabaseClient; // an anonymous visitor
 
-async function staffId(): Promise<string> {
-  const created = await admin.auth.admin.createUser({
-    email: STAFF_EMAIL,
-    password: "integration-test-only-password",
-    email_confirm: true,
-  });
-  let id = created.data.user?.id;
-  if (!id) {
-    // Already exists from an earlier local run.
-    const { data } = await admin.auth.admin.listUsers({ perPage: 1000 });
-    id = data.users.find((u) => u.email === STAFF_EMAIL)!.id;
-  }
-  await admin.from("users").update({ role: "staff" }).eq("id", id);
-  return id;
-}
-
-async function isOnWhitelist(hid: number) {
-  const { data } = await admin.from("approved_properties").select("status").eq("hid", hid);
-  return data?.[0]?.status as "approved" | "suspended" | undefined;
-}
-
-async function decide(hid: number, decision: string, decidedBy: string, extra = {}) {
-  const { error } = await admin
-    .from("vetting_decisions")
-    .insert({ hid, decision, decided_by: decidedBy, ...extra });
-  if (error) throw new Error(`${decision} ${hid}: ${error.message}`);
-}
+const isOnWhitelist = (hid: number) => whitelistStatus(admin, hid);
 
 beforeAll(async () => {
-  if (!url || !publishableKey || !secretKey) {
-    throw new Error("Run via `npm run test:integration` (needs the local Supabase stack).");
-  }
-  admin = createClient(url, secretKey, options);
-  anon = createClient(url, publishableKey, options);
-  const staff = await staffId();
-
-  // Set up the three cases. Idempotent, so it can run on a local database
-  // more than once (the whitelist is append-only by design).
-  if (!(await isOnWhitelist(APPROVED))) {
-    await decide(APPROVED, "approved", staff, {
-      note: "integration test",
-      public_summary: "Integration test: approved.",
-    });
-  }
-  if (!(await isOnWhitelist(SUSPENDED))) {
-    await decide(SUSPENDED, "approved", staff, {
-      note: "integration test",
-      public_summary: "Integration test: will be suspended.",
-    });
-  }
-  if ((await isOnWhitelist(SUSPENDED)) === "approved") {
-    await decide(SUSPENDED, "suspended", staff, { note: "integration test" });
-  }
-  expect(await isOnWhitelist(APPROVED)).toBe("approved");
-  expect(await isOnWhitelist(SUSPENDED)).toBe("suspended");
-  expect(await isOnWhitelist(NEVER_APPROVED)).toBeUndefined();
+  ({ admin, anon } = testClients());
+  await setUpWhitelist(admin);
 }, 30_000);
 
 const allCitySearch = () =>
@@ -139,5 +86,19 @@ describe("public whitelist (real database)", () => {
       .insert({ hid: NEVER_APPROVED, decision: "approved", public_summary: "x", note: "x" });
     expect(viaDecision.error?.code).toBe("42501");
     expect(await isOnWhitelist(NEVER_APPROVED)).toBeUndefined();
+  });
+});
+
+describe("public approval of one hotel (property page, real database)", () => {
+  it.each([
+    ["approved", APPROVED, true],
+    ["suspended", SUSPENDED, false],
+    ["never approved", NEVER_APPROVED, false],
+  ])("%s hotel → visible: %s", async (_label, hid, visible) => {
+    for (const reader of [anon, admin]) {
+      const result = await fetchPublicApproval(reader, hid);
+      expect(result.ok).toBe(true);
+      expect(result.ok && result.approved !== null).toBe(visible);
+    }
   });
 });

@@ -9,8 +9,8 @@ export default defineConfig({
   },
   test: {
     include: ["src/**/*.test.ts"],
-    // Integration tests need a database: npm run test:integration.
-    exclude: ["src/**/*.integration.test.ts", "node_modules/**"],
+    // These need a database: npm run test:integration / test:public-flow.
+    exclude: ["src/**/*.integration.test.ts", "src/**/*.e2e.test.ts", "node_modules/**"],
     environment: "node",
   },
 });
