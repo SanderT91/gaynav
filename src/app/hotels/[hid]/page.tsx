@@ -4,11 +4,12 @@ import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { formValues, StayForm } from "@/components/stay-form";
+import { LAUNCH_CITIES } from "@/lib/cities";
 import { dateLabel, money, todayIso } from "@/lib/format";
 import type { HotelDetail, RoomOption } from "@/lib/hotels/detail";
 import { loadPublicHotel } from "@/lib/hotels/load";
-import { LAUNCH_CITIES } from "@/lib/cities";
 import { parseSearch, type SearchParams } from "@/lib/search/params";
+import styles from "./hotel.module.css";
 
 // Per-hotel titles and Open Graph tags come with Epic 2.3 (SEO).
 export const metadata: Metadata = {
@@ -16,13 +17,14 @@ export const metadata: Metadata = {
   description: "A hotel personally vetted by GAYNAV as safe and welcoming for LGBTQ+ travellers.",
 };
 
-// Public property page (Epic 2.2). No login needed. Only approved hotels:
-// anything else — unknown, under review, suspended, closed — is a plain 404.
-// Prices appear once dates and guests are chosen; booking comes in Phase 4.
+// Public property page (Epic 2.2, styled in 2.6). No login needed. Only
+// approved hotels: anything else — unknown, under review, suspended, closed —
+// is a plain 404. Prices appear once dates and guests are chosen; booking
+// comes in Phase 4.
 export default function HotelPage({ params, searchParams }: PageProps<"/hotels/[hid]">) {
   return (
-    <main style={{ padding: "3rem 1.5rem", maxWidth: "56rem", margin: "0 auto" }}>
-      <Suspense fallback={<p>Loading…</p>}>
+    <main className="page">
+      <Suspense fallback={<p className="panel">Loading…</p>}>
         <HotelBody params={params} searchParams={searchParams} />
       </Suspense>
     </main>
@@ -49,7 +51,9 @@ async function HotelBody({
   if (result.status === "not-found") notFound();
   if (result.status === "error") {
     return (
-      <p role="alert">We couldn&apos;t load this hotel just now. Please try again in a moment.</p>
+      <p role="alert" className="panel">
+        We couldn&apos;t load this hotel just now. Please try again in a moment.
+      </p>
     );
   }
   const hotel = result.hotel;
@@ -62,154 +66,112 @@ async function HotelBody({
 
   return (
     <article>
-      <p>
-        <Link href={backToSearch}>Hotels in {hotel.city}</Link>
+      <p className={styles.back}>
+        <Link href={backToSearch}>← Hotels in {hotel.city}</Link>
       </p>
-      <h1>{hotel.name}</h1>
-      <p>
-        {hotel.city}, {hotel.countryCode} · {hotel.kind}
-        {hotel.stars > 0 && ` · ${hotel.stars}★`}
-      </p>
-      <p style={{ fontSize: "0.9rem" }}>{hotel.address}</p>
-      <p style={{ marginTop: "0.75rem" }}>
-        <a href="#availability">Check availability</a>
+      <h1 className={styles.title}>{hotel.name}</h1>
+      <p className={styles.meta}>
+        {hotel.kind}
+        {hotel.stars > 0 && ` · ${"★".repeat(hotel.stars)}`} · {hotel.address}, {hotel.city},{" "}
+        {hotel.countryCode}
       </p>
 
       <Photos hotel={hotel} />
 
-      <section
-        aria-labelledby="why"
-        style={{
-          marginTop: "2rem",
-          padding: "1.25rem",
-          border: "1px solid #8884",
-          borderRadius: "8px",
-        }}
-      >
-        <h2 id="why" style={{ fontSize: "1.15rem" }}>
-          Why we list it
-        </h2>
-        <p style={{ marginTop: "0.5rem" }}>{hotel.vettingSummary}</p>
-        <p style={{ marginTop: "0.5rem", fontSize: "0.85rem" }}>
-          Every GAYNAV hotel is reviewed by a person on our team before it appears here.
-        </p>
-      </section>
-
-      <section aria-labelledby="availability" style={{ marginTop: "2rem" }}>
-        <h2 id="availability" style={{ fontSize: "1.15rem" }}>
-          Check availability
-        </h2>
-        <StayForm
-          action={`/hotels/${hotel.hid}`}
-          values={formValues(parsed)}
-          errors={parsed.status === "invalid" ? parsed.errors : {}}
-          today={today}
-          submitLabel="Check availability"
-        />
-        {stay ? (
-          <Rooms rooms={hotel.rooms ?? []} stay={stay} />
-        ) : (
-          parsed.status === "empty" && (
-            <p style={{ marginTop: "1rem" }}>
-              Choose your dates and number of guests to see rooms and prices.
-            </p>
-          )
-        )}
-      </section>
-
-      {hotel.description.map((section) => (
-        <section key={section.title} style={{ marginTop: "2rem" }}>
-          <h2 style={{ fontSize: "1.15rem" }}>{section.title}</h2>
-          {section.paragraphs.map((p, i) => (
-            <p key={i} style={{ marginTop: "0.5rem" }}>
-              {p}
-            </p>
-          ))}
-        </section>
-      ))}
-
-      {hotel.amenities.length > 0 && (
-        <section aria-labelledby="amenities" style={{ marginTop: "2rem" }}>
-          <h2 id="amenities" style={{ fontSize: "1.15rem" }}>
-            Amenities
-          </h2>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(14rem, 1fr))",
-              gap: "1rem",
-              marginTop: "0.5rem",
-            }}
-          >
-            {hotel.amenities.map((g) => (
-              <div key={g.group}>
-                <h3 style={{ fontSize: "1rem" }}>{g.group}</h3>
-                <ul style={{ paddingLeft: "1.25rem" }}>
-                  {g.free.map((a) => (
-                    <li key={a}>{a}</li>
-                  ))}
-                  {g.paid.map((a) => (
-                    <li key={a}>{a} (extra charge)</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      <section aria-labelledby="rules" style={{ marginTop: "2rem" }}>
-        <h2 id="rules" style={{ fontSize: "1.15rem" }}>
-          House rules
-        </h2>
-        <ul style={{ paddingLeft: "1.25rem", marginTop: "0.5rem" }}>
-          <li>Check-in from {hotel.checkIn}</li>
-          <li>Check-out until {hotel.checkOut}</li>
-          {hotel.rules.map((r) => (
-            <li key={r}>{r}</li>
-          ))}
-        </ul>
-        {hotel.extraInfo && (
-          <p style={{ marginTop: "0.5rem" }}>
-            <strong>From the hotel:</strong> {hotel.extraInfo}
+      <div className={styles.layout}>
+        <section aria-labelledby="why" className={styles.why}>
+          <h2 id="why">Why we list it</h2>
+          <p>{hotel.vettingSummary}</p>
+          <p className={styles.whyNote}>
+            Every GAYNAV hotel is reviewed by a person on our team before it appears here.
           </p>
-        )}
-      </section>
+        </section>
+
+        <section aria-labelledby="availability" className={styles.aside}>
+          <h2 id="availability">Check availability</h2>
+          <StayForm
+            action={`/hotels/${hotel.hid}`}
+            values={formValues(parsed)}
+            errors={parsed.status === "invalid" ? parsed.errors : {}}
+            today={today}
+            submitLabel="Check availability"
+          />
+          {stay ? (
+            <Rooms rooms={hotel.rooms ?? []} stay={stay} />
+          ) : (
+            parsed.status === "empty" && (
+              <p className={styles.notLive}>
+                Choose your dates and number of guests to see rooms and prices.
+              </p>
+            )
+          )}
+        </section>
+
+        <div className={styles.details}>
+          {hotel.description.map((section) => (
+            <section key={section.title}>
+              <h2>{section.title}</h2>
+              {section.paragraphs.map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+            </section>
+          ))}
+
+          {hotel.amenities.length > 0 && (
+            <section aria-labelledby="amenities">
+              <h2 id="amenities">Amenities</h2>
+              <div className={styles.amenities}>
+                {hotel.amenities.map((g) => (
+                  <div key={g.group}>
+                    <h3>{g.group}</h3>
+                    <ul>
+                      {g.free.map((a) => (
+                        <li key={a}>{a}</li>
+                      ))}
+                      {g.paid.map((a) => (
+                        <li key={a}>{a} (extra charge)</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <section aria-labelledby="rules">
+            <h2 id="rules">House rules</h2>
+            <ul className={styles.rules}>
+              <li>Check-in from {hotel.checkIn}</li>
+              <li>Check-out until {hotel.checkOut}</li>
+              {hotel.rules.map((r) => (
+                <li key={r}>{r}</li>
+              ))}
+            </ul>
+            {hotel.extraInfo && (
+              <p>
+                <strong>From the hotel:</strong> {hotel.extraInfo}
+              </p>
+            )}
+          </section>
+        </div>
+      </div>
     </article>
   );
 }
 
 function Photos({ hotel }: { hotel: HotelDetail }) {
   if (hotel.photos.length === 0) return null;
-  const [first, ...rest] = hotel.photos;
-  // Mock placeholder images; image optimisation comes with the design pass.
+  // Mock placeholder images; image optimisation comes with the real photos in Phase 3.
   /* eslint-disable @next/next/no-img-element */
   return (
-    <section aria-label="Photos" style={{ marginTop: "1.5rem" }}>
-      <img
-        src={first.url.replace("{size}", "1024x768")}
-        alt={`${hotel.name}: ${first.category}`}
-        style={{ width: "100%", height: "auto", borderRadius: "8px" }}
-      />
-      {rest.length > 0 && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(8rem, 1fr))",
-            gap: "0.5rem",
-            marginTop: "0.5rem",
-          }}
-        >
-          {rest.map((p) => (
-            <img
-              key={p.url}
-              src={p.url.replace("{size}", "320x200")}
-              alt={`${hotel.name}: ${p.category}`}
-              style={{ width: "100%", height: "auto", borderRadius: "4px" }}
-            />
-          ))}
-        </div>
-      )}
+    <section aria-label="Photos" className={styles.gallery}>
+      {hotel.photos.slice(0, 5).map((p, i) => (
+        <img
+          key={p.url}
+          src={p.url.replace("{size}", i === 0 ? "1024x768" : "640x400")}
+          alt={`${hotel.name}: ${p.category}`}
+        />
+      ))}
     </section>
   );
   /* eslint-enable @next/next/no-img-element */
@@ -222,9 +184,9 @@ function Rooms({ rooms, stay }: { rooms: RoomOption[]; stay: SearchParams }) {
 
   if (rooms.length === 0) {
     return (
-      <div role="status" style={{ marginTop: "1rem" }}>
-        <p>{summary}</p>
-        <p style={{ marginTop: "0.5rem" }}>
+      <div role="status">
+        <p className={styles.stay}>{summary}</p>
+        <p className={styles.notLive}>
           No rooms available for these dates. Try other dates, or{" "}
           <Link href="/search">look at other hotels</Link>.
         </p>
@@ -233,28 +195,22 @@ function Rooms({ rooms, stay }: { rooms: RoomOption[]; stay: SearchParams }) {
   }
 
   return (
-    <div style={{ marginTop: "1rem" }}>
-      <p>{summary}</p>
-      <ul
-        style={{
-          listStyle: "none",
-          padding: 0,
-          display: "grid",
-          gap: "0.75rem",
-          marginTop: "0.5rem",
-        }}
-      >
+    <div>
+      <p className={styles.stay}>{summary}</p>
+      <ul className={styles.rooms}>
         {rooms.map((room, i) => (
-          <li key={i} style={{ borderTop: "1px solid #8884", paddingTop: "0.75rem" }}>
-            <strong>{room.name}</strong>
-            {room.price.breakfastIncluded ? " · breakfast included" : " · room only"}
-            <br />
-            <strong>{money(room.price.total, room.price.currency)}</strong> for {room.price.nights}{" "}
-            {room.price.nights === 1 ? "night" : "nights"}
-            {room.price.excludedTaxes > 0 &&
-              ` + ${money(room.price.excludedTaxes, room.price.currency)} local tax paid at the hotel`}
-            <br />
-            <span style={{ fontSize: "0.9rem" }}>
+          <li key={i} className={styles.room}>
+            <span className={styles.roomName}>{room.name}</span>
+            <span className={styles.muted}>
+              {room.price.breakfastIncluded ? "Breakfast included" : "Room only"}
+            </span>
+            <span className={styles.roomPrice}>{money(room.price.total, room.price.currency)}</span>
+            <span className={styles.muted}>
+              {room.price.nights} {room.price.nights === 1 ? "night" : "nights"}
+              {room.price.excludedTaxes > 0 &&
+                ` + ${money(room.price.excludedTaxes, room.price.currency)} local tax paid at the hotel`}
+            </span>
+            <span className={room.price.freeCancellationBefore ? styles.good : styles.muted}>
               {room.price.freeCancellationBefore
                 ? `Free cancellation until ${dateLabel(room.price.freeCancellationBefore)}`
                 : "Non-refundable"}
@@ -262,7 +218,7 @@ function Rooms({ rooms, stay }: { rooms: RoomOption[]; stay: SearchParams }) {
           </li>
         ))}
       </ul>
-      <p style={{ marginTop: "1rem", fontSize: "0.9rem" }}>
+      <p className={styles.notLive}>
         Sample prices. Booking opens soon — for now you can&apos;t reserve a room here yet.
       </p>
     </div>
