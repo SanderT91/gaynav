@@ -10,6 +10,7 @@ export function StayForm({
   today,
   cities,
   submitLabel = "Search",
+  hidden = {},
 }: {
   action: string;
   values: Record<string, string>;
@@ -18,6 +19,8 @@ export function StayForm({
   /** Show a city picker with these cities; omit on a hotel page. */
   cities?: readonly string[];
   submitLabel?: string;
+  /** Extra fixed values sent with the form, e.g. the city on a city page. */
+  hidden?: Record<string, string>;
 }) {
   const field = { display: "grid", gap: "0.25rem" } as const;
   const error = (name: string) =>
@@ -39,6 +42,9 @@ export function StayForm({
         alignItems: "end",
       }}
     >
+      {Object.entries(hidden).map(([name, value]) => (
+        <input key={name} type="hidden" name={name} value={value} />
+      ))}
       {cities && (
         <label style={field}>
           City

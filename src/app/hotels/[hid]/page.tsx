@@ -7,7 +7,7 @@ import { formValues, StayForm } from "@/components/stay-form";
 import { dateLabel, money, todayIso } from "@/lib/format";
 import type { HotelDetail, RoomOption } from "@/lib/hotels/detail";
 import { loadPublicHotel } from "@/lib/hotels/load";
-import { LAUNCH_CITIES } from "@/lib/search/load";
+import { LAUNCH_CITIES } from "@/lib/cities";
 import { parseSearch, type SearchParams } from "@/lib/search/params";
 
 // Per-hotel titles and Open Graph tags come with Epic 2.3 (SEO).

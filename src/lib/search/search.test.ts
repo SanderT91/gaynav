@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { mockHotelContent, mockSearchResponse } from "@/mock/ratehawk";
-import { cheapestPrice, searchApproved } from "./search";
+import { approvedInCity, cheapestPrice, searchApproved } from "./search";
+import { CITIES } from "@/lib/cities";
 
 const hotels = mockHotelContent;
 const search = mockSearchResponse;
@@ -72,5 +73,34 @@ describe("cheapestPrice", () => {
 
   it("returns null when there are no rates", () => {
     expect(cheapestPrice([])).toBeNull();
+  });
+});
+
+describe("approvedInCity", () => {
+  it("lists only approved, open hotels in that city, without prices", () => {
+    const results = approvedInCity({
+      approved: approve(ROSE, LANTERN, DOCKLANDS, PETIT_PONT_CLOSED),
+      hotels,
+      city: "London",
+    });
+    expect(results.map((r) => r.hid).sort()).toEqual([DOCKLANDS, ROSE].sort());
+    expect(results.every((r) => r.price === null)).toBe(true);
+  });
+
+  it("never lists a hotel that isn't approved, even in a city full of them", () => {
+    expect(approvedInCity({ approved: [], hotels, city: "London" })).toEqual([]);
+  });
+});
+
+describe("launch cities", () => {
+  it("match the city names in the hotel data, so filters find them", () => {
+    const regions = new Set(hotels.map((h) => h.region.name));
+    for (const city of CITIES) expect(regions).toContain(city.name);
+  });
+
+  it("have unique, URL-safe slugs", () => {
+    const slugs = CITIES.map((c) => c.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+    for (const slug of slugs) expect(slug).toMatch(/^[a-z]+(-[a-z]+)*$/);
   });
 });
