@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { connection } from "next/server";
 import { Suspense } from "react";
-import { MAX_ADULTS, MAX_NIGHTS, parseSearch, type SearchParams } from "@/lib/search/params";
+import { formValues, StayForm } from "@/components/stay-form";
+import { dateLabel, money, todayIso } from "@/lib/format";
+import { parseSearch, type SearchParams } from "@/lib/search/params";
 import { LAUNCH_CITIES, loadSearch } from "@/lib/search/load";
 import { emptyState, type EmptyState } from "@/lib/search/empty-state";
 import type { SearchResult } from "@/lib/search/search";
@@ -28,48 +31,28 @@ export default function SearchPage({ searchParams }: PageProps<"/search">) {
   );
 }
 
-const todayIso = () => new Date().toISOString().slice(0, 10);
-
-const money = (amount: number, currency: string) =>
-  new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(amount);
-
-const dateLabel = (iso: string) =>
-  new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-
 async function SearchBody({
   searchParams,
 }: {
   searchParams: PageProps<"/search">["searchParams"];
 }) {
   const raw = await searchParams;
+  await connection(); // "today" is per request, never prerendered
   const today = todayIso();
   const parsed = parseSearch(raw, today, LAUNCH_CITIES);
 
-  const values =
-    parsed.status === "invalid"
-      ? parsed.values
-      : parsed.status === "ok"
-        ? {
-            city: parsed.params.city ?? "",
-            checkin: parsed.params.checkin,
-            checkout: parsed.params.checkout,
-            adults: String(parsed.params.adults),
-          }
-        : {
-            city: typeof raw.city === "string" ? raw.city : "",
-            checkin: "",
-            checkout: "",
-            adults: "2",
-          };
+  const values = formValues(parsed, typeof raw.city === "string" ? raw.city : "");
   const errors = parsed.status === "invalid" ? parsed.errors : {};
 
   return (
     <>
-      <SearchForm values={values} errors={errors} today={today} />
+      <StayForm
+        action="/search"
+        values={values}
+        errors={errors}
+        today={today}
+        cities={LAUNCH_CITIES}
+      />
       {parsed.status === "empty" && (
         <p style={{ marginTop: "1.5rem" }}>
           Choose your dates and number of guests to see hotels and prices.
@@ -77,97 +60,6 @@ async function SearchBody({
       )}
       {parsed.status === "ok" && <Results params={parsed.params} today={today} />}
     </>
-  );
-}
-
-function SearchForm({
-  values,
-  errors,
-  today,
-}: {
-  values: Record<string, string>;
-  errors: Partial<Record<string, string>>;
-  today: string;
-}) {
-  const field = { display: "grid", gap: "0.25rem" } as const;
-  const error = (name: string) =>
-    errors[name] ? (
-      <span id={`${name}-error`} role="alert" style={{ color: "#b42318", fontSize: "0.9rem" }}>
-        {errors[name]}
-      </span>
-    ) : null;
-
-  // A plain GET form: works without JavaScript, and the URL is shareable.
-  return (
-    <form
-      action="/search"
-      method="get"
-      style={{
-        marginTop: "1rem",
-        display: "flex",
-        flexWrap: "wrap",
-        gap: "1rem",
-        alignItems: "end",
-      }}
-    >
-      <label style={field}>
-        City
-        <select name="city" defaultValue={values.city} aria-describedby="city-error">
-          <option value="">All cities</option>
-          {LAUNCH_CITIES.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
-        {error("city")}
-      </label>
-      <label style={field}>
-        Check-in
-        <input
-          type="date"
-          name="checkin"
-          required
-          min={today}
-          defaultValue={values.checkin}
-          aria-describedby="checkin-error"
-        />
-        {error("checkin")}
-      </label>
-      <label style={field}>
-        Check-out
-        <input
-          type="date"
-          name="checkout"
-          required
-          min={today}
-          defaultValue={values.checkout}
-          aria-describedby="checkout-error"
-        />
-        {error("checkout")}
-      </label>
-      <label style={field}>
-        Guests
-        <select
-          name="adults"
-          required
-          defaultValue={values.adults || "2"}
-          aria-describedby="adults-error"
-        >
-          {Array.from({ length: MAX_ADULTS }, (_, i) => i + 1).map((n) => (
-            <option key={n} value={n}>
-              {n} {n === 1 ? "adult" : "adults"}
-            </option>
-          ))}
-        </select>
-        {error("adults")}
-      </label>
-      <button type="submit">Search</button>
-      <p style={{ flexBasis: "100%", fontSize: "0.85rem" }}>
-        One room, up to {MAX_ADULTS} adults, stays of up to {MAX_NIGHTS} nights. Sample prices —
-        booking isn&apos;t live yet.
-      </p>
-    </form>
   );
 }
 
@@ -207,7 +99,7 @@ async function Results({ params, today }: { params: SearchParams; today: string 
           }}
         >
           {result.results.map((hotel) => (
-            <HotelCard key={hotel.hid} hotel={hotel} />
+            <HotelCard key={hotel.hid} hotel={hotel} params={params} />
           ))}
         </ul>
       )}
@@ -215,7 +107,8 @@ async function Results({ params, today }: { params: SearchParams; today: string 
   );
 }
 
-function HotelCard({ hotel }: { hotel: SearchResult }) {
+function HotelCard({ hotel, params }: { hotel: SearchResult; params: SearchParams }) {
+  const href = `/hotels/${hotel.hid}?${new URLSearchParams({ checkin: params.checkin, checkout: params.checkout, adults: String(params.adults) })}`;
   return (
     <li
       style={{
@@ -232,7 +125,9 @@ function HotelCard({ hotel }: { hotel: SearchResult }) {
         <img src={hotel.photo.replace("{size}", "320x200")} alt="" width={192} height={120} />
       )}
       <div style={{ flex: "1 1 18rem" }}>
-        <h2 style={{ fontSize: "1.15rem" }}>{hotel.name}</h2>
+        <h2 style={{ fontSize: "1.15rem" }}>
+          <Link href={href}>{hotel.name}</Link>
+        </h2>
         <p style={{ fontSize: "0.9rem" }}>
           {hotel.city}, {hotel.countryCode} · {hotel.kind}
           {hotel.stars > 0 && ` · ${hotel.stars}★`}
