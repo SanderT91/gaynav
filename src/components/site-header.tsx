@@ -13,6 +13,7 @@ export function SiteHeader() {
         <nav aria-label="Main" className="site-nav">
           <Link href="/#cities">Cities</Link>
           <Link href="/search">Find a hotel</Link>
+          <Link href="/how-we-vet">How we vet</Link>
           <Link href="/about">About</Link>
           <Link href="/login" className="button button--small">
             Sign in

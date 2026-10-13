@@ -144,6 +144,15 @@ describe("public flow with no session", () => {
     expectNoStaffData(res.body);
   });
 
+  it("the trust page loads anonymously and is indexable", async () => {
+    const res = await get("/how-we-vet");
+    expect(res.status).toBe(200);
+    expect(res.location).toBeNull();
+    expect(res.body).toContain("What keeps a hotel off GAYNAV");
+    expect(res.body).not.toMatch(/<meta name="robots" content="noindex"/);
+    expectNoStaffData(res.body);
+  });
+
   it("About, Privacy and Terms load anonymously; unfinished legal text is flagged", async () => {
     const about = await get("/about");
     expect(about.status).toBe(200);

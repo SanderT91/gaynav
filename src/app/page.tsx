@@ -80,6 +80,9 @@ export default function Home() {
             <p>If a hotel stops meeting our standard, we take it off the site.</p>
           </li>
         </ul>
+        <p className={styles.sectionLead}>
+          <Link href="/how-we-vet">How we vet hotels →</Link>
+        </p>
       </section>
     </main>
   );
