@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { MAX_ADULTS, MAX_NIGHTS, parseSearch, type SearchParams } from "@/lib/search/params";
 import { LAUNCH_CITIES, loadSearch } from "@/lib/search/load";
+import { emptyState, type EmptyState } from "@/lib/search/empty-state";
 import type { SearchResult } from "@/lib/search/search";
 
 export const metadata: Metadata = {
@@ -187,19 +188,29 @@ async function Results({ params, today }: { params: SearchParams; today: string 
         {params.nights} {params.nights === 1 ? "night" : "nights"} · {params.adults}{" "}
         {params.adults === 1 ? "guest" : "guests"}
       </p>
-      <ul
-        style={{
-          listStyle: "none",
-          padding: 0,
-          marginTop: "1rem",
-          display: "grid",
-          gap: "1.25rem",
-        }}
-      >
-        {result.results.map((hotel) => (
-          <HotelCard key={hotel.hid} hotel={hotel} />
-        ))}
-      </ul>
+      {result.results.length === 0 ? (
+        <EmptyResults
+          state={emptyState({
+            city: params.city,
+            approvedAnywhere: result.approvedAnywhere,
+            query: { checkin: params.checkin, checkout: params.checkout, adults: params.adults },
+          })}
+        />
+      ) : (
+        <ul
+          style={{
+            listStyle: "none",
+            padding: 0,
+            marginTop: "1rem",
+            display: "grid",
+            gap: "1.25rem",
+          }}
+        >
+          {result.results.map((hotel) => (
+            <HotelCard key={hotel.hid} hotel={hotel} />
+          ))}
+        </ul>
+      )}
     </section>
   );
 }
@@ -248,5 +259,27 @@ function HotelCard({ hotel }: { hotel: SearchResult }) {
         )}
       </div>
     </li>
+  );
+}
+
+function EmptyResults({ state }: { state: EmptyState }) {
+  return (
+    <div
+      role="status"
+      style={{
+        marginTop: "1.5rem",
+        padding: "1.5rem",
+        border: "1px solid #8884",
+        borderRadius: "8px",
+      }}
+    >
+      <h2 style={{ fontSize: "1.15rem" }}>{state.title}</h2>
+      <p style={{ marginTop: "0.5rem" }}>{state.body}</p>
+      {state.action && (
+        <p style={{ marginTop: "0.75rem" }}>
+          <Link href={state.action.href}>{state.action.label}</Link>
+        </p>
+      )}
+    </div>
   );
 }

@@ -25,7 +25,9 @@ export const LAUNCH_CITIES = [
 export async function loadSearch(
   params: SearchParams,
   today: string,
-): Promise<{ ok: true; results: SearchResult[] } | { ok: false; error: string }> {
+): Promise<
+  { ok: true; results: SearchResult[]; approvedAnywhere: number } | { ok: false; error: string }
+> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("approved_properties")
@@ -36,12 +38,17 @@ export async function loadSearch(
     return { ok: false, error: "We couldn't load hotels just now. Please try again in a moment." };
   }
 
+  const approved = (data ?? []) as ApprovedHotel[];
+  const rates = mockSearchRates(params, today); // MOCK until Phase 3
   const results = searchApproved({
-    approved: (data ?? []) as ApprovedHotel[],
+    approved,
     hotels: mockHotelContent,
-    // MOCK until Phase 3: rates adapted to the requested dates and guests.
-    search: mockSearchRates(params, today),
+    search: rates,
     city: params.city,
   });
-  return { ok: true, results };
+  // For the empty state: are there hotels in other cities?
+  const approvedAnywhere = params.city
+    ? searchApproved({ approved, hotels: mockHotelContent, search: rates }).length
+    : results.length;
+  return { ok: true, results, approvedAnywhere };
 }
