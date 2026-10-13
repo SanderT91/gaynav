@@ -1,4 +1,5 @@
 import { MAX_ADULTS, MAX_NIGHTS } from "@/lib/search/params";
+import styles from "./stay-form.module.css";
 
 // The dates-and-guests form, used by search (with a city picker) and by the
 // hotel page (without). A plain GET form: works without JavaScript and the
@@ -22,35 +23,20 @@ export function StayForm({
   /** Extra fixed values sent with the form, e.g. the city on a city page. */
   hidden?: Record<string, string>;
 }) {
-  const field = { display: "grid", gap: "0.25rem" } as const;
   const error = (name: string) =>
     errors[name] ? (
-      <span
-        id={`${name}-error`}
-        role="alert"
-        style={{ color: "var(--color-error)", fontSize: "0.9rem" }}
-      >
+      <span id={`${name}-error`} role="alert" className={styles.error}>
         {errors[name]}
       </span>
     ) : null;
 
   return (
-    <form
-      action={action}
-      method="get"
-      style={{
-        marginTop: "1rem",
-        display: "flex",
-        flexWrap: "wrap",
-        gap: "1rem",
-        alignItems: "end",
-      }}
-    >
+    <form action={action} method="get" className={styles.form}>
       {Object.entries(hidden).map(([name, value]) => (
         <input key={name} type="hidden" name={name} value={value} />
       ))}
       {cities && (
-        <label style={field}>
+        <label className={styles.field}>
           City
           <select name="city" defaultValue={values.city} aria-describedby="city-error">
             <option value="">All cities</option>
@@ -63,7 +49,7 @@ export function StayForm({
           {error("city")}
         </label>
       )}
-      <label style={field}>
+      <label className={styles.field}>
         Check-in
         <input
           type="date"
@@ -75,7 +61,7 @@ export function StayForm({
         />
         {error("checkin")}
       </label>
-      <label style={field}>
+      <label className={styles.field}>
         Check-out
         <input
           type="date"
@@ -87,7 +73,7 @@ export function StayForm({
         />
         {error("checkout")}
       </label>
-      <label style={field}>
+      <label className={styles.field}>
         Guests
         <select
           name="adults"
@@ -103,8 +89,10 @@ export function StayForm({
         </select>
         {error("adults")}
       </label>
-      <button type="submit">{submitLabel}</button>
-      <p style={{ flexBasis: "100%", fontSize: "0.85rem" }}>
+      <button type="submit" className={styles.submit}>
+        {submitLabel}
+      </button>
+      <p className={styles.hint}>
         One room, up to {MAX_ADULTS} adults, stays of up to {MAX_NIGHTS} nights. Sample prices —
         booking isn&apos;t live yet.
       </p>

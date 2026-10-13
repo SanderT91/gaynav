@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
+import { HotelCard } from "@/components/hotel-card";
 import { StayForm } from "@/components/stay-form";
 import { CITIES, cityBySlug, type City } from "@/lib/cities";
 import { todayIso } from "@/lib/format";
@@ -35,18 +36,18 @@ export default async function CityPage({ params }: PageProps<"/cities/[slug]">) 
   if (!city) notFound();
 
   return (
-    <main style={{ padding: "3rem 1.5rem", maxWidth: "56rem", margin: "0 auto" }}>
+    <main className="page">
       <h1>LGBTQ+ friendly hotels in {city.name}</h1>
-      <p style={{ marginTop: "0.5rem" }}>
+      <p className="page-lead">
         Every hotel below has been reviewed by a person on our team and approved as safe and
         welcoming for LGBTQ+ travellers. Choose your dates to see rooms and prices.
       </p>
-      <Suspense fallback={<p style={{ marginTop: "1rem" }}>Loading hotels…</p>}>
+      <Suspense fallback={<p className="panel">Loading hotels…</p>}>
         <CityBody city={city} />
       </Suspense>
-      <nav aria-label="Other cities" style={{ marginTop: "2.5rem" }}>
-        <h2 style={{ fontSize: "1rem" }}>Other cities</h2>
-        <p style={{ marginTop: "0.25rem" }}>
+      <nav aria-label="Other cities" className="panel">
+        <h2>Other cities</h2>
+        <p>
           {CITIES.filter((c) => c.slug !== city.slug).map((c, i) => (
             <span key={c.slug}>
               {i > 0 && " · "}
@@ -66,78 +67,37 @@ async function CityBody({ city }: { city: City }) {
 
   return (
     <>
-      <StayForm
-        action="/search"
-        values={{ checkin: "", checkout: "", adults: "2" }}
-        errors={{}}
-        today={today}
-        hidden={{ city: city.name }}
-        submitLabel={`Search ${city.name}`}
-      />
+      <div className="panel">
+        <StayForm
+          action="/search"
+          values={{ checkin: "", checkout: "", adults: "2" }}
+          errors={{}}
+          today={today}
+          hidden={{ city: city.name }}
+          submitLabel={`Search ${city.name}`}
+        />
+      </div>
       {!result.ok ? (
-        <p role="alert" style={{ marginTop: "1.5rem" }}>
+        <p role="alert" className="panel">
           We couldn&apos;t load hotels just now. Please try again in a moment.
         </p>
       ) : result.hotels.length === 0 ? (
-        <div
-          role="status"
-          style={{
-            marginTop: "1.5rem",
-            padding: "1.5rem",
-            border: "1px solid #8884",
-            borderRadius: "8px",
-          }}
-        >
-          <h2 style={{ fontSize: "1.15rem" }}>{city.name} is still being curated</h2>
-          <p style={{ marginTop: "0.5rem" }}>
+        <div role="status" className="panel panel--brand">
+          <h2>{city.name} is still being curated</h2>
+          <p>
             We only list hotels our team has checked are genuinely welcoming to LGBTQ+ travellers,
             so we&apos;re starting small on purpose. Please check back soon.
           </p>
         </div>
       ) : (
-        <ul
-          style={{
-            listStyle: "none",
-            padding: 0,
-            marginTop: "1.5rem",
-            display: "grid",
-            gap: "1.25rem",
-          }}
-        >
+        <ul className="result-list">
           {result.hotels.map((hotel) => (
-            <li
+            <HotelCard
               key={hotel.hid}
-              style={{
-                display: "flex",
-                gap: "1rem",
-                borderTop: "1px solid #8884",
-                paddingTop: "1rem",
-                flexWrap: "wrap",
-              }}
-            >
-              {hotel.photo && (
-                // Mock placeholder images; image optimisation comes with the design pass.
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={hotel.photo.replace("{size}", "320x200")}
-                  alt=""
-                  width={192}
-                  height={120}
-                />
-              )}
-              <div style={{ flex: "1 1 18rem" }}>
-                <h2 style={{ fontSize: "1.15rem" }}>
-                  <Link href={`/hotels/${hotel.hid}`}>{hotel.name}</Link>
-                </h2>
-                <p style={{ fontSize: "0.9rem" }}>
-                  {hotel.kind}
-                  {hotel.stars > 0 && ` · ${hotel.stars}★`}
-                </p>
-                <p style={{ marginTop: "0.5rem" }}>
-                  <strong>Why we list it:</strong> {hotel.vettingSummary}
-                </p>
-              </div>
-            </li>
+              hotel={hotel}
+              href={`/hotels/${hotel.hid}`}
+              showPrice={false}
+            />
           ))}
         </ul>
       )}
