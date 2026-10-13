@@ -15,7 +15,7 @@ export function GenerateButton({ hid, label }: { hid: string; label: string }) {
         {pending ? "Reading the sources… (this can take a minute)" : label}
       </button>
       {state.error && (
-        <p role="alert" style={{ marginTop: "0.5rem", color: "#b42318" }}>
+        <p role="alert" style={{ marginTop: "0.5rem", color: "var(--color-error)" }}>
           {state.error}
         </p>
       )}

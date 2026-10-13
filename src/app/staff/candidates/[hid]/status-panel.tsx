@@ -25,7 +25,7 @@ export function StatusPanel({ hid, status }: { hid: string; status: "approved" |
         {pending ? "Saving…" : isApproved ? "Suspend" : "Reactivate"}
       </button>
       {state.error && (
-        <p role="alert" style={{ color: "#b42318" }}>
+        <p role="alert" style={{ color: "var(--color-error)" }}>
           {state.error}
         </p>
       )}

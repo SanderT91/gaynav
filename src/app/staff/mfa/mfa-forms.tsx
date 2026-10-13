@@ -26,7 +26,7 @@ function CodeForm({ factorId, next, label }: { factorId: string; next: string; l
         autoFocus
       />
       {state.error && (
-        <p role="alert" style={{ color: "#b42318" }}>
+        <p role="alert" style={{ color: "var(--color-error)" }}>
           {state.error}
         </p>
       )}
@@ -54,7 +54,7 @@ export function EnrollTotp({ next }: { next: string }) {
     return (
       <form action={start} style={{ marginTop: "1.5rem" }}>
         {state.status === "error" && (
-          <p role="alert" style={{ color: "#b42318", marginBottom: "0.75rem" }}>
+          <p role="alert" style={{ color: "var(--color-error)", marginBottom: "0.75rem" }}>
             {state.message}
           </p>
         )}
@@ -78,7 +78,7 @@ export function EnrollTotp({ next }: { next: string }) {
         alt="QR code for your authenticator app"
         width={200}
         height={200}
-        style={{ marginTop: "1rem", background: "#fff", padding: "0.5rem" }}
+        style={{ marginTop: "1rem", background: "var(--color-bg)", padding: "0.5rem" }}
       />
       <p style={{ marginTop: "1rem" }}>
         Can&apos;t scan it? Enter this key manually: <code>{state.secret}</code>
