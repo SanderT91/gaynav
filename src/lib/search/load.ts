@@ -3,18 +3,8 @@ import { mockSearchRates } from "@/lib/rates/mock-search";
 import { createClient } from "@/lib/supabase/server";
 import { mockHotelContent } from "@/mock/ratehawk";
 import type { SearchParams } from "./params";
-import { searchApproved, type SearchResult } from "./search";
+import { approvedInCity, searchApproved, type SearchResult } from "./search";
 import { fetchPublicWhitelist } from "./whitelist";
-
-/** The launch cities (owner decision 2026-10-12). */
-export const LAUNCH_CITIES = [
-  "London",
-  "Paris",
-  "Rome",
-  "Tokyo",
-  "Bangkok",
-  "Ho Chi Minh City",
-] as const;
 
 // Loads public search results on the server, for a complete, validated search
 // (dates and guests are required — see params.ts).
@@ -47,4 +37,16 @@ export async function loadSearch(
     ? searchApproved({ approved, hotels: mockHotelContent, search: rates }).length
     : results.length;
   return { ok: true, results, approvedAnywhere };
+}
+
+/** Approved hotels in one city, for its city page (no dates, no prices). */
+export async function loadCityHotels(
+  city: string,
+): Promise<{ ok: true; hotels: SearchResult[] } | { ok: false }> {
+  const whitelist = await fetchPublicWhitelist(await createClient());
+  if (!whitelist.ok) return { ok: false };
+  return {
+    ok: true,
+    hotels: approvedInCity({ approved: whitelist.approved, hotels: mockHotelContent, city }),
+  };
 }

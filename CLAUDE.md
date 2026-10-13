@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 2 — Public search and listing pages (against mock data). Phase 1 complete and reviewed by the owner 2026-10-12.
 - **Last updated:** 2026-10-13
-- **Next up:** Epic 2.5 — homepage with city curations. Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 homepage & city pages → 2.6 light design round → 2.3 SEO → 2.4 trust page.
+- **Next up:** Epic 2.5 — homepage with city curations (city pages are done). Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 homepage & city pages → 2.6 light design round → 2.3 SEO → 2.4 trust page.
 
 ## Session protocol
 
@@ -169,7 +169,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 **Epic 2.5 — Homepage and city pages**
 *This app replaces gaynav.com entirely (owner decision 2026-10-12), so the public entry points of the current site are rebuilt here. Accounts are this app's own — no combined login with the old site.*
 - [ ] Feature: homepage with a hero, a search box, and "City curations" cards for the six launch cities, each linking to a city page (replaces the current deep links into my.gaynav.com search)
-- [ ] Feature: city page per launch city showing only approved properties for that city, server-rendered with its own metadata (SEO)
+- [x] Feature: city page per launch city showing only approved properties for that city, server-rendered with its own metadata (SEO) — done 2026-10-13, PR #36 (`/cities/[slug]`; built before the homepage so its city cards have somewhere to link)
 - [ ] Feature: About, Privacy and Terms pages (placeholder text where legal copy isn't final, flagged clearly). The Insiders news feed is NOT part of the MVP (see `FEATURE_BACKLOG.md`)
 
 **Epic 2.6 — Light design round (owner demo)**
