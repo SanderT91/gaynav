@@ -26,6 +26,9 @@ export function SiteFooter() {
           <h2 className="site-footer__heading">GAYNAV</h2>
           <ul>
             <li>
+              <Link href="/how-we-vet">How we vet hotels</Link>
+            </li>
+            <li>
               <Link href="/about">About</Link>
             </li>
             <li>

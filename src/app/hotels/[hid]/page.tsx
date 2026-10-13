@@ -87,7 +87,8 @@ async function HotelBody({
           <h2 id="why">Why we list it</h2>
           <p>{hotel.vettingSummary}</p>
           <p className={styles.whyNote}>
-            Every GAYNAV hotel is reviewed by a person on our team before it appears here.
+            Every GAYNAV hotel is reviewed by a person on our team before it appears here.{" "}
+            <Link href="/how-we-vet">How we vet hotels</Link>
           </p>
         </section>
 

@@ -25,7 +25,8 @@ export default function AboutPage() {
       </p>
       <p>
         That means our list is deliberately small, especially at the start. We&apos;d rather show
-        you a few hotels we trust than many we don&apos;t know.
+        you a few hotels we trust than many we don&apos;t know.{" "}
+        <Link href="/how-we-vet">Read how we vet hotels</Link>.
       </p>
       <h2 style={{ fontSize: "1.15rem" }}>Where we are</h2>
       <p>
