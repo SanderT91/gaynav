@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 2 — Public search and listing pages (against mock data). Phase 1 complete and reviewed by the owner 2026-10-12.
 - **Last updated:** 2026-10-13
-- **Next up:** Epic 2.2 — property detail page. Phase 2 build order (owner left it to Claude, 2026-10-12): finish 2.1 → 2.2 detail page → 2.5 homepage & city pages → 2.6 light design round → 2.3 SEO → 2.4 trust page.
+- **Next up:** Epic 2.1 — test that the whole public flow (search + property page) works with no session and leaks no staff data. Phase 2 build order (owner left it to Claude, 2026-10-12): finish 2.1 → 2.2 detail page → 2.5 homepage & city pages → 2.6 light design round → 2.3 SEO → 2.4 trust page.
 
 ## Session protocol
 
@@ -158,7 +158,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [ ] Feature: test that the whole public flow works with no session at all: an anonymous visitor can run a search and open a property page, with no redirect to a login page and no staff-only data in the response
 
 **Epic 2.2 — Property detail page**
-- [ ] Feature: detail page with photos, amenities, the public vetting summary (the staff-approved text, never the raw AI evidence pack), and a "Check availability" call to action (no real booking yet)
+- [x] Feature: detail page with photos, amenities, the public vetting summary (the staff-approved text, never the raw AI evidence pack), and a "Check availability" call to action (no real booking yet) — done 2026-10-13, PR #34 (`/hotels/[hid]`: unknown, unapproved, suspended or closed hotels are a plain 404; rooms and prices once dates and guests are chosen)
 
 **Epic 2.3 — SEO foundations**
 - [ ] Feature: server-rendered metadata (title, description, Open Graph tags) per property and search page — organic search is called out as a core growth channel in the business plan, and this is much cheaper to build in from the start than to retrofit later

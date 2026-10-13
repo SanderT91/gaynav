@@ -35,7 +35,7 @@ export type SearchResult = {
   price: PriceSummary | null;
 };
 
-function priceOf(rate: Rate): PriceSummary | null {
+export function priceOf(rate: Rate): PriceSummary | null {
   const pt: PaymentType | undefined = rate.payment_options.payment_types[0];
   if (!pt) return null;
   const excluded = pt.tax_data.taxes
