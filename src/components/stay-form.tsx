@@ -25,7 +25,11 @@ export function StayForm({
   const field = { display: "grid", gap: "0.25rem" } as const;
   const error = (name: string) =>
     errors[name] ? (
-      <span id={`${name}-error`} role="alert" style={{ color: "#b42318", fontSize: "0.9rem" }}>
+      <span
+        id={`${name}-error`}
+        role="alert"
+        style={{ color: "var(--color-error)", fontSize: "0.9rem" }}
+      >
         {errors[name]}
       </span>
     ) : null;
