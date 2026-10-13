@@ -3,7 +3,8 @@ import { mockSearchRates } from "@/lib/rates/mock-search";
 import { createClient } from "@/lib/supabase/server";
 import { mockHotelContent } from "@/mock/ratehawk";
 import type { SearchParams } from "./params";
-import { searchApproved, type ApprovedHotel, type SearchResult } from "./search";
+import { searchApproved, type SearchResult } from "./search";
+import { fetchPublicWhitelist } from "./whitelist";
 
 /** The launch cities (owner decision 2026-10-12). */
 export const LAUNCH_CITIES = [
@@ -28,17 +29,12 @@ export async function loadSearch(
 ): Promise<
   { ok: true; results: SearchResult[]; approvedAnywhere: number } | { ok: false; error: string }
 > {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("approved_properties")
-    .select("hid, vetting_summary")
-    .eq("status", "approved");
-
-  if (error) {
+  const whitelist = await fetchPublicWhitelist(await createClient());
+  if (!whitelist.ok) {
     return { ok: false, error: "We couldn't load hotels just now. Please try again in a moment." };
   }
 
-  const approved = (data ?? []) as ApprovedHotel[];
+  const approved = whitelist.approved;
   const rates = mockSearchRates(params, today); // MOCK until Phase 3
   const results = searchApproved({
     approved,
