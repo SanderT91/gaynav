@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { StayForm } from "@/components/stay-form";
 import { CITIES, LAUNCH_CITIES } from "@/lib/cities";
 import { todayIso } from "@/lib/format";
+import styles from "./home.module.css";
 
 export const metadata: Metadata = {
   title: "GAYNAV — LGBTQ+ friendly hotels, personally vetted",
@@ -12,49 +13,72 @@ export const metadata: Metadata = {
     "Hotels in London, Paris, Rome, Tokyo, Bangkok and Ho Chi Minh City, each reviewed by the GAYNAV team as safe and welcoming for LGBTQ+ travellers.",
 };
 
-// Homepage (Epic 2.5): replaces gaynav.com's entry points. A hero, the search
-// box, and a card per launch city ("City curations"). Styling comes in the
-// light design round (Epic 2.6).
+// Homepage (Epic 2.5, styled in 2.6): replaces gaynav.com's entry points.
+// A hero with the search box, a card per launch city ("City curations"),
+// and the vetting promise in three lines.
 export default function Home() {
   return (
-    <main style={{ padding: "3rem 1.5rem", maxWidth: "56rem", margin: "0 auto" }}>
-      <section aria-labelledby="hero">
-        <h1 id="hero">Travel where you&apos;re welcome</h1>
-        <p style={{ marginTop: "0.75rem", fontSize: "1.1rem" }}>
-          Every hotel on GAYNAV is reviewed by a person on our team and approved as safe and
-          welcoming for LGBTQ+ travellers — before it&apos;s ever listed.
-        </p>
-        <Suspense fallback={null}>
-          <HeroSearch />
-        </Suspense>
+    <main>
+      <section aria-labelledby="hero" className={styles.hero}>
+        <div className={styles.heroInner}>
+          <h1 id="hero" className={styles.heroTitle}>
+            Travel where you&apos;re welcome
+          </h1>
+          <p className={styles.heroLead}>
+            Every hotel on GAYNAV is reviewed by a person on our team and approved as safe and
+            welcoming for LGBTQ+ travellers — before it&apos;s ever listed.
+          </p>
+          <div className={styles.searchCard}>
+            <Suspense fallback={null}>
+              <HeroSearch />
+            </Suspense>
+          </div>
+        </div>
       </section>
 
-      <section aria-labelledby="cities" style={{ marginTop: "3rem" }}>
-        <h2 id="cities">City curations</h2>
-        <p style={{ marginTop: "0.5rem" }}>
+      <section id="cities" aria-labelledby="cities-title" className={styles.section}>
+        <h2 id="cities-title" className={styles.sectionTitle}>
+          City curations
+        </h2>
+        <p className={styles.sectionLead}>
           We&apos;re starting with six cities and a small, hand-picked list of hotels in each.
         </p>
-        <ul
-          style={{
-            listStyle: "none",
-            padding: 0,
-            marginTop: "1rem",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(15rem, 1fr))",
-            gap: "1rem",
-          }}
-        >
+        <ul className={styles.cityGrid}>
           {CITIES.map((city) => (
-            <li
-              key={city.slug}
-              style={{ border: "1px solid #8884", borderRadius: "8px", padding: "1.25rem" }}
-            >
-              <h3 style={{ fontSize: "1.15rem" }}>
-                <Link href={`/cities/${city.slug}`}>{city.name}</Link>
-              </h3>
-              <p style={{ fontSize: "0.9rem" }}>{city.country}</p>
+            <li key={city.slug}>
+              <Link href={`/cities/${city.slug}`} className={styles.cityCard}>
+                <span className={styles.cityImage} aria-hidden="true">
+                  {city.name}
+                </span>
+                <span className={styles.cityMeta}>
+                  <span>
+                    <strong>{city.name}</strong>, {city.country}
+                  </span>
+                  <span>See hotels →</span>
+                </span>
+              </Link>
             </li>
           ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="promise-title" className={styles.section}>
+        <h2 id="promise-title" className={styles.sectionTitle}>
+          Why GAYNAV
+        </h2>
+        <ul className={styles.promise}>
+          <li>
+            <h3>Reviewed by a person</h3>
+            <p>No hotel is listed automatically. Someone on our team checks every one.</p>
+          </li>
+          <li>
+            <h3>Small on purpose</h3>
+            <p>We&apos;d rather show you a few hotels we trust than many we don&apos;t know.</p>
+          </li>
+          <li>
+            <h3>Taken down if things change</h3>
+            <p>If a hotel stops meeting our standard, we take it off the site.</p>
+          </li>
         </ul>
       </section>
     </main>

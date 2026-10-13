@@ -1,0 +1,142 @@
+/* Homepage (Epic 2.6): the gaynav.com look — a full-width hero with a light
+   white headline, the search box on a white card, rounded city cards. All
+   colours come from the tokens in theme.css. */
+
+.hero {
+  position: relative;
+  color: var(--color-on-primary);
+  /* Stand-in for the hero photo: a brand gradient. Swap in a licensed photo
+     via --hero-image once the owner supplies one. */
+  background:
+    var(--hero-image, none) center / cover no-repeat,
+    radial-gradient(circle at 85% 15%, var(--pink-400) 0, transparent 45%),
+    linear-gradient(135deg, var(--pink-900) 0%, var(--pink-700) 45%, var(--pink-500) 100%);
+}
+
+.heroInner {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: var(--space-8) var(--page-gutter) var(--space-7);
+}
+
+.heroTitle {
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  font-weight: var(--weight-light);
+  letter-spacing: -0.02em;
+  max-width: 18ch;
+}
+
+.heroLead {
+  margin-top: var(--space-4);
+  max-width: 40rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: var(--weight-light);
+}
+
+.searchCard {
+  margin-top: var(--space-6);
+  padding: var(--space-2) var(--space-5) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+  color: var(--color-text);
+  box-shadow: var(--shadow-card);
+}
+
+/* Hero call-to-action buttons are pills (gaynav.com). */
+.searchCard button {
+  border-radius: var(--radius-pill);
+}
+
+.section {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: var(--space-7) var(--page-gutter) 0;
+}
+
+.sectionTitle {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.sectionLead {
+  margin-top: var(--space-2);
+  color: var(--color-muted);
+}
+
+.cityGrid {
+  list-style: none;
+  margin-top: var(--space-5);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: var(--space-5);
+}
+
+.cityCard {
+  display: block;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-card);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: transform 0.15s ease;
+}
+
+.cityCard:hover {
+  transform: translateY(-2px);
+  color: var(--color-text);
+}
+
+/* Stand-in for a city photo, in the brand colours. */
+.cityImage {
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-4);
+  color: var(--color-on-primary);
+  font-size: 1.6rem;
+  font-weight: var(--weight-light);
+  background: linear-gradient(160deg, var(--pink-300), var(--pink-700));
+}
+
+.cityGrid li:nth-child(3n + 2) .cityImage {
+  background: linear-gradient(160deg, var(--pink-400), var(--pink-900));
+}
+
+.cityGrid li:nth-child(3n) .cityImage {
+  background: linear-gradient(160deg, var(--pink-200), var(--pink-600));
+}
+
+.cityMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+}
+
+.cityMeta span:last-child {
+  color: var(--color-primary);
+  font-weight: var(--weight-medium);
+}
+
+.promise {
+  margin-top: var(--space-5);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--space-5);
+  list-style: none;
+}
+
+.promise li {
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--pink-100);
+}
+
+.promise h3 {
+  font-size: 1.1rem;
+  color: var(--pink-800);
+}
+
+.promise p {
+  margin-top: var(--space-2);
+}
