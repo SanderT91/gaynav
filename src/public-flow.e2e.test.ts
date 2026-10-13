@@ -102,6 +102,31 @@ describe("public flow with no session", () => {
     expectNoStaffData(res.body);
   });
 
+  it("a city page works anonymously and lists only that city's approved hotels", async () => {
+    const rome = await get("/cities/rome");
+    expect(rome.status).toBe(200);
+    expect(rome.location).toBeNull();
+    expect(rome.body).toContain(names[APPROVED]);
+    expect(rome.body).toContain("<title>LGBTQ+ friendly hotels in Rome — GAYNAV</title>");
+    expectNoStaffData(rome.body);
+
+    // The suspended hotel's city: nothing about it, and an intentional empty state.
+    const tokyo = await get("/cities/tokyo");
+    expect(tokyo.status).toBe(200);
+    expect(tokyo.body).not.toContain(names[SUSPENDED]);
+    expect(tokyo.body).toContain("still being curated");
+    expectNoStaffData(tokyo.body);
+
+    const bangkok = await get("/cities/bangkok");
+    expect(bangkok.body).not.toContain(names[NEVER_APPROVED]);
+  });
+
+  it("an unknown city is not found", async () => {
+    const res = await get("/cities/atlantis");
+    expect(res.body).toContain("could not be found");
+    expect(res.body).toMatch(/<meta name="robots" content="noindex"/);
+  });
+
   it("the home page loads anonymously", async () => {
     const res = await get("/");
     expect(res.status).toBe(200);

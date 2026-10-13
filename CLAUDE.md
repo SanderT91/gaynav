@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 2 — Public search and listing pages (against mock data). Phase 1 complete and reviewed by the owner 2026-10-12.
 - **Last updated:** 2026-10-13
-- **Next up:** Epic 2.5 — homepage with city curations. Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 homepage & city pages → 2.6 light design round → 2.3 SEO → 2.4 trust page.
+- **Next up:** Epic 2.5 — homepage with city curations (city pages are done). Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 homepage & city pages → 2.6 light design round → 2.3 SEO → 2.4 trust page.
 
 ## Session protocol
 
