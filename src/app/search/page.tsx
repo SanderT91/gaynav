@@ -5,7 +5,8 @@ import { Suspense } from "react";
 import { formValues, StayForm } from "@/components/stay-form";
 import { dateLabel, money, todayIso } from "@/lib/format";
 import { parseSearch, type SearchParams } from "@/lib/search/params";
-import { LAUNCH_CITIES, loadSearch } from "@/lib/search/load";
+import { LAUNCH_CITIES } from "@/lib/cities";
+import { loadSearch } from "@/lib/search/load";
 import { emptyState, type EmptyState } from "@/lib/search/empty-state";
 import type { SearchResult } from "@/lib/search/search";
 

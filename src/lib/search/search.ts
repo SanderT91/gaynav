@@ -99,3 +99,20 @@ export function searchApproved(input: {
     return a.name.localeCompare(b.name);
   });
 }
+
+/**
+ * Approved hotels in one city, without dates (city pages): the same
+ * whitelist-first rule as search, just no rates — so no prices.
+ */
+export function approvedInCity(input: {
+  approved: ApprovedHotel[];
+  hotels: HotelContent[];
+  city: string;
+}): SearchResult[] {
+  const noRates: SearchResponse = {
+    status: "ok",
+    error: null,
+    data: { hotels: [], total_hotels: 0 },
+  };
+  return searchApproved({ ...input, search: noRates });
+}

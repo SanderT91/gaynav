@@ -169,7 +169,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 **Epic 2.5 — Homepage and city pages**
 *This app replaces gaynav.com entirely (owner decision 2026-10-12), so the public entry points of the current site are rebuilt here. Accounts are this app's own — no combined login with the old site.*
 - [ ] Feature: homepage with a hero, a search box, and "City curations" cards for the six launch cities, each linking to a city page (replaces the current deep links into my.gaynav.com search)
-- [ ] Feature: city page per launch city showing only approved properties for that city, server-rendered with its own metadata (SEO)
+- [x] Feature: city page per launch city showing only approved properties for that city, server-rendered with its own metadata (SEO) — done 2026-10-13, PR #36 (`/cities/[slug]`; built before the homepage so its city cards have somewhere to link)
 - [ ] Feature: About, Privacy and Terms pages (placeholder text where legal copy isn't final, flagged clearly). The Insiders news feed is NOT part of the MVP (see `FEATURE_BACKLOG.md`)
 
 **Epic 2.6 — Light design round (owner demo)**
