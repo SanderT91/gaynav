@@ -9,11 +9,14 @@ import { dateLabel, todayIso } from "@/lib/format";
 import { emptyState, type EmptyState } from "@/lib/search/empty-state";
 import { loadSearch } from "@/lib/search/load";
 import { parseSearch, type SearchParams } from "@/lib/search/params";
+import { searchMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Find a hotel — GAYNAV",
-  description: "Hotels personally vetted by GAYNAV as safe and welcoming for LGBTQ+ travellers.",
-};
+// Per-city title and description when a city is chosen; the canonical URL
+// is the city page, which has no dates (Epic 2.3).
+export async function generateMetadata({ searchParams }: PageProps<"/search">): Promise<Metadata> {
+  const { city } = await searchParams;
+  return searchMetadata(typeof city === "string" ? city : undefined);
+}
 
 // Public search (Epic 2.1). No login needed. Only hotels GAYNAV staff have
 // approved. Dates and guests are required: without them there are no real

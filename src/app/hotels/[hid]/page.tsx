@@ -9,13 +9,17 @@ import { dateLabel, money, todayIso } from "@/lib/format";
 import type { HotelDetail, RoomOption } from "@/lib/hotels/detail";
 import { loadPublicHotel } from "@/lib/hotels/load";
 import { parseSearch, type SearchParams } from "@/lib/search/params";
+import { hotelMetadata } from "@/lib/seo";
 import styles from "./hotel.module.css";
 
-// Per-hotel titles and Open Graph tags come with Epic 2.3 (SEO).
-export const metadata: Metadata = {
-  title: "Hotel — GAYNAV",
-  description: "A hotel personally vetted by GAYNAV as safe and welcoming for LGBTQ+ travellers.",
-};
+// Title, description and Open Graph tags per hotel (Epic 2.3). Runs the same
+// approval check as the page: a hidden hotel gets generic, unindexed
+// metadata, never its name. The page reads per-request data inside Suspense,
+// so this per-request metadata is allowed under Cache Components.
+export async function generateMetadata({ params }: PageProps<"/hotels/[hid]">): Promise<Metadata> {
+  const result = await loadPublicHotel((await params).hid, null, "");
+  return hotelMetadata(result.status === "ok" ? result.hotel : null);
+}
 
 // Public property page (Epic 2.2, styled in 2.6). No login needed. Only
 // approved hotels: anything else — unknown, under review, suspended, closed —

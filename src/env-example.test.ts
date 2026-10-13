@@ -25,8 +25,15 @@ function variablesReadByCode(): Set<string> {
       found.add(match[1]);
     }
   }
-  // Set by Node/Next.js themselves, not by us.
-  for (const builtIn of ["NODE_ENV", "NEXT_RUNTIME", "VERCEL_ENV", "CI"]) found.delete(builtIn);
+  // Set by Node, Next.js or Vercel themselves, not by us.
+  for (const builtIn of [
+    "NODE_ENV",
+    "NEXT_RUNTIME",
+    "VERCEL_ENV",
+    "VERCEL_PROJECT_PRODUCTION_URL",
+    "CI",
+  ])
+    found.delete(builtIn);
   // Set by our own test runners (scripts/run-*-test*.mjs), never by a developer.
   for (const testOnly of [
     "SUPABASE_TEST_URL",

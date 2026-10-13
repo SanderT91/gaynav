@@ -79,6 +79,13 @@ describe("public flow with no session", () => {
     expect(res.body).toContain("Why we list it");
     expect(res.body).toContain("Integration test: approved.");
     expect(res.body).toContain("Standard Double Room");
+    // Server-rendered metadata (Epic 2.3).
+    expect(res.body).toMatch(new RegExp(`<title>${names[APPROVED]}[^<]*, Rome — GAYNAV</title>`));
+    expect(res.body).toMatch(/<meta property="og:title" content="Casa Trastevere[^"]*"/);
+    expect(res.body).toMatch(/<meta property="og:image" content="http[^"]+"/);
+    expect(res.body).toMatch(
+      new RegExp(`<link rel="canonical" href="http[^"]+/hotels/${APPROVED}"`),
+    );
     expectNoStaffData(res.body);
   });
 
