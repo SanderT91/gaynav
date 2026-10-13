@@ -7,7 +7,7 @@ import { approveAction, rejectAction, type DecisionState } from "./actions";
 function Feedback({ state }: { state: DecisionState }) {
   if (state.error) {
     return (
-      <p role="alert" style={{ marginTop: "0.5rem", color: "#b42318" }}>
+      <p role="alert" style={{ marginTop: "0.5rem", color: "var(--color-error)" }}>
         {state.error}
       </p>
     );

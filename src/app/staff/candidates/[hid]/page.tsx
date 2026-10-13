@@ -19,9 +19,9 @@ export const metadata: Metadata = {
 };
 
 const TONE: Record<EvidenceSignal["tone"], { label: string; color: string }> = {
-  positive: { label: "Positive", color: "#1a7f37" },
-  neutral: { label: "Neutral", color: "#6e7781" },
-  concern: { label: "Concern", color: "#b42318" },
+  positive: { label: "Positive", color: "var(--color-success)" },
+  neutral: { label: "Neutral", color: "var(--color-muted)" },
+  concern: { label: "Concern", color: "var(--color-error)" },
 };
 
 const WHITELIST_LABEL = {
@@ -85,7 +85,7 @@ async function CandidateDetail({
           : "Not reviewed"}
       </p>
       {hotel.is_closed && (
-        <p role="alert" style={{ marginTop: "0.5rem", color: "#b42318" }}>
+        <p role="alert" style={{ marginTop: "0.5rem", color: "var(--color-error)" }}>
           This hotel is marked closed by RateHawk. It cannot be approved.
         </p>
       )}
@@ -142,7 +142,7 @@ async function CandidateDetail({
 
         {latest?.status === "failed" && (
           <>
-            <p role="alert" style={{ marginTop: "1rem", color: "#b42318" }}>
+            <p role="alert" style={{ marginTop: "1rem", color: "var(--color-error)" }}>
               Last attempt ({new Date(latest.generated_at).toLocaleString("en-GB")}):{" "}
               {latest.failure_message}
             </p>

@@ -45,4 +45,15 @@ describe("design tokens", () => {
       });
     expect(offenders).toEqual([]);
   });
+
+  it("uses no hard-coded colour at all outside theme.css (only the tokens)", () => {
+    const offenders = files(SRC)
+      .filter((f) => f !== THEME)
+      .flatMap((f) =>
+        [...readFileSync(f, "utf8").matchAll(/#[0-9a-f]{3,8}\b|rgba?\(\s*\d/gi)].map(
+          (m) => `${relative(SRC, f)}: ${m[0]}`,
+        ),
+      );
+    expect(offenders).toEqual([]);
+  });
 });

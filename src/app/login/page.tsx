@@ -41,7 +41,7 @@ async function LoginForms({ searchParams }: { searchParams: PageProps<"/login">[
   return (
     <>
       {error && (
-        <p role="alert" style={{ marginTop: "1.5rem", color: "#b42318" }}>
+        <p role="alert" style={{ marginTop: "1.5rem", color: "var(--color-error)" }}>
           {error}
         </p>
       )}
@@ -75,7 +75,7 @@ function AuthForm({
 }) {
   const id = autoComplete === "new-password" ? "signup" : "signin";
   return (
-    <form action={action} style={{ marginTop: "2rem", display: "grid", gap: "0.75rem" }}>
+    <form action={action} className="panel" style={{ display: "grid", gap: "var(--space-3)" }}>
       <h2 style={{ fontSize: "1.1rem" }}>{title}</h2>
       <input type="hidden" name="next" value={next} />
       <label htmlFor={`${id}-email`}>Email</label>

@@ -44,7 +44,7 @@ async function AuditLog({
   const result = await loadAudit(filters);
   if (!result.ok) {
     return (
-      <p role="alert" style={{ marginTop: "1rem", color: "#b42318" }}>
+      <p role="alert" style={{ marginTop: "1rem", color: "var(--color-error)" }}>
         {result.error}
       </p>
     );
@@ -113,7 +113,7 @@ async function AuditLog({
           </thead>
           <tbody>
             {result.decisions.map((d) => (
-              <tr key={d.id} style={{ borderTop: "1px solid #8884" }}>
+              <tr key={d.id} style={{ borderTop: "1px solid var(--color-border)" }}>
                 <td style={cell}>{new Date(d.decided_at).toLocaleString("en-GB")}</td>
                 <td style={cell}>{d.who}</td>
                 <td style={cell}>

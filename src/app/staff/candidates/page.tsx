@@ -47,7 +47,7 @@ async function CandidateList({
   const result = await loadCandidateRows();
   if (!result.ok) {
     return (
-      <p role="alert" style={{ marginTop: "1rem", color: "#b42318" }}>
+      <p role="alert" style={{ marginTop: "1rem", color: "var(--color-error)" }}>
         {result.error}
       </p>
     );
@@ -94,7 +94,7 @@ async function CandidateList({
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.hid} style={{ borderTop: "1px solid #8884" }}>
+            <tr key={row.hid} style={{ borderTop: "1px solid var(--color-border)" }}>
               <td style={{ padding: "0.5rem 0.5rem 0.5rem 0" }}>
                 <Link href={`/staff/candidates/${row.hid}`}>{row.name}</Link>
                 {row.isClosed && <strong> · Closed — cannot be approved</strong>}
