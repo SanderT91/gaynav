@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 2 — Public search and listing pages (against mock data). Phase 1 complete and reviewed by the owner 2026-10-12.
 - **Last updated:** 2026-10-13
-- **Next up:** Epic 2.6 — style search results, hotel cards and the property page. Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 ✓ → 2.6 light design round → 2.3 SEO → 2.4 trust page.
+- **Next up:** Epic 2.4 — trust page (also completes Epic 2.6's last feature), then the sitemap/robots feature of Epic 2.3. Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 ✓ → 2.6 light design round → 2.3 SEO → 2.4 trust page.
 
 ## Session protocol
 
@@ -161,7 +161,8 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [x] Feature: detail page with photos, amenities, the public vetting summary (the staff-approved text, never the raw AI evidence pack), and a "Check availability" call to action (no real booking yet) — done 2026-10-13, PR #34 (`/hotels/[hid]`: unknown, unapproved, suspended or closed hotels are a plain 404; rooms and prices once dates and guests are chosen)
 
 **Epic 2.3 — SEO foundations**
-- [ ] Feature: server-rendered metadata (title, description, Open Graph tags) per property and search page — organic search is called out as a core growth channel in the business plan, and this is much cheaper to build in from the start than to retrofit later
+- [x] Feature: server-rendered metadata (title, description, Open Graph tags) per property and search page — organic search is called out as a core growth channel in the business plan, and this is much cheaper to build in from the start than to retrofit later — done 2026-10-13, PR #44 (`src/lib/seo.ts`; a hidden hotel's metadata never names it)
+- [ ] Feature: `sitemap.xml` (homepage, city pages, approved hotels only, trust and About pages) and `robots.txt` (keeps /staff, /account and /login out of search engines) — added 2026-10-13: standard SEO foundations that were missing from this epic
 
 **Epic 2.4 — Trust page**
 - [ ] Feature: a public page explaining the vetting process in plain language (why every property is reviewed, what disqualifies one) — this is the core brand promise and costs little to build, but was missing from the original phase plan
@@ -176,7 +177,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 *Goal: the owner can open the preview and see something that feels like GAYNAV, not a bare prototype. Uses the brand tokens in "Design direction". Not a full polish pass — that stays in Phase 5.*
 - [x] Feature: design tokens (Lexend Deca, the pink scale, radii, spacing) in a single theme file, plus a shared header (logo, nav, login) and footer used by every public page — done 2026-10-13, PR #40 (`src/app/theme.css`; a test fails if a brand hex appears outside it)
 - [x] Feature: style the homepage with a photo hero, the search box and the six city cards in the gaynav.com look — done 2026-10-13, PR #41 (brand-gradient stand-ins for the hero and city photos until the owner supplies licensed photos)
-- [ ] Feature: style the search results page, hotel cards and the property detail page; responsive down to phone width (basic layout only — the full mobile check stays in Phase 5)
+- [x] Feature: style the search results page, hotel cards and the property detail page; responsive down to phone width (basic layout only — the full mobile check stays in Phase 5) — done 2026-10-13, PR #42
 - [ ] Feature: style the trust page, the sign-in/sign-up pages and the staff workbench lightly (consistent fonts and colors, no redesign)
 
 **Deferred, deliberately out of MVP scope:** favoriting/saved properties, multi-language UI, personalized recommendations. Not forgotten — reviewed and postponed past MVP.
