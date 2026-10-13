@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 2 — Public search and listing pages (against mock data). Phase 1 complete and reviewed by the owner 2026-10-12.
 - **Last updated:** 2026-10-13
-- **Next up:** Epic 2.6 — style search results, hotel cards and the property page. Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 ✓ → 2.6 light design round → 2.3 SEO → 2.4 trust page.
+- **Next up:** Epic 2.6 — light styling for sign-in and the staff workbench (the trust page is styled when it's built in Epic 2.4). Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 ✓ → 2.6 light design round → 2.3 SEO → 2.4 trust page.
 
 ## Session protocol
 
@@ -176,7 +176,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 *Goal: the owner can open the preview and see something that feels like GAYNAV, not a bare prototype. Uses the brand tokens in "Design direction". Not a full polish pass — that stays in Phase 5.*
 - [x] Feature: design tokens (Lexend Deca, the pink scale, radii, spacing) in a single theme file, plus a shared header (logo, nav, login) and footer used by every public page — done 2026-10-13, PR #40 (`src/app/theme.css`; a test fails if a brand hex appears outside it)
 - [x] Feature: style the homepage with a photo hero, the search box and the six city cards in the gaynav.com look — done 2026-10-13, PR #41 (brand-gradient stand-ins for the hero and city photos until the owner supplies licensed photos)
-- [ ] Feature: style the search results page, hotel cards and the property detail page; responsive down to phone width (basic layout only — the full mobile check stays in Phase 5)
+- [x] Feature: style the search results page, hotel cards and the property detail page; responsive down to phone width (basic layout only — the full mobile check stays in Phase 5) — done 2026-10-13, PR #42
 - [ ] Feature: style the trust page, the sign-in/sign-up pages and the staff workbench lightly (consistent fonts and colors, no redesign)
 
 **Deferred, deliberately out of MVP scope:** favoriting/saved properties, multi-language UI, personalized recommendations. Not forgotten — reviewed and postponed past MVP.
