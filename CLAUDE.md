@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 2 — Public search and listing pages (against mock data). Phase 1 complete and reviewed by the owner 2026-10-12.
 - **Last updated:** 2026-10-13
-- **Next up:** Epic 2.1 — test that the whole public flow (search + property page) works with no session and leaks no staff data. Phase 2 build order (owner left it to Claude, 2026-10-12): finish 2.1 → 2.2 detail page → 2.5 homepage & city pages → 2.6 light design round → 2.3 SEO → 2.4 trust page.
+- **Next up:** Epic 2.5 — homepage with city curations. Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 homepage & city pages → 2.6 light design round → 2.3 SEO → 2.4 trust page.
 
 ## Session protocol
 
@@ -155,7 +155,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 - [x] Feature: date range and guest count as required search inputs — RateHawk cannot return real availability/pricing without them, so the UI shouldn't let a search happen without them either — done 2026-10-12, PR #29 (one room, 1–6 adults, up to 30 nights; children's ages and `residency` come with the real RateHawk search in Phase 3)
 - [x] Feature: empty-state messaging for a search with zero approved properties (expected and common at launch, given the deliberately small, hand-picked catalogue — this must not look like a broken page) — done 2026-10-12, PR #31
 - [x] Feature: server-side enforcement test proving an unapproved or suspended property can never appear in results — done 2026-10-13, PR #32 (`whitelist.integration.test.ts`: runs against a real database in CI, as an anonymous visitor and as a reader allowed to see suspended rows)
-- [ ] Feature: test that the whole public flow works with no session at all: an anonymous visitor can run a search and open a property page, with no redirect to a login page and no staff-only data in the response
+- [x] Feature: test that the whole public flow works with no session at all: an anonymous visitor can run a search and open a property page, with no redirect to a login page and no staff-only data in the response — done 2026-10-13, PR #35 (`public-flow.e2e.test.ts`: a production build checked over HTTP with no cookies, in CI)
 
 **Epic 2.2 — Property detail page**
 - [x] Feature: detail page with photos, amenities, the public vetting summary (the staff-approved text, never the raw AI evidence pack), and a "Check availability" call to action (no real booking yet) — done 2026-10-13, PR #34 (`/hotels/[hid]`: unknown, unapproved, suspended or closed hotels are a plain 404; rooms and prices once dates and guests are chosen)

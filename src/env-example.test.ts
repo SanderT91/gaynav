@@ -27,6 +27,14 @@ function variablesReadByCode(): Set<string> {
   }
   // Set by Node/Next.js themselves, not by us.
   for (const builtIn of ["NODE_ENV", "NEXT_RUNTIME", "VERCEL_ENV", "CI"]) found.delete(builtIn);
+  // Set by our own test runners (scripts/run-*-test*.mjs), never by a developer.
+  for (const testOnly of [
+    "SUPABASE_TEST_URL",
+    "SUPABASE_TEST_PUBLISHABLE_KEY",
+    "SUPABASE_TEST_SECRET_KEY",
+    "PUBLIC_FLOW_BASE_URL",
+  ])
+    found.delete(testOnly);
   return found;
 }
 

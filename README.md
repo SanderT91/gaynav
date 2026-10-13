@@ -10,21 +10,23 @@ Curated LGBTQ+ hotel search and booking. See [`CLAUDE.md`](CLAUDE.md) for the ar
 
 ## Scripts
 
-| Command                     | What it does                                                  |
-| --------------------------- | ------------------------------------------------------------- |
-| `npm run dev`               | Start the dev server on http://localhost:3000                 |
-| `npm run build`             | Production build                                              |
-| `npm run lint`              | ESLint (Next.js + TypeScript rules)                           |
-| `npm run typecheck`         | Generate route types and run `tsc`                            |
-| `npm run format`            | Format all files with Prettier                                |
-| `npm run format:check`      | Check formatting without writing                              |
-| `npm test`                  | Unit tests (Vitest)                                           |
-| `npm run test:watch`        | Unit tests in watch mode                                      |
-| `npm run db:start`          | Start the local Supabase stack (needs Docker)                 |
-| `npm run db:reset`          | Rebuild the local database from migrations                    |
-| `npm run db:test`           | Rebuild the local database, then run the pgTAP tests          |
-| `npm run db:check-exposure` | Check over HTTP that internal schemas are hidden from the API |
-| `npm run db:stop`           | Stop the local Supabase stack                                 |
+| Command                     | What it does                                                                                   |
+| --------------------------- | ---------------------------------------------------------------------------------------------- |
+| `npm run dev`               | Start the dev server on http://localhost:3000                                                  |
+| `npm run build`             | Production build                                                                               |
+| `npm run lint`              | ESLint (Next.js + TypeScript rules)                                                            |
+| `npm run typecheck`         | Generate route types and run `tsc`                                                             |
+| `npm run format`            | Format all files with Prettier                                                                 |
+| `npm run format:check`      | Check formatting without writing                                                               |
+| `npm test`                  | Unit tests (Vitest)                                                                            |
+| `npm run test:watch`        | Unit tests in watch mode                                                                       |
+| `npm run test:integration`  | App code against the local database (needs `db:start`)                                         |
+| `npm run test:public-flow`  | Builds and starts the app, then checks the anonymous visitor flow over HTTP (needs `db:start`) |
+| `npm run db:start`          | Start the local Supabase stack (needs Docker)                                                  |
+| `npm run db:reset`          | Rebuild the local database from migrations                                                     |
+| `npm run db:test`           | Rebuild the local database, then run the pgTAP tests                                           |
+| `npm run db:check-exposure` | Check over HTTP that internal schemas are hidden from the API                                  |
+| `npm run db:stop`           | Stop the local Supabase stack                                                                  |
 
 ## Folder structure
 
@@ -62,7 +64,7 @@ You develop against a **local Supabase stack** running in Docker: a private, thr
 
 - `npm run db:start` / `npm run db:stop` start and stop the stack. Data survives a stop.
 - `npm run db:reset` wipes the local database and rebuilds it from migrations. Do this after pulling new migrations.
-- `npm test` runs the unit tests; `npm run db:test` runs the database tests (it resets the local database first).
+- `npm test` runs the unit tests; `npm run db:test` runs the database tests (it resets the local database first); `npm run test:integration` and `npm run test:public-flow` run app code against the local database (they add a few test hotels and a test staff account, `whitelist-test-staff@gaynav.test`).
 
 ### Signing up and testing as staff locally
 
