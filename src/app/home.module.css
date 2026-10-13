@@ -4,16 +4,41 @@
 
 .hero {
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
   color: var(--color-on-primary);
-  /* Stand-in for the hero photo: a brand gradient. Swap in a licensed photo
-     via --hero-image once the owner supplies one. */
-  background:
-    var(--hero-image, none) center / cover no-repeat,
-    radial-gradient(circle at 85% 15%, var(--pink-400) 0, transparent 45%),
-    linear-gradient(135deg, var(--pink-900) 0%, var(--pink-700) 45%, var(--pink-500) 100%);
+  /* Shown while the photo loads, and if it ever fails. */
+  background: linear-gradient(
+    135deg,
+    var(--pink-900) 0%,
+    var(--pink-700) 45%,
+    var(--pink-500) 100%
+  );
+}
+
+/* The hero photo, under a brand-coloured shade so the white text stays
+   readable on any photo. */
+.heroPhoto {
+  z-index: 0;
+  object-fit: cover;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--pink-900) 70%, transparent) 0%,
+    color-mix(in srgb, var(--pink-800) 30%, transparent) 55%,
+    color-mix(in srgb, var(--pink-600) 5%, transparent) 100%
+  );
 }
 
 .heroInner {
+  position: relative;
+  z-index: 2;
   max-width: var(--page-width);
   margin: 0 auto;
   padding: var(--space-8) var(--page-gutter) var(--space-7);
@@ -86,24 +111,43 @@
   color: var(--color-text);
 }
 
-/* Stand-in for a city photo, in the brand colours. */
+/* City photo with the name on a soft shade at the bottom. */
 .cityImage {
-  aspect-ratio: 4 / 3;
+  position: relative;
   display: flex;
   align-items: flex-end;
+  aspect-ratio: 4 / 3;
   padding: var(--space-4);
+  overflow: hidden;
   color: var(--color-on-primary);
   font-size: 1.6rem;
   font-weight: var(--weight-light);
   background: linear-gradient(160deg, var(--pink-300), var(--pink-700));
 }
 
-.cityGrid li:nth-child(3n + 2) .cityImage {
-  background: linear-gradient(160deg, var(--pink-400), var(--pink-900));
+.cityPhoto {
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-.cityGrid li:nth-child(3n) .cityImage {
-  background: linear-gradient(160deg, var(--pink-200), var(--pink-600));
+.cityCard:hover .cityPhoto {
+  transform: scale(1.04);
+}
+
+.cityImage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--pink-900) 70%, transparent) 0%,
+    transparent 55%
+  );
+}
+
+.cityName {
+  position: relative;
+  z-index: 1;
 }
 
 .cityMeta {
