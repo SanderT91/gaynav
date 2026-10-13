@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 2 — Public search and listing pages (against mock data). Phase 1 complete and reviewed by the owner 2026-10-12.
 - **Last updated:** 2026-10-13
-- **Next up:** Epic 2.6 — design tokens, shared header and footer. Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 ✓ → 2.6 light design round → 2.3 SEO → 2.4 trust page.
+- **Next up:** Epic 2.6 — style the homepage. Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 ✓ → 2.6 light design round → 2.3 SEO → 2.4 trust page.
 
 ## Session protocol
 
@@ -170,11 +170,11 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 *This app replaces gaynav.com entirely (owner decision 2026-10-12), so the public entry points of the current site are rebuilt here. Accounts are this app's own — no combined login with the old site.*
 - [x] Feature: homepage with a hero, a search box, and "City curations" cards for the six launch cities, each linking to a city page (replaces the current deep links into my.gaynav.com search) — done 2026-10-13, PR #38
 - [x] Feature: city page per launch city showing only approved properties for that city, server-rendered with its own metadata (SEO) — done 2026-10-13, PR #36 (`/cities/[slug]`; built before the homepage so its city cards have somewhere to link)
-- [ ] Feature: About, Privacy and Terms pages (placeholder text where legal copy isn't final, flagged clearly). The Insiders news feed is NOT part of the MVP (see `FEATURE_BACKLOG.md`)
+- [x] Feature: About, Privacy and Terms pages (placeholder text where legal copy isn't final, flagged clearly). The Insiders news feed is NOT part of the MVP (see `FEATURE_BACKLOG.md`) — done 2026-10-13, PR #37 (`/about`, `/privacy`, `/terms`; Privacy and Terms carry a visible 'Placeholder — not final legal text' notice and are `noindex` until legal copy lands)
 
 **Epic 2.6 — Light design round (owner demo)**
 *Goal: the owner can open the preview and see something that feels like GAYNAV, not a bare prototype. Uses the brand tokens in "Design direction". Not a full polish pass — that stays in Phase 5.*
-- [ ] Feature: design tokens (Lexend Deca, the pink scale, radii, spacing) in a single theme file, plus a shared header (logo, nav, login) and footer used by every public page
+- [x] Feature: design tokens (Lexend Deca, the pink scale, radii, spacing) in a single theme file, plus a shared header (logo, nav, login) and footer used by every public page — done 2026-10-13, PR #40 (`src/app/theme.css`; a test fails if a brand hex appears outside it)
 - [ ] Feature: style the homepage with a photo hero, the search box and the six city cards in the gaynav.com look
 - [ ] Feature: style the search results page, hotel cards and the property detail page; responsive down to phone width (basic layout only — the full mobile check stays in Phase 5)
 - [ ] Feature: style the trust page, the sign-in/sign-up pages and the staff workbench lightly (consistent fonts and colors, no redesign)
