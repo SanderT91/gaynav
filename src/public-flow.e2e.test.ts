@@ -144,6 +144,25 @@ describe("public flow with no session", () => {
     expectNoStaffData(res.body);
   });
 
+  it("the sitemap lists the approved hotel, never a suspended or unapproved one", async () => {
+    const res = await get("/sitemap.xml");
+    expect(res.status).toBe(200);
+    expect(res.body).toContain(`/hotels/${APPROVED}</loc>`);
+    expect(res.body).not.toContain(`/hotels/${SUSPENDED}`);
+    expect(res.body).not.toContain(`/hotels/${NEVER_APPROVED}`);
+    expect(res.body).toContain("/cities/rome</loc>");
+    expect(res.body).not.toContain("/staff");
+  });
+
+  it("robots.txt keeps crawlers out of the private areas and points at the sitemap", async () => {
+    const res = await get("/robots.txt");
+    expect(res.status).toBe(200);
+    for (const path of ["/staff", "/account", "/login"]) {
+      expect(res.body).toContain(`Disallow: ${path}`);
+    }
+    expect(res.body).toMatch(/Sitemap: http\S+\/sitemap\.xml/);
+  });
+
   it("the trust page loads anonymously and is indexable", async () => {
     const res = await get("/how-we-vet");
     expect(res.status).toBe(200);

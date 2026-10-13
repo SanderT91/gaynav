@@ -1,7 +1,14 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildHotelDetail } from "@/lib/hotels/detail";
 import { mockHotelContent } from "@/mock/ratehawk";
-import { hotelMetadata, searchMetadata, siteUrl, snippet } from "./seo";
+import {
+  hotelMetadata,
+  PRIVATE_PATHS,
+  searchMetadata,
+  siteUrl,
+  sitemapEntries,
+  snippet,
+} from "./seo";
 
 const CASA = 9990000006;
 const casa = buildHotelDetail({
@@ -76,5 +83,25 @@ describe("siteUrl", () => {
   it("falls back to localhost in development", () => {
     vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "");
     expect(siteUrl().href).toBe("http://localhost:3000/");
+  });
+});
+
+describe("sitemapEntries", () => {
+  const base = new URL("https://gaynav.example");
+
+  it("lists the public pages, every city and the hotels it is given, as absolute URLs", () => {
+    const urls = sitemapEntries(base, [9990000006]).map((e) => e.url);
+    expect(urls).toContain("https://gaynav.example/");
+    expect(urls).toContain("https://gaynav.example/how-we-vet");
+    expect(urls).toContain("https://gaynav.example/cities/ho-chi-minh-city");
+    expect(urls).toContain("https://gaynav.example/hotels/9990000006");
+    expect(urls.filter((u) => u.includes("/cities/"))).toHaveLength(6);
+  });
+
+  it("never lists a private area", () => {
+    const urls = sitemapEntries(base, []).map((e) => new URL(e.url).pathname);
+    for (const path of PRIVATE_PATHS) {
+      expect(urls.some((u) => u.startsWith(path))).toBe(false);
+    }
   });
 });

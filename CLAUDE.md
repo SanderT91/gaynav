@@ -8,7 +8,7 @@ This file orients Claude Code on every session in this repository. Read it in fu
 
 - **Current phase:** 2 — Public search and listing pages (against mock data). Phase 1 complete and reviewed by the owner 2026-10-12.
 - **Last updated:** 2026-10-13
-- **Next up:** Epic 2.3 — sitemap.xml and robots.txt; then the end-of-Phase-2 review. Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 ✓ → 2.6 light design round → 2.3 SEO → 2.4 trust page.
+- **Next up:** end-of-Phase-2 review by the owner (all Phase 2 features are built). Phase 3 then needs the RateHawk credentials and the account-ownership decision (Open items). Phase 2 build order (owner left it to Claude, 2026-10-12): 2.1 ✓ → 2.2 ✓ → 2.5 ✓ → 2.6 light design round → 2.3 SEO → 2.4 trust page.
 
 ## Session protocol
 
@@ -162,7 +162,7 @@ Next.js project scaffold. Supabase schema, RLS, auth. Deployed to Vercel with a 
 
 **Epic 2.3 — SEO foundations**
 - [x] Feature: server-rendered metadata (title, description, Open Graph tags) per property and search page — organic search is called out as a core growth channel in the business plan, and this is much cheaper to build in from the start than to retrofit later — done 2026-10-13, PR #44 (`src/lib/seo.ts`; a hidden hotel's metadata never names it)
-- [ ] Feature: `sitemap.xml` (homepage, city pages, approved hotels only, trust and About pages) and `robots.txt` (keeps /staff, /account and /login out of search engines) — added 2026-10-13: standard SEO foundations that were missing from this epic
+- [x] Feature: `sitemap.xml` (homepage, city pages, approved hotels only, trust and About pages) and `robots.txt` (keeps /staff, /account and /login out of search engines) — added 2026-10-13: standard SEO foundations that were missing from this epic — done 2026-10-13, PR #46
 
 **Epic 2.4 — Trust page**
 - [x] Feature: a public page explaining the vetting process in plain language (why every property is reviewed, what disqualifies one) — this is the core brand promise and costs little to build, but was missing from the original phase plan — done 2026-10-13, PR #45 (`/how-we-vet`, linked from the header, footer, homepage, About and every property page)
