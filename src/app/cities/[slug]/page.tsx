@@ -36,10 +36,7 @@ export default async function CityPage({ params }: PageProps<"/cities/[slug]">) 
 
   return (
     <main style={{ padding: "3rem 1.5rem", maxWidth: "56rem", margin: "0 auto" }}>
-      <p>
-        <Link href="/">GAYNAV</Link>
-      </p>
-      <h1 style={{ marginTop: "0.5rem" }}>LGBTQ+ friendly hotels in {city.name}</h1>
+      <h1>LGBTQ+ friendly hotels in {city.name}</h1>
       <p style={{ marginTop: "0.5rem" }}>
         Every hotel below has been reviewed by a person on our team and approved as safe and
         welcoming for LGBTQ+ travellers. Choose your dates to see rooms and prices.

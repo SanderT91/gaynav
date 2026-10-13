@@ -1,0 +1,58 @@
+/*
+ * GAYNAV design tokens — the ONE place for brand values (CLAUDE.md, Design
+ * direction). Read from the live gaynav.com on 2026-10-12. Components use
+ * these variables; never hard-code a brand hex value anywhere else.
+ */
+:root {
+  /* Brand pink scale. 500 is the main brand colour (primary buttons). */
+  --pink-900: #58032c;
+  --pink-800: #7d073f;
+  --pink-700: #a70a55;
+  --pink-600: #c60a66;
+  --pink-500: #e40d75;
+  --pink-400: #f04395;
+  --pink-300: #f882b7;
+  --pink-200: #fcc2db;
+  --pink-100: #fde8f1;
+
+  /* Surfaces and text. The brand is light-only: white page, near-black text. */
+  --color-bg: #ffffff;
+  --color-text: #171717;
+  --color-muted: #5f5f66;
+  --color-border: #e6e6ea;
+  --color-surface: #fafafa;
+  --color-primary: var(--pink-500);
+  --color-primary-hover: var(--pink-600);
+  --color-on-primary: #ffffff;
+  --color-link: var(--pink-700);
+  --color-error: #b42318;
+  --color-warning: #b54708;
+
+  /* Type. Lexend Deca is loaded in layout.tsx (next/font). */
+  --font-sans: var(--font-lexend-deca), system-ui, sans-serif;
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 600;
+
+  /* Shapes. Header/login buttons and cards: 8px. Hero and CTA buttons: pill. */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  /* Spacing scale (4px steps). */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* Layout. */
+  --page-width: 72rem;
+  --page-gutter: 1.25rem;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 16px rgb(0 0 0 / 0.06);
+}
